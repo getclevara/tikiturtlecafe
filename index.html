@@ -416,6 +416,42 @@
         .menu-item.special { background: linear-gradient(135deg, #fffbf0 0%, #fff 100%); border: 2px solid var(--sunset); }
         .menu-cta { text-align: center; margin-top: 3rem; }
 
+        /* Weekly Specials */
+        .weekly-specials { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; max-width: 1000px; margin: 0 auto; }
+        .week-card {
+            background: white; border-radius: 20px; overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+        }
+        .week-header {
+            background: linear-gradient(135deg, var(--ocean-deep), var(--ocean-mid));
+            color: white; padding: 1.25rem 1.5rem; text-align: center;
+        }
+        .week-header h3 { font-size: 1.3rem; margin-bottom: 0.25rem; }
+        .week-header p { font-size: 0.85rem; opacity: 0.8; }
+        .week-days { padding: 1.5rem; }
+        .day-item {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0.75rem 0; border-bottom: 1px solid var(--sand);
+        }
+        .day-item:last-child { border-bottom: none; }
+        .day-name { font-weight: 600; color: var(--ocean-deep); font-size: 0.9rem; min-width: 90px; }
+        .day-dish { color: var(--text-dark); font-size: 0.95rem; flex: 1; }
+        .day-price { font-weight: 700; color: var(--coral); font-size: 0.95rem; }
+        .dole-flavors {
+            background: var(--sand); padding: 1rem 1.5rem;
+            display: flex; align-items: center; gap: 0.5rem;
+            font-size: 0.9rem; color: var(--text-dark);
+        }
+        .dole-flavors strong { color: var(--sunset); }
+        .specials-note {
+            text-align: center; margin-top: 2rem; padding: 1rem;
+            background: rgba(14, 140, 160, 0.08); border-radius: 12px;
+            color: var(--ocean-mid); font-size: 0.95rem; max-width: 600px; margin-left: auto; margin-right: auto;
+        }
+        @media (max-width: 768px) {
+            .weekly-specials { grid-template-columns: 1fr; }
+        }
+
         /* Catering Section */
         .catering { background: var(--sand); }
         .catering-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; max-width: 1100px; margin: 0 auto; }
@@ -649,11 +685,37 @@
                 <button class="menu-tab" data-category="treats">Treats</button>
             </div>
             <div class="menu-category active" id="specials">
-                <div class="menu-grid">
-                    <div class="menu-item special"><div class="menu-item-header"><h3>🌟 Weekly Special</h3><span class="price">Ask Us!</span></div><p>Check with our team for this week's special creation from Chef Angelina!</p></div>
-                    <div class="menu-item"><div class="menu-item-header"><h3>Chicken Plate</h3><span class="price">$12.00</span></div><p>Tender grilled chicken with your choice of sides. Hearty and satisfying.</p></div>
+                <div class="weekly-specials">
+                    <div class="week-card">
+                        <div class="week-header">
+                            <h3>🌴 Week 1</h3>
+                            <p>Rotating Weekly</p>
+                        </div>
+                        <div class="week-days">
+                            <div class="day-item"><span class="day-name">Monday</span><span class="day-dish">Hamburger Steak</span><span class="day-price">$14</span></div>
+                            <div class="day-item"><span class="day-name">Tuesday</span><span class="day-dish">Tacos w/ Beans & Rice</span><span class="day-price">$14</span></div>
+                            <div class="day-item"><span class="day-name">Wednesday</span><span class="day-dish">Pepper Chicken</span><span class="day-price">$14</span></div>
+                            <div class="day-item"><span class="day-name">Thursday</span><span class="day-dish">Shredded Roast Pork</span><span class="day-price">$14</span></div>
+                            <div class="day-item"><span class="day-name">Friday</span><span class="day-dish">Mahi Katsu</span><span class="day-price">$14</span></div>
+                        </div>
+                        <div class="dole-flavors">🍦 <strong>Dole Flavors:</strong> Melona | Pineapple</div>
+                    </div>
+                    <div class="week-card">
+                        <div class="week-header">
+                            <h3>🌺 Week 2</h3>
+                            <p>Rotating Weekly</p>
+                        </div>
+                        <div class="week-days">
+                            <div class="day-item"><span class="day-name">Monday</span><span class="day-dish">Shoyu Pork</span><span class="day-price">$14</span></div>
+                            <div class="day-item"><span class="day-name">Tuesday</span><span class="day-dish">Burritos</span><span class="day-price">$14</span></div>
+                            <div class="day-item"><span class="day-name">Wednesday</span><span class="day-dish">Korean Chicken</span><span class="day-price">$14</span></div>
+                            <div class="day-item"><span class="day-name">Thursday</span><span class="day-dish">Burgers w/ Fries</span><span class="day-price">$14</span></div>
+                            <div class="day-item"><span class="day-name">Friday</span><span class="day-dish">Beef Stew</span><span class="day-price">$14</span></div>
+                        </div>
+                        <div class="dole-flavors">🍦 <strong>Dole Flavors:</strong> Cherry | Pineapple</div>
+                    </div>
                 </div>
-                <p style="text-align: center; margin-top: 2rem; color: var(--ocean-mid); font-size: 0.95rem;">Our specials rotate weekly with fresh, local ingredients.</p>
+                <div class="specials-note">Our daily plate specials rotate between Week 1 & Week 2. All plates are $14 and served 10 AM - 2 PM, Mon-Fri.</div>
             </div>
             <div class="menu-category" id="sandwiches">
                 <div class="menu-grid">
