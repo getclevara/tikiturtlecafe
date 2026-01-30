@@ -262,6 +262,36 @@
         .gallery-placeholder svg { width: 48px; height: 48px; margin-bottom: 0.5rem; }
         .gallery-placeholder span { font-size: 0.85rem; font-weight: 500; }
 
+        /* Testimonials Section */
+        .testimonials { background: var(--sand); }
+        .testimonials-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem; max-width: 1100px; margin: 0 auto;
+        }
+        .testimonial-card {
+            background: white; border-radius: 20px; padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+            transition: all 0.3s ease; position: relative;
+        }
+        .testimonial-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
+        .testimonial-stars { color: #f59e42; font-size: 1.1rem; margin-bottom: 1rem; letter-spacing: 2px; }
+        .testimonial-text { font-size: 1rem; line-height: 1.7; color: var(--text-dark); margin-bottom: 1.25rem; font-style: italic; }
+        .testimonial-author { display: flex; align-items: center; gap: 0.75rem; }
+        .testimonial-avatar {
+            width: 42px; height: 42px; border-radius: 50%;
+            background: linear-gradient(135deg, var(--ocean-mid), var(--ocean-bright));
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-weight: 600; font-size: 1rem;
+        }
+        .testimonial-name { font-weight: 600; color: var(--ocean-deep); font-size: 0.95rem; }
+        .testimonial-source { font-size: 0.8rem; color: var(--text-dark); opacity: 0.6; }
+        .google-badge {
+            display: inline-flex; align-items: center; gap: 0.4rem;
+            background: var(--sand); padding: 0.5rem 1rem; border-radius: 50px;
+            font-size: 0.85rem; color: var(--text-dark); margin-top: 2rem;
+        }
+        .google-badge svg { width: 18px; height: 18px; }
+
         /* Team Section */
         .team { background: linear-gradient(180deg, var(--ocean-deep) 0%, #0a4a5c 100%); position: relative; overflow: hidden; }
         .team::before {
@@ -576,6 +606,71 @@
                 <div class="gallery-item"><div class="gallery-placeholder"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg><span>Sandwich</span></div></div>
                 <div class="gallery-item"><div class="gallery-placeholder"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg><span>Dole Whip</span></div></div>
                 <div class="gallery-item"><div class="gallery-placeholder"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg><span>Salad</span></div></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section testimonials" id="reviews">
+        <div class="section-container">
+            <div class="section-header">
+                <h2>What People Are Saying</h2>
+                <p>Real reviews from our amazing customers</p>
+            </div>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-text">"Great food, cute place and all for a good cause! We will definitely eat there again and again."</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">L</div>
+                        <div><div class="testimonial-name">Laura R.</div><div class="testimonial-source">Google Review</div></div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-text">"Amazing fresh ingredients. Please don't pass up on this place. We need more places like these. Thank you!"</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">C</div>
+                        <div><div class="testimonial-name">Carmen F.</div><div class="testimonial-source">Google Review</div></div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-text">"The service was phenomenal, the person that helped us was kind and professional! If you want a delicious lunch or a DOLEWHIP for a decent price come here!"</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">L</div>
+                        <div><div class="testimonial-name">Laura D.</div><div class="testimonial-source">Google Review</div></div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-text">"Great spot with a cool vibe! The staff was super helpful, and the food was fresh, healthy, and delicious. Definitely worth a visit!"</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">E</div>
+                        <div><div class="testimonial-name">Edward D.</div><div class="testimonial-source">Google Review</div></div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-text">"The chicken salad Mac nut pesto is really good as a wrap. You must try the pineapple slaw, it is sweet and crunchy. Perfect for a warm afternoon!"</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">J</div>
+                        <div><div class="testimonial-name">Jeff M.</div><div class="testimonial-source">Google Review</div></div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-text">"Love that place, the workmanship of bar and decor is very fine. The food excellent and the staff friendly and accommodating. 🙏"</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">M</div>
+                        <div><div class="testimonial-name">Mike H.</div><div class="testimonial-source">Google Review</div></div>
+                    </div>
+                </div>
+            </div>
+            <div style="text-align: center;">
+                <a href="https://www.google.com/maps/place/The+Tiki+Turtle+Cafe" target="_blank" class="google-badge">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+                    See All Reviews on Google
+                </a>
             </div>
         </div>
     </section>
