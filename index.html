@@ -12,443 +12,519 @@
     
     <style>
         :root {
-            --ocean-deep: #0d5c63;
-            --ocean-mid: #14919b;
-            --ocean-bright: #0ad4e6;
-            --ocean-light: #a8e6cf;
-            --sand: #fef9f3;
+            --ocean-deep: #0d5c72;
+            --ocean-mid: #0e8ca0;
+            --ocean-bright: #12b5c4;
+            --ocean-light: #a8dce5;
+            --sand: #f7f3ed;
             --sand-warm: #fff8f0;
-            --coral: #ff6b6b;
-            --coral-dark: #ee5a5a;
-            --sunset: #feca57;
-            --sunset-dark: #ff9f43;
-            --hibiscus: #ff6b9d;
+            --coral: #e85a5a;
+            --coral-light: #ff7b7b;
+            --sunset: #f59e42;
+            --sunset-light: #ffc178;
+            --hibiscus: #d64d7a;
+            --cream: #fffcf7;
             --text-dark: #1a3a4a;
             --text-light: #ffffff;
-            --cream: #fffcf7;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
-        body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text-dark); overflow-x: hidden; }
+        body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text-dark); overflow-x: hidden; line-height: 1.6; }
         h1, h2, h3, h4 { font-family: 'Playfair Display', serif; font-weight: 600; }
 
-        /* Navbar */
+        /* Navigation */
         .navbar {
             position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
             padding: 0.75rem 3rem;
             display: flex; justify-content: space-between; align-items: center;
             transition: all 0.4s ease;
-            background: linear-gradient(180deg, rgba(13, 92, 99, 0.9) 0%, rgba(13, 92, 99, 0) 100%);
+            background: linear-gradient(180deg, rgba(13, 92, 114, 0.9) 0%, rgba(13, 92, 114, 0) 100%);
         }
         .navbar.scrolled {
-            background: rgba(13, 92, 99, 0.98);
+            background: rgba(13, 92, 114, 0.98);
             backdrop-filter: blur(20px);
             box-shadow: 0 4px 30px rgba(0,0,0,0.15);
         }
-        .nav-logo img { height: 55px; width: auto; }
+        .nav-logo { display: flex; align-items: center; text-decoration: none; }
+        .nav-logo img { height: 80px; width: auto; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.2)); transition: transform 0.3s ease; }
+        .nav-logo:hover img { transform: scale(1.05); }
+        
         .nav-center {
-            display: flex; gap: 0.5rem; list-style: none;
+            display: flex; gap: 0.5rem; 
             background: rgba(255,255,255,0.1);
-            padding: 0.5rem; border-radius: 50px;
+            padding: 0.5rem;
+            border-radius: 50px;
+            backdrop-filter: blur(10px);
         }
         .nav-center a {
-            color: white; text-decoration: none;
+            color: var(--text-light); text-decoration: none;
             font-weight: 500; font-size: 0.9rem;
-            padding: 0.6rem 1.25rem; border-radius: 50px;
+            padding: 0.6rem 1.25rem;
+            border-radius: 50px;
             transition: all 0.3s ease;
         }
         .nav-center a:hover { background: rgba(255,255,255,0.15); }
-        .nav-cta {
-            background: linear-gradient(135deg, var(--coral) 0%, var(--hibiscus) 100%);
-            color: white; padding: 0.85rem 1.75rem; border-radius: 50px;
-            text-decoration: none; font-weight: 600;
-            box-shadow: 0 4px 20px rgba(255, 107, 107, 0.4);
-            transition: all 0.3s ease;
-        }
-        .nav-cta:hover { transform: translateY(-2px); }
 
-        /* Hero */
+        .btn-nav-order {
+            background: linear-gradient(135deg, var(--sunset) 0%, var(--coral) 100%);
+            color: white; padding: 0.7rem 1.5rem; border-radius: 50px;
+            text-decoration: none; font-weight: 600; font-size: 0.9rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(245, 158, 66, 0.3);
+        }
+        .btn-nav-order:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(245, 158, 66, 0.4); }
+
+        /* Hero Section */
         .hero {
             min-height: 100vh;
-            background: linear-gradient(165deg, var(--ocean-deep) 0%, var(--ocean-mid) 50%, var(--ocean-bright) 100%);
-            position: relative;
-            display: flex; align-items: center; justify-content: center;
-            overflow: hidden;
+            background: linear-gradient(180deg, var(--ocean-deep) 0%, var(--ocean-mid) 50%, var(--ocean-bright) 100%);
+            position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden;
         }
+
         .light-rays {
             position: absolute; top: 0; left: 0; right: 0; height: 70%;
-            background: linear-gradient(180deg, rgba(255,255,255,0.08) 0%, transparent 100%);
+            background: radial-gradient(ellipse at 50% 0%, rgba(255,255,255,0.08) 0%, transparent 60%);
             pointer-events: none;
         }
 
+        /* Sea Turtles - 6 total */
         .turtle-container { position: absolute; width: 100%; height: 100%; pointer-events: none; overflow: hidden; }
         .sea-turtle { position: absolute; opacity: 0.7; filter: drop-shadow(0 10px 30px rgba(0,0,0,0.2)); }
-        .sea-turtle-1 { width: 160px; top: 20%; animation: swimRight 32s ease-in-out infinite; }
-        .sea-turtle-2 { width: 100px; top: 50%; animation: swimLeft 40s ease-in-out infinite; animation-delay: -15s; opacity: 0.5; }
+        .sea-turtle-1 { width: 160px; top: 18%; animation: swimRight 32s ease-in-out infinite; }
+        .sea-turtle-2 { width: 110px; top: 55%; animation: swimLeft 38s ease-in-out infinite; animation-delay: -12s; opacity: 0.55; }
+        .sea-turtle-3 { width: 90px; top: 75%; animation: swimRight 42s ease-in-out infinite; animation-delay: -25s; opacity: 0.45; }
+        .sea-turtle-4 { width: 130px; top: 40%; animation: swimLeft 35s ease-in-out infinite; animation-delay: -8s; opacity: 0.5; }
+        .sea-turtle-5 { width: 70px; top: 28%; animation: swimRight 48s ease-in-out infinite; animation-delay: -18s; opacity: 0.35; }
+        .sea-turtle-6 { width: 100px; top: 68%; animation: swimLeft 40s ease-in-out infinite; animation-delay: -30s; opacity: 0.4; }
 
         @keyframes swimRight {
             0% { left: -180px; transform: translateY(0) rotate(3deg); }
-            50% { transform: translateY(15px) rotate(-2deg); }
+            25% { transform: translateY(-20px) rotate(0deg); }
+            50% { transform: translateY(12px) rotate(-2deg); }
+            75% { transform: translateY(-8px) rotate(1deg); }
             100% { left: 105%; transform: translateY(0) rotate(3deg); }
         }
         @keyframes swimLeft {
-            0% { right: -150px; left: auto; transform: translateY(0) scaleX(-1); }
-            50% { transform: translateY(-10px) scaleX(-1); }
-            100% { right: 105%; left: auto; transform: translateY(0) scaleX(-1); }
+            0% { right: -180px; left: auto; transform: translateY(0) scaleX(-1) rotate(-3deg); }
+            25% { transform: translateY(15px) scaleX(-1) rotate(0deg); }
+            50% { transform: translateY(-12px) scaleX(-1) rotate(2deg); }
+            75% { transform: translateY(8px) scaleX(-1) rotate(-1deg); }
+            100% { right: 105%; left: auto; transform: translateY(0) scaleX(-1) rotate(-3deg); }
         }
 
+        /* Bubbles - doubled (24 total) */
         .bubbles { position: absolute; width: 100%; height: 100%; overflow: hidden; pointer-events: none; }
         .bubble {
             position: absolute; bottom: -30px;
-            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.8), rgba(255,255,255,0.15));
-            border-radius: 50%;
-            animation: rise 12s ease-in infinite;
+            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9), rgba(255,255,255,0.2));
+            border-radius: 50%; animation: rise 12s ease-in infinite;
         }
         @keyframes rise {
             0% { bottom: -30px; opacity: 0; }
-            5% { opacity: 0.6; }
-            100% { bottom: 105%; opacity: 0; }
+            10% { opacity: 0.7; }
+            90% { opacity: 0.5; }
+            100% { bottom: 105%; opacity: 0; transform: translateX(40px); }
         }
 
+        /* Waves */
         .ocean { position: absolute; bottom: 0; left: 0; width: 100%; height: 100px; overflow: hidden; }
         .wave { position: absolute; bottom: 0; left: 0; width: 200%; height: 100%; background-repeat: repeat-x; animation: wave 10s linear infinite; }
-        .wave1 { background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120'%3E%3Cpath fill='%23fffcf7' d='M0,60 C150,100 350,20 600,60 C850,100 1050,20 1200,60 L1200,120 L0,120 Z'/%3E%3C/svg%3E") 0 bottom; background-size: 1200px 100px; }
+        .wave1 { background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120'%3E%3Cpath fill='%23f7f3ed' d='M0,60 C150,100 350,20 600,60 C850,100 1050,20 1200,60 L1200,120 L0,120 Z'/%3E%3C/svg%3E") 0 bottom; background-size: 1200px 100px; }
+        .wave2 { background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120'%3E%3Cpath fill='%23f7f3ed' opacity='0.5' d='M0,60 C150,20 350,100 600,60 C850,20 1050,100 1200,60 L1200,120 L0,120 Z'/%3E%3C/svg%3E") 0 bottom; background-size: 1200px 100px; opacity: 0.5; animation-duration: 7s; animation-direction: reverse; bottom: 3px; }
         @keyframes wave { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
+        /* Hero Content */
         .hero-content { text-align: center; z-index: 10; padding: 2rem; max-width: 800px; }
-        .hero-tagline {
-            font-size: 1rem; color: rgba(255,255,255,0.9);
-            text-transform: uppercase; letter-spacing: 4px;
-            margin-bottom: 1rem;
+        
+        .hero-eyebrow {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            background: rgba(255,255,255,0.12); backdrop-filter: blur(10px);
+            padding: 0.6rem 1.25rem; border-radius: 50px;
+            color: var(--sunset-light); font-size: 0.85rem; font-weight: 600;
+            letter-spacing: 1.5px; text-transform: uppercase;
+            margin-bottom: 1.5rem;
+            border: 1px solid rgba(255,255,255,0.1);
         }
+        
         .hero h1 {
-            font-size: clamp(3rem, 8vw, 5rem);
-            color: white; margin-bottom: 0.5rem; line-height: 1.1;
+            font-size: clamp(2.8rem, 7vw, 4.5rem);
+            color: var(--text-light);
+            margin-bottom: 1rem;
+            line-height: 1.15;
+            text-shadow: 0 4px 30px rgba(0,0,0,0.2);
         }
-        .hero h1 span { color: var(--sunset); }
-        .hero-subtitle { font-size: 1.3rem; color: rgba(255,255,255,0.85); margin-bottom: 2.5rem; }
+        .hero h1 span { 
+            background: linear-gradient(135deg, var(--sunset-light) 0%, var(--coral-light) 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.15rem; color: rgba(255,255,255,0.9);
+            margin-bottom: 2.5rem; font-weight: 400;
+            max-width: 550px; margin-left: auto; margin-right: auto;
+            line-height: 1.7;
+        }
+
         .hero-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
         .btn {
-            padding: 1.1rem 2.5rem; border-radius: 50px;
-            text-decoration: none; font-weight: 600;
-            display: inline-flex; align-items: center; gap: 0.6rem;
-            transition: all 0.3s ease;
+            padding: 1rem 2.25rem; border-radius: 50px; text-decoration: none;
+            font-weight: 600; font-size: 1rem; transition: all 0.3s ease;
+            display: inline-flex; align-items: center; gap: 0.5rem;
         }
         .btn-primary {
             background: linear-gradient(135deg, var(--coral) 0%, var(--hibiscus) 100%);
-            color: white; box-shadow: 0 4px 25px rgba(255, 107, 107, 0.4);
+            color: white; box-shadow: 0 4px 20px rgba(232, 90, 90, 0.35);
         }
-        .btn-primary:hover { transform: translateY(-3px); }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(232, 90, 90, 0.45); }
         .btn-secondary {
             background: rgba(255,255,255,0.12); color: white;
-            border: 2px solid rgba(255,255,255,0.3);
+            border: 1px solid rgba(255,255,255,0.25); backdrop-filter: blur(10px);
         }
-        .btn-secondary:hover { background: rgba(255,255,255,0.2); }
+        .btn-secondary:hover { background: rgba(255,255,255,0.2); transform: translateY(-3px); }
 
         .hero-hours {
-            margin-top: 3rem;
-            display: inline-flex; align-items: center; gap: 1rem;
-            color: white;
+            margin-top: 2.5rem; padding: 0.9rem 1.75rem;
+            background: rgba(255,255,255,0.1); backdrop-filter: blur(10px);
+            border-radius: 50px; display: inline-flex; align-items: center; gap: 0.75rem;
+            border: 1px solid rgba(255,255,255,0.15);
+            color: white; font-weight: 500; font-size: 0.95rem;
         }
-        .hero-hours .dot { width: 8px; height: 8px; background: var(--ocean-light); border-radius: 50%; animation: pulse 2s ease-in-out infinite; }
+        .hero-hours .dot { width: 8px; height: 8px; background: #4ade80; border-radius: 50%; animation: pulse 2s ease-in-out infinite; }
         @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
-        .hero-hours span { color: var(--sunset); font-weight: 600; }
+        .hero-hours strong { color: var(--sunset-light); }
 
-        /* Sections */
-        .section { padding: 7rem 2rem; }
+        .scroll-indicator {
+            position: absolute; bottom: 130px; left: 50%; transform: translateX(-50%);
+            display: flex; flex-direction: column; align-items: center; gap: 0.4rem;
+            color: rgba(255,255,255,0.6); font-size: 0.8rem; font-weight: 500;
+            animation: bounce 2.5s ease-in-out infinite;
+        }
+        @keyframes bounce { 0%, 100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(8px); } }
+
+        /* Section Styles */
+        .section { padding: 6rem 2rem; }
+        .section-container { max-width: 1200px; margin: 0 auto; }
         .section-header { text-align: center; margin-bottom: 4rem; }
-        .section-label {
-            display: inline-block; font-size: 0.85rem; font-weight: 600;
-            color: var(--ocean-mid); text-transform: uppercase; letter-spacing: 3px;
-            margin-bottom: 1rem;
-        }
-        .section-header h2 { font-size: clamp(2.2rem, 5vw, 3rem); color: var(--text-dark); }
-        .section-header h2 span { color: var(--coral); }
-        .section-header p { font-size: 1.15rem; color: var(--text-dark); opacity: 0.7; max-width: 600px; margin: 1rem auto 0; }
+        .section-header h2 { font-size: clamp(2.2rem, 5vw, 3rem); color: var(--ocean-deep); margin-bottom: 1rem; }
+        .section-header p { font-size: 1.15rem; color: var(--text-dark); opacity: 0.7; max-width: 600px; margin: 0 auto; }
 
-        /* Mission */
-        .mission { background: var(--cream); }
+        /* Mission Section */
+        .mission { background: var(--sand); }
         .mission-content { max-width: 900px; margin: 0 auto; text-align: center; }
-        .mission-text { font-size: 1.25rem; line-height: 2; color: var(--text-dark); margin-bottom: 2.5rem; }
-        .mission-quote {
-            background: linear-gradient(135deg, var(--ocean-deep) 0%, var(--ocean-mid) 100%);
-            color: white; padding: 3rem; border-radius: 20px; margin: 3rem 0;
+        .mission-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--ocean-mid), var(--ocean-bright));
+            color: white; padding: 0.5rem 1.25rem; border-radius: 50px;
+            font-size: 0.8rem; font-weight: 600; margin-bottom: 1.5rem;
+            text-transform: uppercase; letter-spacing: 2px;
         }
-        .mission-quote p { font-size: 1.3rem; font-style: italic; line-height: 1.9; }
-        .mission-stats { display: flex; justify-content: center; gap: 4rem; margin-top: 4rem; flex-wrap: wrap; }
-        .stat-item { text-align: center; }
-        .stat-item .number { font-family: 'Playfair Display', serif; font-size: 3.5rem; font-weight: 700; color: var(--ocean-mid); }
-        .stat-item .label { font-size: 1rem; color: var(--text-dark); opacity: 0.7; margin-top: 0.5rem; }
+        .mission-statement { font-size: 1.15rem; line-height: 1.9; color: var(--text-dark); margin-bottom: 2rem; }
+        .mission-highlight {
+            background: linear-gradient(135deg, var(--ocean-deep) 0%, var(--ocean-mid) 100%);
+            color: white; padding: 2.5rem; border-radius: 24px; margin: 2.5rem 0;
+            position: relative; overflow: hidden;
+        }
+        .mission-highlight::before {
+            content: '"'; position: absolute; top: 10px; left: 25px;
+            font-size: 120px; font-family: 'Playfair Display', serif; opacity: 0.1;
+        }
+        .mission-highlight p { font-size: 1.2rem; font-style: italic; line-height: 1.8; position: relative; z-index: 2; }
+        
+        .mission-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 3rem; }
+        .stat-item {
+            text-align: center; padding: 2rem 1.5rem;
+            background: white; border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+            transition: transform 0.3s ease;
+        }
+        .stat-item:hover { transform: translateY(-5px); }
+        .stat-item .number { font-family: 'Playfair Display', serif; font-size: 2.75rem; font-weight: 700; color: var(--ocean-mid); }
+        .stat-item .label { font-size: 0.95rem; color: var(--text-dark); margin-top: 0.25rem; opacity: 0.8; }
 
         /* Food Gallery */
-        .food-gallery { background: var(--sand-warm); }
-        .gallery-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; max-width: 1200px; margin: 0 auto; }
+        .gallery { background: var(--cream); }
+        .gallery-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.25rem; }
         .gallery-item {
             aspect-ratio: 1; border-radius: 20px; overflow: hidden;
-            background: linear-gradient(135deg, var(--ocean-mid) 0%, var(--ocean-bright) 100%);
-            cursor: pointer; transition: transform 0.3s ease;
+            background: linear-gradient(135deg, var(--ocean-light) 0%, var(--sand) 100%);
+            position: relative; cursor: pointer; transition: all 0.4s ease;
         }
-        .gallery-item:first-child { grid-column: span 2; grid-row: span 2; }
         .gallery-item:hover { transform: scale(1.03); }
+        .gallery-item.large { grid-column: span 2; grid-row: span 2; }
         .gallery-placeholder {
             width: 100%; height: 100%;
             display: flex; flex-direction: column;
             align-items: center; justify-content: center;
-            color: white; font-weight: 500;
+            color: var(--ocean-mid); opacity: 0.6;
         }
-        .gallery-placeholder svg { width: 40px; height: 40px; margin-bottom: 0.5rem; opacity: 0.8; }
+        .gallery-placeholder svg { width: 48px; height: 48px; margin-bottom: 0.5rem; }
+        .gallery-placeholder span { font-size: 0.85rem; font-weight: 500; }
 
-        /* Team */
-        .team { background: linear-gradient(180deg, var(--cream) 0%, var(--sand-warm) 100%); overflow: hidden; }
+        /* Team Section */
+        .team { background: linear-gradient(180deg, var(--ocean-deep) 0%, #0a4a5c 100%); position: relative; overflow: hidden; }
+        .team::before {
+            content: ''; position: absolute; inset: 0;
+            background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='50' cy='50' r='1.5' fill='%23ffffff' opacity='0.1'/%3E%3C/svg%3E");
+            background-size: 50px 50px;
+        }
+        .team .section-header h2 { color: white; }
+        .team .section-header p { color: rgba(255,255,255,0.7); }
+
         .team-scroll {
-            display: flex; gap: 2rem; padding: 2rem 0;
-            overflow-x: auto; scroll-snap-type: x mandatory;
+            display: flex; gap: 1.5rem;
+            overflow-x: auto; padding: 1rem 0 2rem;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
             scrollbar-width: none;
         }
         .team-scroll::-webkit-scrollbar { display: none; }
-        .team-scroll::before, .team-scroll::after { content: ''; flex-shrink: 0; width: calc((100vw - 1200px) / 2); min-width: 2rem; }
-        .team-card {
-            flex-shrink: 0; width: 320px;
-            background: white; border-radius: 24px; overflow: hidden;
-            scroll-snap-align: center;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
-            cursor: pointer; transition: all 0.4s ease;
+
+        .team-member {
+            flex: 0 0 280px; scroll-snap-align: start;
+            background: white; border-radius: 24px;
+            overflow: hidden; transition: all 0.4s ease;
+            cursor: pointer;
         }
-        .team-card:hover { transform: translateY(-8px); box-shadow: 0 20px 60px rgba(0,0,0,0.15); }
-        .team-card-image {
+        .team-member:hover { transform: translateY(-8px); box-shadow: 0 20px 50px rgba(0,0,0,0.3); }
+        
+        .team-photo {
+            height: 200px;
+            background: linear-gradient(135deg, var(--ocean-light) 0%, var(--sand) 100%);
+            display: flex; align-items: center; justify-content: center;
+        }
+        .team-photo-placeholder {
+            width: 80px; height: 80px; border-radius: 50%;
+            background: linear-gradient(135deg, var(--ocean-mid), var(--ocean-bright));
+            display: flex; align-items: center; justify-content: center;
+            font-size: 2rem; color: white; font-family: 'Playfair Display', serif; font-weight: 600;
+        }
+        
+        .team-info { padding: 1.5rem; text-align: center; }
+        .team-info h3 { font-size: 1.3rem; color: var(--ocean-deep); margin-bottom: 0.25rem; }
+        .team-info .role { color: var(--coral); font-weight: 600; font-size: 0.9rem; margin-bottom: 0.75rem; }
+        .team-info p { font-size: 0.9rem; color: var(--text-dark); opacity: 0.7; line-height: 1.5; }
+        
+        .team-cta {
+            display: inline-flex; align-items: center; gap: 0.4rem;
+            color: var(--ocean-mid); font-weight: 600; font-size: 0.85rem;
+            margin-top: 1rem; padding: 0.5rem 1rem;
+            background: rgba(14, 140, 160, 0.08); border-radius: 50px;
+            transition: all 0.3s ease;
+        }
+        .team-member:hover .team-cta { background: var(--ocean-mid); color: white; }
+
+        .team-scroll-hint { text-align: center; margin-top: 1rem; color: rgba(255,255,255,0.5); font-size: 0.85rem; }
+
+        /* Team Modal */
+        .team-modal {
+            display: none; position: fixed; inset: 0;
+            background: rgba(10, 74, 92, 0.95); backdrop-filter: blur(10px);
+            z-index: 2000; align-items: center; justify-content: center;
+            padding: 2rem; opacity: 0; transition: opacity 0.3s ease;
+        }
+        .team-modal.active { display: flex; opacity: 1; }
+        .modal-content {
+            background: white; border-radius: 28px;
+            max-width: 550px; width: 100%; max-height: 85vh;
+            overflow-y: auto; position: relative;
+            animation: modalSlide 0.4s ease;
+        }
+        @keyframes modalSlide { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        
+        .modal-close {
+            position: absolute; top: 1.25rem; right: 1.25rem;
+            width: 40px; height: 40px; border: none;
+            background: var(--sand); border-radius: 50%; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.3s ease; z-index: 10;
+        }
+        .modal-close:hover { background: var(--coral); color: white; }
+        
+        .modal-photo {
             height: 200px;
             background: linear-gradient(135deg, var(--ocean-mid), var(--ocean-bright));
             display: flex; align-items: center; justify-content: center;
         }
-        .team-avatar {
-            width: 100px; height: 100px;
-            background: white; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 2.5rem; font-weight: 700; color: var(--ocean-mid);
-            font-family: 'Playfair Display', serif;
-        }
-        .team-card-content { padding: 1.75rem; text-align: center; }
-        .team-card h3 { font-size: 1.4rem; color: var(--text-dark); margin-bottom: 0.25rem; }
-        .team-role { font-size: 0.9rem; font-weight: 600; color: var(--coral); margin-bottom: 1rem; }
-        .team-preview { font-size: 0.95rem; color: var(--text-dark); opacity: 0.7; line-height: 1.6; margin-bottom: 1.25rem; }
-        .team-read-more { display: inline-flex; align-items: center; gap: 0.4rem; color: var(--ocean-mid); font-weight: 600; font-size: 0.9rem; }
-        .team-card:hover .team-read-more { color: var(--coral); }
-
-        .team-nav { display: flex; justify-content: center; gap: 1rem; margin-top: 2rem; }
-        .team-nav button {
-            width: 50px; height: 50px; border-radius: 50%;
-            border: 2px solid var(--ocean-mid); background: transparent;
-            color: var(--ocean-mid); cursor: pointer; transition: all 0.3s ease;
-            display: flex; align-items: center; justify-content: center;
-        }
-        .team-nav button:hover { background: var(--ocean-mid); color: white; }
-
-        /* Modal */
-        .team-modal {
-            display: none; position: fixed; inset: 0;
-            background: rgba(13, 92, 99, 0.95); z-index: 2000;
-            align-items: center; justify-content: center; padding: 2rem;
-        }
-        .team-modal.active { display: flex; }
-        .modal-content {
-            background: white; border-radius: 30px;
-            max-width: 550px; width: 100%; max-height: 85vh;
-            overflow-y: auto; padding: 3rem; position: relative;
-            animation: modalSlide 0.4s ease;
-        }
-        @keyframes modalSlide { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        .modal-close {
-            position: absolute; top: 1.25rem; right: 1.25rem;
-            width: 44px; height: 44px; border: none; background: var(--sand);
-            border-radius: 50%; cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
-        }
-        .modal-close:hover { background: var(--coral); color: white; }
-        .modal-avatar {
-            width: 100px; height: 100px; border-radius: 50%;
-            background: linear-gradient(135deg, var(--ocean-mid), var(--ocean-bright));
-            margin: 0 auto 1.5rem;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 2.5rem; color: white; font-family: 'Playfair Display', serif; font-weight: 700;
-        }
-        .modal-content h3 { text-align: center; font-size: 1.8rem; color: var(--text-dark); margin-bottom: 0.25rem; }
-        .modal-role { text-align: center; color: var(--coral); font-weight: 600; margin-bottom: 2rem; }
-        .modal-story { font-size: 1.05rem; line-height: 1.9; color: var(--text-dark); }
+        .modal-photo .team-photo-placeholder { width: 100px; height: 100px; font-size: 2.5rem; }
+        
+        .modal-body { padding: 2rem; }
+        .modal-body h3 { font-size: 1.8rem; color: var(--ocean-deep); margin-bottom: 0.25rem; }
+        .modal-body .role { color: var(--coral); font-weight: 600; font-size: 1rem; margin-bottom: 1.5rem; }
+        .modal-story { font-size: 1.05rem; line-height: 1.85; color: var(--text-dark); }
         .modal-story p { margin-bottom: 1.25rem; }
 
-        /* Menu */
-        .menu { background: white; }
-        .menu-tabs { display: flex; justify-content: center; gap: 0.5rem; margin-bottom: 3rem; flex-wrap: wrap; }
-        .menu-tab {
-            padding: 0.9rem 1.75rem; border: none; background: var(--sand);
-            border-radius: 50px; font-family: 'DM Sans', sans-serif;
-            font-size: 0.95rem; font-weight: 500; color: var(--text-dark);
-            cursor: pointer; transition: all 0.3s ease;
+        /* Menu Section */
+        .menu { background: var(--cream); }
+        .menu-tabs {
+            display: flex; justify-content: center; gap: 0.4rem;
+            margin-bottom: 3rem; flex-wrap: wrap;
+            background: var(--sand); padding: 0.5rem;
+            border-radius: 50px; max-width: fit-content; margin-left: auto; margin-right: auto;
         }
-        .menu-tab:hover { background: var(--ocean-light); }
-        .menu-tab.active { background: var(--ocean-mid); color: white; }
+        .menu-tab {
+            padding: 0.85rem 1.75rem; border: none;
+            background: transparent; border-radius: 50px;
+            font-family: 'DM Sans', sans-serif; font-size: 0.95rem; font-weight: 500;
+            color: var(--text-dark); cursor: pointer; transition: all 0.3s ease;
+        }
+        .menu-tab:hover { color: var(--ocean-mid); }
+        .menu-tab.active { background: white; color: var(--ocean-deep); box-shadow: 0 2px 10px rgba(0,0,0,0.08); }
+        
         .menu-category { display: none; animation: fadeIn 0.4s ease; }
         .menu-category.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
         .menu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.25rem; max-width: 900px; margin: 0 auto; }
-        .menu-item {
-            background: var(--sand); border-radius: 16px; padding: 1.5rem 1.75rem;
-            border-left: 4px solid var(--ocean-mid); transition: all 0.3s ease;
-        }
-        .menu-item:hover { transform: translateX(4px); }
-        .menu-item.featured { background: linear-gradient(135deg, #fffbeb 0%, #fff 100%); border-left-color: var(--sunset-dark); }
-        .menu-item-header { display: flex; justify-content: space-between; margin-bottom: 0.5rem; }
-        .menu-item h3 { font-size: 1.1rem; color: var(--text-dark); }
+        .menu-item { background: white; border-radius: 16px; padding: 1.5rem; transition: all 0.3s ease; border: 1px solid rgba(0,0,0,0.04); }
+        .menu-item:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0,0,0,0.06); }
+        .menu-item-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem; }
+        .menu-item h3 { font-size: 1.1rem; color: var(--ocean-deep); }
         .menu-item .price { font-size: 1.1rem; font-weight: 700; color: var(--coral); }
-        .menu-item p { font-size: 0.9rem; color: var(--text-dark); opacity: 0.65; }
-        .menu-cta { text-align: center; margin-top: 3.5rem; }
+        .menu-item p { color: var(--text-dark); opacity: 0.65; font-size: 0.9rem; line-height: 1.5; }
+        .menu-item.special { background: linear-gradient(135deg, #fffbf0 0%, #fff 100%); border: 2px solid var(--sunset); }
+        .menu-cta { text-align: center; margin-top: 3rem; }
 
-        /* Catering */
-        .catering {
-            background: linear-gradient(135deg, var(--ocean-deep) 0%, var(--ocean-mid) 100%);
-            position: relative;
-        }
-        .catering-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; max-width: 1100px; margin: 0 auto; align-items: center; }
-        .catering-content h2 { font-size: clamp(2rem, 4vw, 2.8rem); color: white; margin-bottom: 1.5rem; }
-        .catering-content p { font-size: 1.1rem; line-height: 1.8; color: rgba(255,255,255,0.85); margin-bottom: 1.5rem; }
-        .catering-features { display: flex; flex-direction: column; gap: 1rem; margin-top: 2rem; }
-        .catering-feature { display: flex; align-items: center; gap: 0.75rem; color: rgba(255,255,255,0.9); font-weight: 500; }
-        .catering-feature svg { width: 24px; height: 24px; color: var(--sunset); }
-        .catering-form { background: white; border-radius: 24px; padding: 2.5rem; box-shadow: 0 20px 60px rgba(0,0,0,0.2); }
-        .catering-form h3 { font-size: 1.5rem; color: var(--text-dark); margin-bottom: 1.5rem; text-align: center; }
+        /* Catering Section */
+        .catering { background: var(--sand); }
+        .catering-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; max-width: 1100px; margin: 0 auto; }
+        .catering-content h2 { font-size: clamp(2rem, 4vw, 2.5rem); color: var(--ocean-deep); margin-bottom: 1rem; }
+        .catering-content p { font-size: 1.1rem; line-height: 1.8; color: var(--text-dark); opacity: 0.8; margin-bottom: 1.5rem; }
+        .catering-benefits { list-style: none; margin-bottom: 1.5rem; }
+        .catering-benefits li { display: flex; align-items: center; gap: 0.75rem; padding: 0.5rem 0; font-size: 1rem; color: var(--text-dark); }
+        .catering-benefits li svg { width: 22px; height: 22px; color: var(--ocean-mid); flex-shrink: 0; }
+
+        .catering-form { background: white; border-radius: 24px; padding: 2.5rem; box-shadow: 0 10px 40px rgba(0,0,0,0.06); }
         .form-group { margin-bottom: 1.25rem; }
-        .form-group label { display: block; font-size: 0.9rem; font-weight: 500; color: var(--text-dark); margin-bottom: 0.5rem; }
-        .form-group input, .form-group select, .form-group textarea {
-            width: 100%; padding: 0.9rem 1rem; border: 2px solid #e8e8e8; border-radius: 12px;
+        .form-group label { display: block; font-size: 0.9rem; font-weight: 600; color: var(--ocean-deep); margin-bottom: 0.5rem; }
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%; padding: 0.9rem 1rem;
+            border: 2px solid var(--sand); border-radius: 12px;
             font-family: 'DM Sans', sans-serif; font-size: 1rem;
+            transition: border-color 0.3s ease; background: var(--sand-warm);
         }
-        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: var(--ocean-mid); }
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus { outline: none; border-color: var(--ocean-mid); }
         .form-group textarea { resize: vertical; min-height: 100px; }
         .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
         .form-submit {
             width: 100%; padding: 1rem;
-            background: linear-gradient(135deg, var(--coral) 0%, var(--hibiscus) 100%);
+            background: linear-gradient(135deg, var(--ocean-mid), var(--ocean-bright));
             color: white; border: none; border-radius: 12px;
             font-family: 'DM Sans', sans-serif; font-size: 1rem; font-weight: 600;
             cursor: pointer; transition: all 0.3s ease;
         }
-        .form-submit:hover { transform: translateY(-2px); }
+        .form-submit:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(14, 140, 160, 0.3); }
 
-        /* Location */
+        /* Location Section */
         .location { background: var(--cream); }
-        .location-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 4rem; max-width: 1100px; margin: 0 auto; align-items: center; }
-        .location-content h2 { font-size: clamp(2rem, 4vw, 2.5rem); color: var(--text-dark); margin-bottom: 2rem; }
-        .location-info { display: flex; flex-direction: column; gap: 1.5rem; }
+        .location-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 3rem; max-width: 1100px; margin: 0 auto; align-items: center; }
+        .location-content h2 { font-size: clamp(2rem, 4vw, 2.5rem); color: var(--ocean-deep); margin-bottom: 1.5rem; }
+        .location-info { display: flex; flex-direction: column; gap: 1.25rem; }
         .location-item { display: flex; gap: 1rem; align-items: flex-start; }
         .location-icon {
             width: 50px; height: 50px;
             background: linear-gradient(135deg, var(--ocean-mid), var(--ocean-bright));
-            border-radius: 14px;
-            display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+            border-radius: 14px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
         }
         .location-icon svg { width: 24px; height: 24px; color: white; }
-        .location-item h4 { font-size: 1rem; color: var(--text-dark); margin-bottom: 0.2rem; font-weight: 600; }
+        .location-item h4 { font-size: 1rem; color: var(--ocean-deep); margin-bottom: 0.15rem; font-weight: 600; }
         .location-item p { color: var(--text-dark); opacity: 0.7; font-size: 0.95rem; }
         .location-item a { color: var(--coral); text-decoration: none; }
-        .location-map { border-radius: 24px; overflow: hidden; height: 380px; box-shadow: 0 20px 50px rgba(0,0,0,0.1); }
+        .location-item a:hover { text-decoration: underline; }
+        .location-map { border-radius: 24px; overflow: hidden; box-shadow: 0 15px 40px rgba(0,0,0,0.1); height: 350px; }
         .location-map iframe { width: 100%; height: 100%; border: none; }
 
-        /* Arc */
-        .arc-connection { padding: 5rem 2rem; background: var(--sand-warm); text-align: center; }
-        .arc-connection img { height: 90px; margin-bottom: 1.5rem; }
-        .arc-connection h2 { font-size: 1.6rem; color: var(--text-dark); margin-bottom: 1rem; }
-        .arc-connection p { font-size: 1.05rem; line-height: 1.8; color: var(--text-dark); opacity: 0.75; max-width: 650px; margin: 0 auto 1.5rem; }
-        .arc-link { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--ocean-mid); font-weight: 600; text-decoration: none; }
-        .arc-link:hover { color: var(--coral); }
+        /* Arc Connection */
+        .arc-connection { background: white; text-align: center; }
+        .arc-connection .section-container { max-width: 700px; }
+        .arc-logo { height: 90px; margin-bottom: 1.5rem; }
+        .arc-connection h2 { font-size: 1.75rem; color: var(--ocean-deep); margin-bottom: 1rem; }
+        .arc-connection p { font-size: 1.05rem; line-height: 1.8; color: var(--text-dark); opacity: 0.75; margin-bottom: 1.5rem; }
+        .arc-link { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--ocean-mid); text-decoration: none; font-weight: 600; transition: all 0.3s ease; }
+        .arc-link:hover { color: var(--coral); gap: 0.75rem; }
 
         /* Footer */
         footer { background: var(--ocean-deep); padding: 4rem 2rem 2rem; color: white; }
-        .footer-content { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 4rem; }
-        .footer-brand img { height: 60px; margin-bottom: 1rem; }
+        .footer-content { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 4rem; }
+        .footer-brand h3 { font-family: 'Playfair Display', serif; font-size: 1.6rem; margin-bottom: 0.75rem; }
         .footer-brand p { opacity: 0.7; line-height: 1.7; font-size: 0.95rem; }
-        .footer-links h4, .footer-social h4 { font-size: 1rem; margin-bottom: 1.25rem; color: var(--sunset); }
+        .footer-links h4, .footer-social h4 { font-size: 1rem; margin-bottom: 1.25rem; color: var(--sunset-light); }
         .footer-links ul { list-style: none; }
-        .footer-links a { color: rgba(255,255,255,0.7); text-decoration: none; display: block; padding: 0.4rem 0; font-size: 0.95rem; }
+        .footer-links a { color: rgba(255,255,255,0.7); text-decoration: none; display: block; padding: 0.4rem 0; transition: color 0.3s ease; font-size: 0.95rem; }
         .footer-links a:hover { color: white; }
         .social-icons { display: flex; gap: 0.75rem; }
-        .social-icons a {
-            width: 42px; height: 42px; background: rgba(255,255,255,0.1); border-radius: 50%;
-            display: flex; align-items: center; justify-content: center; color: white; transition: all 0.3s ease;
-        }
+        .social-icons a { width: 42px; height: 42px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; transition: all 0.3s ease; }
         .social-icons a:hover { background: var(--coral); transform: translateY(-3px); }
-        .footer-bottom { max-width: 1100px; margin: 3rem auto 0; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1); text-align: center; opacity: 0.6; font-size: 0.85rem; }
+        .footer-bottom { max-width: 1200px; margin: 3rem auto 0; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.1); text-align: center; opacity: 0.6; font-size: 0.85rem; }
 
-        .mobile-menu-btn { display: none; background: none; border: none; color: white; cursor: pointer; }
+        /* Mobile */
+        .mobile-menu-btn { display: none; background: none; border: none; color: white; cursor: pointer; padding: 0.5rem; }
+        .mobile-menu-btn svg { width: 26px; height: 26px; }
 
         @media (max-width: 1024px) {
             .gallery-grid { grid-template-columns: repeat(2, 1fr); }
-            .gallery-item:first-child { grid-column: span 2; grid-row: span 1; aspect-ratio: 2/1; }
-            .catering-grid, .location-grid { grid-template-columns: 1fr; gap: 3rem; }
+            .gallery-item.large { grid-column: span 1; grid-row: span 1; }
         }
-        @media (max-width: 768px) {
-            .navbar { padding: 0.75rem 1.5rem; }
-            .nav-center, .nav-cta { display: none; }
+
+        @media (max-width: 900px) {
+            .nav-center { display: none; }
+            .btn-nav-order { display: none; }
             .mobile-menu-btn { display: block; }
-            .hero h1 { font-size: 2.5rem; }
-            .gallery-grid { grid-template-columns: 1fr 1fr; gap: 1rem; }
-            .gallery-item:first-child { grid-column: span 2; }
-            .mission-stats { gap: 2rem; }
-            .team-card { width: 280px; }
-            .menu-grid { grid-template-columns: 1fr; }
-            .form-row { grid-template-columns: 1fr; }
+            .navbar { padding: 0.75rem 1.5rem; }
+            .catering-grid, .location-grid { grid-template-columns: 1fr; gap: 2.5rem; }
             .footer-content { grid-template-columns: 1fr; gap: 2rem; text-align: center; }
             .social-icons { justify-content: center; }
+        }
+
+        @media (max-width: 600px) {
+            .section { padding: 4rem 1.25rem; }
+            .hero-content { padding: 1.5rem; }
+            .hero h1 { font-size: 2.2rem; }
+            .hero-buttons { flex-direction: column; align-items: center; }
+            .mission-stats { grid-template-columns: 1fr; }
+            .menu-grid { grid-template-columns: 1fr; }
+            .menu-tabs { border-radius: 20px; }
+            .menu-tab { padding: 0.7rem 1rem; font-size: 0.85rem; }
+            .gallery-grid { grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+            .team-member { flex: 0 0 260px; }
+            .form-row { grid-template-columns: 1fr; }
+            .nav-logo img { height: 55px; }
         }
     </style>
 </head>
 <body>
     <nav class="navbar" id="navbar">
         <a href="#" class="nav-logo"><img src="tiki-logo.png" alt="Tiki Turtle Cafe"></a>
-        <ul class="nav-center">
-            <li><a href="#mission">Mission</a></li>
-            <li><a href="#food">Food</a></li>
-            <li><a href="#team">Team</a></li>
-            <li><a href="#menu">Menu</a></li>
-            <li><a href="#catering">Catering</a></li>
-            <li><a href="#location">Visit</a></li>
-        </ul>
-
+        <div class="nav-center">
+            <a href="#mission">Our Mission</a>
+            <a href="#team">Our Team</a>
+            <a href="#menu">Menu</a>
+            <a href="#catering">Catering</a>
+            <a href="#location">Visit Us</a>
+        </div>
+        <a href="https://www.clover.com/online-ordering/the-tiki-turtle-cafe-hilo" target="_blank" class="btn btn-nav-order">Order Online</a>
         <button class="mobile-menu-btn" aria-label="Menu">
-            <svg width="28" height="28" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
         </button>
     </nav>
 
     <section class="hero">
         <div class="light-rays"></div>
         <div class="turtle-container">
-            <svg class="sea-turtle sea-turtle-1" viewBox="0 0 200 120" fill="none">
-                <ellipse cx="100" cy="60" rx="55" ry="40" fill="#3d7a5a"/>
-                <ellipse cx="100" cy="55" rx="48" ry="35" fill="#5a9a7a"/>
-                <path d="M100 25 L100 85" stroke="#3d7a5a" stroke-width="3"/>
-                <path d="M55 55 L145 55" stroke="#3d7a5a" stroke-width="2"/>
-                <ellipse cx="165" cy="55" rx="22" ry="16" fill="#6aaa8a"/>
-                <ellipse cx="172" cy="50" rx="4" ry="3" fill="#2a5a4a"/>
-                <circle cx="173" cy="49" r="1.5" fill="white"/>
-                <path d="M140 40 Q170 20 190 35 Q175 45 145 50" fill="#5a9a7a"/>
-                <path d="M140 75 Q170 95 190 80 Q175 70 145 65" fill="#5a9a7a"/>
-                <ellipse cx="50" cy="45" rx="18" ry="10" fill="#5a9a7a" transform="rotate(-20 50 45)"/>
-                <ellipse cx="50" cy="75" rx="18" ry="10" fill="#5a9a7a" transform="rotate(20 50 75)"/>
-            </svg>
-            <svg class="sea-turtle sea-turtle-2" viewBox="0 0 200 120" fill="none">
-                <ellipse cx="100" cy="60" rx="55" ry="40" fill="#2d6a4a"/>
-                <ellipse cx="100" cy="55" rx="48" ry="35" fill="#4a8a6a"/>
-                <ellipse cx="165" cy="55" rx="22" ry="16" fill="#5a9a7a"/>
-                <path d="M140 40 Q170 20 190 35 Q175 45 145 50" fill="#4a8a6a"/>
-                <path d="M140 75 Q170 95 190 80 Q175 70 145 65" fill="#4a8a6a"/>
-            </svg>
+            <svg class="sea-turtle sea-turtle-1" viewBox="0 0 200 120" fill="none"><ellipse cx="100" cy="60" rx="55" ry="40" fill="#3d7a5a"/><ellipse cx="100" cy="55" rx="48" ry="35" fill="#5a9a7a"/><path d="M100 25 L100 85" stroke="#3d7a5a" stroke-width="3"/><path d="M55 55 L145 55" stroke="#3d7a5a" stroke-width="2"/><ellipse cx="165" cy="55" rx="22" ry="16" fill="#6aaa8a"/><ellipse cx="172" cy="50" rx="4" ry="3" fill="#2a5a4a"/><circle cx="173" cy="49" r="1.5" fill="white"/><path d="M140 40 Q170 20 190 35 Q175 45 145 50" fill="#5a9a7a"/><path d="M140 75 Q170 95 190 80 Q175 70 145 65" fill="#5a9a7a"/><ellipse cx="50" cy="45" rx="18" ry="10" fill="#5a9a7a" transform="rotate(-20 50 45)"/><ellipse cx="50" cy="75" rx="18" ry="10" fill="#5a9a7a" transform="rotate(20 50 75)"/></svg>
+            <svg class="sea-turtle sea-turtle-2" viewBox="0 0 200 120" fill="none"><ellipse cx="100" cy="60" rx="55" ry="40" fill="#2d6a4a"/><ellipse cx="100" cy="55" rx="48" ry="35" fill="#4a8a6a"/><ellipse cx="165" cy="55" rx="22" ry="16" fill="#5a9a7a"/><ellipse cx="172" cy="50" rx="4" ry="3" fill="#1a4a3a"/><circle cx="173" cy="49" r="1.5" fill="white"/><path d="M140 40 Q170 20 190 35 Q175 45 145 50" fill="#4a8a6a"/><path d="M140 75 Q170 95 190 80 Q175 70 145 65" fill="#4a8a6a"/><ellipse cx="50" cy="45" rx="18" ry="10" fill="#4a8a6a" transform="rotate(-20 50 45)"/><ellipse cx="50" cy="75" rx="18" ry="10" fill="#4a8a6a" transform="rotate(20 50 75)"/></svg>
+            <svg class="sea-turtle sea-turtle-3" viewBox="0 0 200 120" fill="none"><ellipse cx="100" cy="60" rx="55" ry="40" fill="#3d7a5a"/><ellipse cx="100" cy="55" rx="48" ry="35" fill="#5a9a7a"/><ellipse cx="165" cy="55" rx="22" ry="16" fill="#6aaa8a"/><ellipse cx="172" cy="50" rx="4" ry="3" fill="#2a5a4a"/><circle cx="173" cy="49" r="1.5" fill="white"/><path d="M140 40 Q170 20 190 35 Q175 45 145 50" fill="#5a9a7a"/><path d="M140 75 Q170 95 190 80 Q175 70 145 65" fill="#5a9a7a"/></svg>
+            <svg class="sea-turtle sea-turtle-4" viewBox="0 0 200 120" fill="none"><ellipse cx="100" cy="60" rx="55" ry="40" fill="#2d6a4a"/><ellipse cx="100" cy="55" rx="48" ry="35" fill="#4a8a6a"/><ellipse cx="165" cy="55" rx="22" ry="16" fill="#5a9a7a"/><ellipse cx="172" cy="50" rx="4" ry="3" fill="#1a4a3a"/><circle cx="173" cy="49" r="1.5" fill="white"/><path d="M140 40 Q170 20 190 35 Q175 45 145 50" fill="#4a8a6a"/><path d="M140 75 Q170 95 190 80 Q175 70 145 65" fill="#4a8a6a"/><ellipse cx="50" cy="45" rx="18" ry="10" fill="#4a8a6a" transform="rotate(-20 50 45)"/><ellipse cx="50" cy="75" rx="18" ry="10" fill="#4a8a6a" transform="rotate(20 50 75)"/></svg>
+            <svg class="sea-turtle sea-turtle-5" viewBox="0 0 200 120" fill="none"><ellipse cx="100" cy="60" rx="55" ry="40" fill="#3d7a5a"/><ellipse cx="100" cy="55" rx="48" ry="35" fill="#5a9a7a"/><ellipse cx="165" cy="55" rx="22" ry="16" fill="#6aaa8a"/><path d="M140 40 Q170 20 190 35 Q175 45 145 50" fill="#5a9a7a"/><path d="M140 75 Q170 95 190 80 Q175 70 145 65" fill="#5a9a7a"/></svg>
+            <svg class="sea-turtle sea-turtle-6" viewBox="0 0 200 120" fill="none"><ellipse cx="100" cy="60" rx="55" ry="40" fill="#2d6a4a"/><ellipse cx="100" cy="55" rx="48" ry="35" fill="#4a8a6a"/><ellipse cx="165" cy="55" rx="22" ry="16" fill="#5a9a7a"/><ellipse cx="172" cy="50" rx="4" ry="3" fill="#1a4a3a"/><circle cx="173" cy="49" r="1.5" fill="white"/><path d="M140 40 Q170 20 190 35 Q175 45 145 50" fill="#4a8a6a"/><path d="M140 75 Q170 95 190 80 Q175 70 145 65" fill="#4a8a6a"/></svg>
         </div>
         <div class="bubbles" id="bubbles"></div>
         
         <div class="hero-content">
-            <p class="hero-tagline">The Arc of Hilo Presents</p>
-            <h1>Tiki <span>Turtle</span> Cafe</h1>
-            <p class="hero-subtitle">Where Every Bite Transforms Lives</p>
+            <span class="hero-eyebrow">A Program of The Arc of Hilo</span>
+            <h1>Good Food.<br><span>Great Purpose.</span></h1>
+            <p class="hero-subtitle">A vocational training cafe where every meal supports individuals with disabilities in building skills, confidence, and independence.</p>
             <div class="hero-buttons">
                 <a href="https://www.clover.com/online-ordering/the-tiki-turtle-cafe-hilo" target="_blank" class="btn btn-primary">
                     <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
@@ -458,191 +534,195 @@
             </div>
             <div class="hero-hours">
                 <span class="dot"></span>
-                Open <span>Monday - Friday</span> · 10 AM to 2 PM
+                <span>Open <strong>Mon - Fri</strong> · 10 AM to 2 PM</span>
             </div>
         </div>
 
-        <div class="ocean"><div class="wave wave1"></div></div>
+        <div class="scroll-indicator">
+            <span>Dive In</span>
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
+        </div>
+
+        <div class="ocean"><div class="wave wave1"></div><div class="wave wave2"></div></div>
     </section>
 
     <section class="section mission" id="mission">
-        <div class="mission-content">
-            <span class="section-label">Our Mission</span>
-            <h2 style="font-size: clamp(2.2rem, 5vw, 3rem); color: var(--text-dark); margin-bottom: 2rem;">Every Person Deserves a Chance to <span style="color: var(--coral);">Shine</span></h2>
-            <p class="mission-text">We believe in a world where ability is celebrated, potential is nurtured, and everyone has a seat at the table. At Tiki Turtle Cafe, we serve hope, dignity, and opportunity with every meal.</p>
-            <div class="mission-quote">
-                <p>When you walk through our doors, you witness something beautiful. Individuals with disabilities discovering their strengths, building confidence with every dish they create, and realizing their contributions truly matter.</p>
-            </div>
-            <div class="mission-stats">
-                <div class="stat-item"><div class="number">100%</div><div class="label">Made with Aloha</div></div>
-                <div class="stat-item"><div class="number">∞</div><div class="label">Lives Transformed</div></div>
-                <div class="stat-item"><div class="number">1</div><div class="label">Ohana</div></div>
+        <div class="section-container">
+            <div class="mission-content">
+                <span class="mission-badge">Our Purpose</span>
+                <h2>More Than a Cafe</h2>
+                <p class="mission-statement">We believe every person deserves a chance to shine. At Tiki Turtle Cafe, we create opportunities for individuals with disabilities to discover their potential through meaningful work and culinary training.</p>
+                <div class="mission-highlight">
+                    <p>When you dine with us, you witness transformation. You see confidence being built, skills being mastered, and dreams becoming reality. This is not just lunch. This is community in action.</p>
+                </div>
+                <div class="mission-stats">
+                    <div class="stat-item"><div class="number">100%</div><div class="label">Made with Aloha</div></div>
+                    <div class="stat-item"><div class="number">∞</div><div class="label">Lives Transformed</div></div>
+                    <div class="stat-item"><div class="number">1</div><div class="label">Ohana</div></div>
+                </div>
             </div>
         </div>
     </section>
 
-    <section class="section food-gallery" id="food">
-        <div class="section-header">
-            <span class="section-label">Our Food</span>
-            <h2>Made Fresh, Made with <span>Love</span></h2>
-            <p>Every dish tells a story of dedication and aloha</p>
-        </div>
-        <div class="gallery-grid">
-            <div class="gallery-item"><div class="gallery-placeholder"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>Featured Photo</div></div>
-            <div class="gallery-item"><div class="gallery-placeholder"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>Smoothie</div></div>
-            <div class="gallery-item"><div class="gallery-placeholder"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>Dole Whip</div></div>
-            <div class="gallery-item"><div class="gallery-placeholder"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>Salad</div></div>
-            <div class="gallery-item"><div class="gallery-placeholder"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>Special</div></div>
+    <section class="section gallery" id="gallery">
+        <div class="section-container">
+            <div class="section-header">
+                <h2>Made Fresh Daily</h2>
+                <p>A taste of what we are serving up</p>
+            </div>
+            <div class="gallery-grid">
+                <div class="gallery-item large"><div class="gallery-placeholder"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg><span>Food Photo</span></div></div>
+                <div class="gallery-item"><div class="gallery-placeholder"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg><span>Smoothie</span></div></div>
+                <div class="gallery-item"><div class="gallery-placeholder"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg><span>Sandwich</span></div></div>
+                <div class="gallery-item"><div class="gallery-placeholder"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg><span>Dole Whip</span></div></div>
+                <div class="gallery-item"><div class="gallery-placeholder"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg><span>Salad</span></div></div>
+            </div>
         </div>
     </section>
 
     <section class="section team" id="team">
-        <div class="section-header">
-            <span class="section-label">Our Ohana</span>
-            <h2>Meet the <span>Team</span></h2>
-            <p>The amazing people behind every delicious bite</p>
-        </div>
-        <div class="team-scroll" id="teamScroll">
-            <div class="team-card" data-member="chef"><div class="team-card-image"><div class="team-avatar">AW</div></div><div class="team-card-content"><h3>Chef Angelina</h3><p class="team-role">Head Chef & Mentor</p><p class="team-preview">The heart of our kitchen, bringing passion to every dish.</p><span class="team-read-more">Read her story →</span></div></div>
-            <div class="team-card" data-member="alyssa"><div class="team-card-image"><div class="team-avatar">A</div></div><div class="team-card-content"><h3>Alyssa</h3><p class="team-role">Team Lead & Mentor</p><p class="team-preview">Trains and supports our front of house team with dedication.</p><span class="team-read-more">Read her story →</span></div></div>
-            <div class="team-card" data-member="jace"><div class="team-card-image"><div class="team-avatar">J</div></div><div class="team-card-content"><h3>Jace</h3><p class="team-role">Team Member</p><p class="team-preview">Brings energy and enthusiasm to everything he does.</p><span class="team-read-more">Read his story →</span></div></div>
-            <div class="team-card" data-member="matt"><div class="team-card-image"><div class="team-avatar">M</div></div><div class="team-card-content"><h3>Matt</h3><p class="team-role">Team Member</p><p class="team-preview">Known for attention to detail and friendly demeanor.</p><span class="team-read-more">Read his story →</span></div></div>
-            <div class="team-card" data-member="dayton"><div class="team-card-image"><div class="team-avatar">D</div></div><div class="team-card-content"><h3>Dayton</h3><p class="team-role">Team Member</p><p class="team-preview">Determination and growth make him invaluable.</p><span class="team-read-more">Read his story →</span></div></div>
-            <div class="team-card" data-member="lisa"><div class="team-card-image"><div class="team-avatar">L</div></div><div class="team-card-content"><h3>Lisa</h3><p class="team-role">Team Member</p><p class="team-preview">Brightens every shift with warmth and care.</p><span class="team-read-more">Read her story →</span></div></div>
-            <div class="team-card" data-member="ethan"><div class="team-card-image"><div class="team-avatar">E</div></div><div class="team-card-content"><h3>Ethan</h3><p class="team-role">Team Member</p><p class="team-preview">Approaches every task with focus and commitment.</p><span class="team-read-more">Read his story →</span></div></div>
-            <div class="team-card" data-member="genesis"><div class="team-card-image"><div class="team-avatar">G</div></div><div class="team-card-content"><h3>Genesis</h3><p class="team-role">Team Member</p><p class="team-preview">Brings creativity and joy to everything she does.</p><span class="team-read-more">Read her story →</span></div></div>
-        </div>
-        <div class="team-nav">
-            <button id="teamPrev"><svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg></button>
-            <button id="teamNext"><svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></button>
+        <div class="section-container">
+            <div class="section-header">
+                <h2>Meet Our Ohana</h2>
+                <p>The amazing people who make the magic happen</p>
+            </div>
+            <div class="team-scroll">
+                <div class="team-member" data-member="chef"><div class="team-photo"><div class="team-photo-placeholder">AW</div></div><div class="team-info"><h3>Chef Angelina</h3><p class="role">Head Chef & Mentor</p><p>The heart of our kitchen, guiding our team with patience and passion.</p><span class="team-cta">Read Story <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></span></div></div>
+                <div class="team-member" data-member="alyssa"><div class="team-photo"><div class="team-photo-placeholder">A</div></div><div class="team-info"><h3>Alyssa</h3><p class="role">Team Lead & Mentor</p><p>Trains our front of house team and is a source of support for all participants.</p><span class="team-cta">Read Story <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></span></div></div>
+                <div class="team-member" data-member="jace"><div class="team-photo"><div class="team-photo-placeholder">J</div></div><div class="team-info"><h3>Jace</h3><p class="role">Team Member</p><p>Brings energy and enthusiasm to everything he does.</p><span class="team-cta">Read Story <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></span></div></div>
+                <div class="team-member" data-member="matt"><div class="team-photo"><div class="team-photo-placeholder">M</div></div><div class="team-info"><h3>Matt</h3><p class="role">Team Member</p><p>Known for his attention to detail and friendly demeanor.</p><span class="team-cta">Read Story <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></span></div></div>
+                <div class="team-member" data-member="dayton"><div class="team-photo"><div class="team-photo-placeholder">D</div></div><div class="team-info"><h3>Dayton</h3><p class="role">Team Member</p><p>His hard work and determination make him invaluable.</p><span class="team-cta">Read Story <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></span></div></div>
+                <div class="team-member" data-member="lisa"><div class="team-photo"><div class="team-photo-placeholder">L</div></div><div class="team-info"><h3>Lisa</h3><p class="role">Team Member</p><p>Brightens every shift with her warm smile and caring nature.</p><span class="team-cta">Read Story <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></span></div></div>
+                <div class="team-member" data-member="ethan"><div class="team-photo"><div class="team-photo-placeholder">E</div></div><div class="team-info"><h3>Ethan</h3><p class="role">Team Member</p><p>Approaches every task with focus and commitment.</p><span class="team-cta">Read Story <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></span></div></div>
+                <div class="team-member" data-member="genesis"><div class="team-photo"><div class="team-photo-placeholder">G</div></div><div class="team-info"><h3>Genesis</h3><p class="role">Team Member</p><p>Brings creativity and joy to our team every day.</p><span class="team-cta">Read Story <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></span></div></div>
+            </div>
+            <p class="team-scroll-hint">← Scroll to meet more team members →</p>
         </div>
     </section>
 
     <div class="team-modal" id="teamModal">
         <div class="modal-content">
             <button class="modal-close" id="modalClose"><svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
-            <div class="modal-avatar" id="modalAvatar"></div>
-            <h3 id="modalName"></h3>
-            <p class="modal-role" id="modalRole"></p>
-            <div class="modal-story" id="modalStory"></div>
+            <div class="modal-photo"><div class="team-photo-placeholder" id="modalAvatar"></div></div>
+            <div class="modal-body"><h3 id="modalName"></h3><p class="role" id="modalRole"></p><div class="modal-story" id="modalStory"></div></div>
         </div>
     </div>
 
     <section class="section menu" id="menu">
-        <div class="section-header">
-            <span class="section-label">Our Menu</span>
-            <h2>Fresh & <span>Delicious</span></h2>
-        </div>
-        <div class="menu-tabs">
-            <button class="menu-tab active" data-category="specials">Specials</button>
-            <button class="menu-tab" data-category="sandwiches">Sandwiches</button>
-            <button class="menu-tab" data-category="salads">Salads</button>
-            <button class="menu-tab" data-category="smoothies">Smoothies</button>
-            <button class="menu-tab" data-category="treats">Treats</button>
-        </div>
-        <div class="menu-category active" id="specials">
-            <div class="menu-grid">
-                <div class="menu-item featured"><div class="menu-item-header"><h3>🌟 Weekly Special</h3><span class="price">Ask Us!</span></div><p>Ask our team for this week's special from Chef Angelina!</p></div>
-                <div class="menu-item"><div class="menu-item-header"><h3>Chicken Plate</h3><span class="price">$12.00</span></div><p>Tender grilled chicken with your choice of sides.</p></div>
+        <div class="section-container">
+            <div class="section-header"><h2>Our Menu</h2><p>Fresh, delicious, and made with purpose</p></div>
+            <div class="menu-tabs">
+                <button class="menu-tab active" data-category="specials">Specials</button>
+                <button class="menu-tab" data-category="sandwiches">Sandwiches</button>
+                <button class="menu-tab" data-category="salads">Salads</button>
+                <button class="menu-tab" data-category="smoothies">Smoothies</button>
+                <button class="menu-tab" data-category="treats">Treats</button>
             </div>
-        </div>
-        <div class="menu-category" id="sandwiches">
-            <div class="menu-grid">
-                <div class="menu-item"><div class="menu-item-header"><h3>Ham, Turkey, or Tuna</h3><span class="price">$11.44</span></div><p>With lettuce, tomato, red onion & Swiss cheese.</p></div>
-                <div class="menu-item"><div class="menu-item-header"><h3>Chicken Mac Nut Pesto</h3><span class="price">$14.04</span></div><p>Grilled chicken, pesto, macadamia nuts & Swiss.</p></div>
-                <div class="menu-item"><div class="menu-item-header"><h3>Da Robert's Special</h3><span class="price">$14.04</span></div><p>Tuna, apples, pecans, red onion & Swiss. Local favorite!</p></div>
-                <div class="menu-item"><div class="menu-item-header"><h3>Chicken Bacon Ranch</h3><span class="price">$14.04</span></div><p>Grilled chicken, bacon, and ranch dressing.</p></div>
+            <div class="menu-category active" id="specials">
+                <div class="menu-grid">
+                    <div class="menu-item special"><div class="menu-item-header"><h3>🌟 Weekly Special</h3><span class="price">Ask Us!</span></div><p>Check with our team for this week's special creation from Chef Angelina!</p></div>
+                    <div class="menu-item"><div class="menu-item-header"><h3>Chicken Plate</h3><span class="price">$12.00</span></div><p>Tender grilled chicken with your choice of sides. Hearty and satisfying.</p></div>
+                </div>
+                <p style="text-align: center; margin-top: 2rem; color: var(--ocean-mid); font-size: 0.95rem;">Our specials rotate weekly with fresh, local ingredients.</p>
             </div>
-        </div>
-        <div class="menu-category" id="salads">
-            <div class="menu-grid">
-                <div class="menu-item"><div class="menu-item-header"><h3>Chicken Mac Nut Pesto Salad</h3><span class="price">$13.52</span></div><p>Over organic greens with cucumbers and tomatoes.</p></div>
-                <div class="menu-item"><div class="menu-item-header"><h3>Chef's Salad</h3><span class="price">$13.52</span></div><p>Turkey, ham, bacon, egg, greens, tomato & sprouts.</p></div>
+            <div class="menu-category" id="sandwiches">
+                <div class="menu-grid">
+                    <div class="menu-item"><div class="menu-item-header"><h3>Ham, Turkey, or Tuna</h3><span class="price">$11.44</span></div><p>With lettuce, tomato, red onion & Swiss. Choice of bread or wrap.</p></div>
+                    <div class="menu-item"><div class="menu-item-header"><h3>Chicken Mac Nut Pesto</h3><span class="price">$14.04</span></div><p>Grilled chicken, pesto, macadamia nuts, red onions, lettuce, tomato & Swiss.</p></div>
+                    <div class="menu-item"><div class="menu-item-header"><h3>Da Robert's Special</h3><span class="price">$14.04</span></div><p>Tuna, apples, pecans, red onion, lettuce, tomato & Swiss. Local favorite!</p></div>
+                    <div class="menu-item"><div class="menu-item-header"><h3>Chicken Bacon Ranch</h3><span class="price">$14.04</span></div><p>Grilled chicken, crispy bacon, and creamy ranch dressing.</p></div>
+                </div>
             </div>
-        </div>
-        <div class="menu-category" id="smoothies">
-            <div class="menu-grid">
-                <div class="menu-item"><div class="menu-item-header"><h3>Mixed Berry</h3><span class="price">$6.50/$7.25</span></div><p>Raspberries, blueberries, strawberries, almond milk & honey.</p></div>
-                <div class="menu-item"><div class="menu-item-header"><h3>Strawberry Banana</h3><span class="price">$6.50/$7.25</span></div><p>Classic blend with almond milk & honey.</p></div>
-                <div class="menu-item"><div class="menu-item-header"><h3>Choco-nana</h3><span class="price">$6.50/$7.25</span></div><p>Chocolate, banana, peanut butter & almond milk.</p></div>
-                <div class="menu-item"><div class="menu-item-header"><h3>Mango</h3><span class="price">$6.50/$7.25</span></div><p>Tropical mango, pineapple, almond milk & honey.</p></div>
+            <div class="menu-category" id="salads">
+                <div class="menu-grid">
+                    <div class="menu-item"><div class="menu-item-header"><h3>Chicken Mac Nut Pesto Salad</h3><span class="price">$13.52</span></div><p>Chicken salad over organic greens with cucumbers and tomatoes.</p></div>
+                    <div class="menu-item"><div class="menu-item-header"><h3>Chef's Salad</h3><span class="price">$13.52</span></div><p>Turkey, ham, bacon, egg, organic greens, tomato, cucumber & sprouts.</p></div>
+                </div>
             </div>
-        </div>
-        <div class="menu-category" id="treats">
-            <div class="menu-grid">
-                <div class="menu-item"><div class="menu-item-header"><h3>Dole Pineapple Whip</h3><span class="price">$5.00</span></div><p>The iconic Hawaiian treat.</p></div>
-                <div class="menu-item"><div class="menu-item-header"><h3>Vanilla Soft Serve</h3><span class="price">$5.00</span></div><p>Classic creamy vanilla.</p></div>
-                <div class="menu-item"><div class="menu-item-header"><h3>Twist</h3><span class="price">$5.00</span></div><p>Pineapple and vanilla swirled together.</p></div>
-                <div class="menu-item"><div class="menu-item-header"><h3>Fountain Drinks</h3><span class="price">$2.00</span></div><p>Pepsi, Orange Crush, Starry, Diet Pepsi, Water.</p></div>
+            <div class="menu-category" id="smoothies">
+                <div class="menu-grid">
+                    <div class="menu-item"><div class="menu-item-header"><h3>Mixed Berry</h3><span class="price">$6.50 / $7.25</span></div><p>Raspberries, blueberries, strawberries, almond milk & honey.</p></div>
+                    <div class="menu-item"><div class="menu-item-header"><h3>Strawberry Banana</h3><span class="price">$6.50 / $7.25</span></div><p>Classic banana, strawberries, almond milk & honey.</p></div>
+                    <div class="menu-item"><div class="menu-item-header"><h3>Choco-nana</h3><span class="price">$6.50 / $7.25</span></div><p>Chocolate soft serve, banana, peanut butter & almond milk.</p></div>
+                    <div class="menu-item"><div class="menu-item-header"><h3>Mango</h3><span class="price">$6.50 / $7.25</span></div><p>Tropical mango, pineapple, almond milk & honey.</p></div>
+                    <div class="menu-item"><div class="menu-item-header"><h3>Green Smoothie</h3><span class="price">$6.50 / $7.25</span></div><p>Our healthy green blend for a nutritious boost.</p></div>
+                </div>
             </div>
+            <div class="menu-category" id="treats">
+                <div class="menu-grid">
+                    <div class="menu-item"><div class="menu-item-header"><h3>Dole Pineapple Whip</h3><span class="price">$5.00</span></div><p>The iconic Hawaiian treat. Refreshing pineapple soft serve.</p></div>
+                    <div class="menu-item"><div class="menu-item-header"><h3>Vanilla Soft Serve</h3><span class="price">$5.00</span></div><p>Classic creamy vanilla soft serve.</p></div>
+                    <div class="menu-item"><div class="menu-item-header"><h3>Pineapple & Vanilla Twist</h3><span class="price">$5.00</span></div><p>Pineapple and vanilla swirled together.</p></div>
+                    <div class="menu-item"><div class="menu-item-header"><h3>Fountain Drinks</h3><span class="price">$2.00</span></div><p>Pepsi, Orange Crush, Starry, Diet Pepsi, or Water.</p></div>
+                </div>
+            </div>
+            <div class="menu-cta"><a href="https://www.clover.com/online-ordering/the-tiki-turtle-cafe-hilo" target="_blank" class="btn btn-primary"><svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg> Order Online</a></div>
         </div>
-        <div class="menu-cta"><a href="https://www.clover.com/online-ordering/the-tiki-turtle-cafe-hilo" target="_blank" class="btn btn-primary"><svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4"/></svg>Order Online</a></div>
     </section>
 
     <section class="section catering" id="catering">
-        <div class="catering-grid">
-            <div class="catering-content">
-                <h2>Catering with a Cause</h2>
-                <p>Bring Tiki Turtle flavors to your next event while supporting our mission. From corporate lunches to celebrations, we deliver delicious food and meaningful impact.</p>
-                <div class="catering-features">
-                    <div class="catering-feature"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>Fresh, made-to-order meals</div>
-                    <div class="catering-feature"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>Customizable menu options</div>
-                    <div class="catering-feature"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>Supporting vocational training</div>
-                    <div class="catering-feature"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>Delivery in Hilo area</div>
+        <div class="section-container">
+            <div class="catering-grid">
+                <div class="catering-content">
+                    <h2>Catering with Purpose</h2>
+                    <p>Bring the spirit of Tiki Turtle to your next event. Our catering services deliver delicious food while supporting a meaningful cause.</p>
+                    <ul class="catering-benefits">
+                        <li><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Fresh, made-to-order meals</li>
+                        <li><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Customizable menu options</li>
+                        <li><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Corporate events, parties & gatherings</li>
+                        <li><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Support our vocational training program</li>
+                    </ul>
                 </div>
-            </div>
-            <div class="catering-form">
-                <h3>Request a Quote</h3>
-                <form id="cateringForm">
-                    <div class="form-row">
-                        <div class="form-group"><label>Name</label><input type="text" name="name" required></div>
-                        <div class="form-group"><label>Email</label><input type="email" name="email" required></div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group"><label>Phone</label><input type="tel" name="phone"></div>
-                        <div class="form-group"><label>Guests</label><input type="number" name="guests" min="1"></div>
-                    </div>
-                    <div class="form-group"><label>Event Date</label><input type="date" name="date"></div>
-                    <div class="form-group"><label>Tell us about your event</label><textarea name="message" placeholder="Event type, dietary needs, preferences..."></textarea></div>
-                    <button type="submit" class="form-submit">Send Request</button>
-                </form>
+                <div class="catering-form">
+                    <form id="cateringForm">
+                        <div class="form-row"><div class="form-group"><label>Your Name</label><input type="text" name="name" required placeholder="John Smith"></div><div class="form-group"><label>Phone</label><input type="tel" name="phone" required placeholder="808-555-1234"></div></div>
+                        <div class="form-group"><label>Email</label><input type="email" name="email" required placeholder="you@email.com"></div>
+                        <div class="form-row"><div class="form-group"><label>Event Date</label><input type="date" name="date" required></div><div class="form-group"><label>Guest Count</label><select name="guests" required><option value="">Select...</option><option value="10-25">10-25 people</option><option value="25-50">25-50 people</option><option value="50-100">50-100 people</option><option value="100+">100+ people</option></select></div></div>
+                        <div class="form-group"><label>Tell Us About Your Event</label><textarea name="details" placeholder="Event type, dietary needs, any special requests..."></textarea></div>
+                        <button type="submit" class="form-submit">Request Catering Quote</button>
+                    </form>
+                </div>
             </div>
         </div>
     </section>
 
     <section class="section location" id="location">
-        <div class="location-grid">
-            <div class="location-content">
-                <h2>Visit Us</h2>
-                <div class="location-info">
-                    <div class="location-item"><div class="location-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg></div><div><h4>Address</h4><p>1099 Waianuenue Ave<br>Hilo, HI 96720</p></div></div>
-                    <div class="location-item"><div class="location-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div><div><h4>Hours</h4><p>Monday - Friday<br>10 AM to 2 PM</p></div></div>
-                    <div class="location-item"><div class="location-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg></div><div><h4>Contact</h4><p><a href="tel:808-464-6225">808-464-6225</a><br><a href="mailto:info@tikiturtlehi.com">info@tikiturtlehi.com</a></p></div></div>
+        <div class="section-container">
+            <div class="location-grid">
+                <div class="location-content">
+                    <h2>Visit Us</h2>
+                    <div class="location-info">
+                        <div class="location-item"><div class="location-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg></div><div><h4>Address</h4><p>1099 Waianuenue Ave, Hilo, HI 96720</p></div></div>
+                        <div class="location-item"><div class="location-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div><div><h4>Hours</h4><p>Monday - Friday, 10 AM to 2 PM</p></div></div>
+                        <div class="location-item"><div class="location-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg></div><div><h4>Contact</h4><p><a href="tel:808-464-6225">808-464-6225</a><br><a href="mailto:info@tikiturtlehi.com">info@tikiturtlehi.com</a></p></div></div>
+                    </div>
                 </div>
+                <div class="location-map"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3785.1!2d-155.084!3d19.723!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2s1099%20Waianuenue%20Ave%2C%20Hilo%2C%20HI%2096720!5e0!3m2!1sen!2sus!4v1" allowfullscreen="" loading="lazy"></iframe></div>
             </div>
-            <div class="location-map"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3785.1!2d-155.084!3d19.723!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2s1099%20Waianuenue%20Ave%2C%20Hilo%2C%20HI%2096720!5e0!3m2!1sen!2sus!4v1" allowfullscreen="" loading="lazy"></iframe></div>
         </div>
     </section>
 
-    <section class="arc-connection">
-        <img src="arc-logo.png" alt="The Arc of Hilo">
-        <h2>A Program of The Arc of Hilo</h2>
-        <p>Promoting the rights of people with intellectual and developmental disabilities through meaningful employment.</p>
-        <a href="https://thearcofhilo.org" target="_blank" class="arc-link">Learn more →</a>
+    <section class="section arc-connection">
+        <div class="section-container">
+            <img src="arc-logo.png" alt="The Arc of Hilo" class="arc-logo">
+            <h2>A Program of The Arc of Hilo</h2>
+            <p>The Arc of Hilo promotes and protects the human rights of people with intellectual and developmental disabilities. Through meaningful employment at Tiki Turtle Cafe, we build a more inclusive Hawaii.</p>
+            <a href="https://thearcofhilo.org" target="_blank" class="arc-link">Learn More <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg></a>
+        </div>
     </section>
 
     <footer>
         <div class="footer-content">
-            <div class="footer-brand"><img src="tiki-logo.png" alt="Tiki Turtle Cafe"><p>Where every bite transforms lives. A vocational training cafe in Hilo, Hawaii.</p></div>
-            <div class="footer-links"><h4>Links</h4><ul><li><a href="#mission">Mission</a></li><li><a href="#team">Team</a></li><li><a href="#menu">Menu</a></li><li><a href="#catering">Catering</a></li><li><a href="#location">Visit</a></li></ul></div>
-            <div class="footer-social"><h4>Connect</h4><div class="social-icons"><a href="#" aria-label="Facebook"><svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a><a href="#" aria-label="Instagram"><svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069z"/></svg></a></div></div>
+            <div class="footer-brand"><h3>Tiki Turtle Cafe</h3><p>Where every bite transforms lives. A vocational training cafe in Hilo, Hawaii.</p></div>
+            <div class="footer-links"><h4>Quick Links</h4><ul><li><a href="#mission">Our Mission</a></li><li><a href="#team">Our Team</a></li><li><a href="#menu">Menu</a></li><li><a href="#catering">Catering</a></li><li><a href="#location">Visit</a></li></ul></div>
+            <div class="footer-social"><h4>Connect</h4><div class="social-icons"><a href="#" aria-label="Facebook"><svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a><a href="#" aria-label="Instagram"><svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a></div></div>
         </div>
         <div class="footer-bottom"><p>© 2025 Tiki Turtle Cafe · A Program of The Arc of Hilo</p></div>
     </footer>
 
     <script>
         const navbar = document.getElementById('navbar');
-        window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 50));
+        window.addEventListener('scroll', () => { navbar.classList.toggle('scrolled', window.scrollY > 50); });
 
         document.querySelectorAll('.menu-tab').forEach(tab => {
             tab.addEventListener('click', () => {
@@ -653,35 +733,32 @@
             });
         });
 
+        // 24 bubbles (doubled)
         const bubblesContainer = document.getElementById('bubbles');
-        for (let i = 0; i < 12; i++) {
+        for (let i = 0; i < 24; i++) {
             const bubble = document.createElement('div');
             bubble.className = 'bubble';
             bubble.style.left = Math.random() * 100 + '%';
-            bubble.style.width = (Math.random() * 12 + 6) + 'px';
+            bubble.style.width = (Math.random() * 14 + 6) + 'px';
             bubble.style.height = bubble.style.width;
             bubble.style.animationDelay = Math.random() * 12 + 's';
-            bubble.style.animationDuration = (Math.random() * 6 + 10) + 's';
+            bubble.style.animationDuration = (Math.random() * 8 + 8) + 's';
             bubblesContainer.appendChild(bubble);
         }
 
-        const teamScroll = document.getElementById('teamScroll');
-        document.getElementById('teamPrev').addEventListener('click', () => teamScroll.scrollBy({ left: -340, behavior: 'smooth' }));
-        document.getElementById('teamNext').addEventListener('click', () => teamScroll.scrollBy({ left: 340, behavior: 'smooth' }));
-
         const teamData = {
-            chef: { initials: 'AW', name: 'Chef Angelina Wright', role: 'Head Chef & Mentor', story: '<p>Chef Angelina brought her whole heart to Tiki Turtle Cafe.</p><p>She chose to spend her days not just perfecting dishes, but perfecting the confidence of every team member.</p><p>"Cooking is about more than food," she says. "It is about pride. When someone plates their first perfect sandwich and sees a customer smile, that is magic."</p>' },
-            alyssa: { initials: 'A', name: 'Alyssa', role: 'Team Lead & Mentor', story: '<p>Alyssa has grown into a true leader at Tiki Turtle Cafe.</p><p>As our Team Lead & Mentor, she trains and supports our participants, helping them build confidence and skills.</p><p>"I love watching someone learn something new and see their face light up," Alyssa shares. "That is the best part of my job."</p>' },
-            jace: { initials: 'J', name: 'Jace', role: 'Team Member', story: '<p>Jace brings incredible energy to everything he does.</p><p>His positive attitude is contagious, and his willingness to learn inspires everyone around him.</p>' },
-            matt: { initials: 'M', name: 'Matt', role: 'Team Member', story: '<p>Matt is known for his attention to detail and friendly demeanor.</p><p>Customers often comment on how helpful and patient he is.</p>' },
-            dayton: { initials: 'D', name: 'Dayton', role: 'Team Member', story: '<p>Dayton has shown us what determination can achieve.</p><p>He has become someone the team can always count on.</p>' },
-            lisa: { initials: 'L', name: 'Lisa', role: 'Team Member', story: '<p>Lisa brings warmth and sunshine to every shift.</p><p>"I love making people happy," Lisa says. "That is the best feeling."</p>' },
+            chef: { initials: 'AW', name: 'Chef Angelina', role: 'Head Chef & Mentor', story: '<p>Chef Angelina is the heart and soul of Tiki Turtle Cafe.</p><p>With her guidance, our team members learn far more than recipes. They learn confidence, discipline, and the joy of creating something with their own hands.</p><p>"Every person who comes through our kitchen has something special to offer," she says. "My job is to help them discover it."</p>' },
+            alyssa: { initials: 'A', name: 'Alyssa', role: 'Team Lead & Mentor', story: '<p>Alyssa has grown from team member to Team Lead & Mentor, and now helps train our front of house staff.</p><p>She is a source of support and encouragement for all our participants, always ready with a kind word or helping hand.</p><p>"I know what it feels like to need someone to believe in you," Alyssa shares. "Now I get to be that person for others."</p>' },
+            jace: { initials: 'J', name: 'Jace', role: 'Team Member', story: '<p>Jace brings incredible energy and enthusiasm to everything he does.</p><p>His positive attitude is contagious, and his willingness to learn inspires everyone around him.</p>' },
+            matt: { initials: 'M', name: 'Matt', role: 'Team Member', story: '<p>Matt is known for his attention to detail and friendly demeanor.</p><p>Customers often comment on how helpful and patient he is, always going the extra mile.</p>' },
+            dayton: { initials: 'D', name: 'Dayton', role: 'Team Member', story: '<p>Dayton has shown what determination can achieve.</p><p>His growth has been one of our proudest success stories, proving that with support, everyone can thrive.</p>' },
+            lisa: { initials: 'L', name: 'Lisa', role: 'Team Member', story: '<p>Lisa brings warmth and sunshine to every shift.</p><p>Her caring nature makes every customer feel like an old friend.</p>' },
             ethan: { initials: 'E', name: 'Ethan', role: 'Team Member', story: '<p>Ethan approaches every task with focus and commitment.</p><p>His quiet determination speaks louder than words.</p>' },
-            genesis: { initials: 'G', name: 'Genesis', role: 'Team Member', story: '<p>Genesis brings creativity and joy to everything she does.</p><p>Through her work, she has discovered new strengths and confidence.</p>' }
+            genesis: { initials: 'G', name: 'Genesis', role: 'Team Member', story: '<p>Genesis brings creativity and joy to our team.</p><p>Through her work at Tiki Turtle, she has discovered new strengths and confidence.</p>' }
         };
 
         const modal = document.getElementById('teamModal');
-        document.querySelectorAll('.team-card').forEach(card => {
+        document.querySelectorAll('.team-member').forEach(card => {
             card.addEventListener('click', () => {
                 const data = teamData[card.dataset.member];
                 document.getElementById('modalAvatar').textContent = data.initials;
@@ -697,15 +774,16 @@
         document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { modal.classList.remove('active'); document.body.style.overflow = ''; } });
 
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
+            anchor.addEventListener('click', function (e) {
                 e.preventDefault();
-                document.querySelector(this.getAttribute('href'))?.scrollIntoView({ behavior: 'smooth' });
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
             });
         });
 
         document.getElementById('cateringForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            alert('Thank you! We will contact you within 24-48 hours.');
+            alert('Thank you for your catering inquiry! We will contact you within 24-48 hours.');
             this.reset();
         });
     </script>
