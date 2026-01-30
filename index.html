@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tiki Turtle Cafe | Where Every Bite Transforms Lives</title>
+    <meta name="description" content="Tiki Turtle Cafe - A vocational training cafe by The Arc of Hilo, empowering individuals with disabilities through culinary excellence in Hawai'i.">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --ocean-deep: #0a4d68;
+            --ocean-mid: #088395;
+            --ocean-bright: #05bfdb;
+            --ocean-light: #7ed7e8;
+            --sand: #f5e6d3;
+            --sand-light: #faf6f0;
+            --coral: #ff6b6b;
+            --sunset: #ff9f43;
+            --hibiscus: #e84a7f;
+            --text-dark: #1a3a4a;
+            --text-light: #ffffff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Outfit', sans-serif; background: var(--sand-light); color: var(--text-dark); overflow-x: hidden; }
+        h1, h2, h3, h4 { font-family: 'Playfair Display', serif; }
+
+        .navbar {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+            padding: 1rem 2rem; display: flex; justify-content: space-between;
+            align-items: center; transition: all 0.4s ease;
+        }
+        .navbar.scrolled { background: rgba(10, 77, 104, 0.95); backdrop-filter: blur(10px); padding: 0.75rem 2rem; }
+        .nav-logo { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; color: var(--text-light); }
+        .nav-logo img { height: 50px; width: auto; }
+        .nav-links { display: flex; gap: 2rem; list-style: none; }
+        .nav-links a { color: var(--text-light); text-decoration: none; font-weight: 500; font-size: 0.95rem; position: relative; padding: 0.5rem 0; }
+        .nav-links a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px; background: var(--sunset); transition: width 0.3s ease; }
+        .nav-links a:hover::after { width: 100%; }
+        .nav-cta { background: var(--coral); color: white; padding: 0.75rem 1.5rem; border-radius: 50px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3); }
+        .nav-cta:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4); }
+
+        .hero {
+            min-height: 100vh;
+            background: linear-gradient(180deg, var(--ocean-deep) 0%, var(--ocean-mid) 40%, var(--ocean-bright) 100%);
+            position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden;
+        }
+
+        .turtle-container { position: absolute; width: 100%; height: 100%; pointer-events: none; overflow: hidden; }
+        .sea-turtle { position: absolute; opacity: 0.85; filter: drop-shadow(0 15px 35px rgba(0,0,0,0.3)); }
+        .sea-turtle-1 { width: 180px; top: 25%; animation: swimRight 28s ease-in-out infinite; }
+        .sea-turtle-2 { width: 120px; top: 55%; animation: swimLeft 35s ease-in-out infinite; animation-delay: -12s; }
+        .sea-turtle-3 { width: 90px; top: 75%; animation: swimRight 40s ease-in-out infinite; animation-delay: -20s; opacity: 0.5; }
+
+        @keyframes swimRight {
+            0% { left: -200px; transform: translateY(0) rotate(5deg); }
+            25% { transform: translateY(-25px) rotate(0deg); }
+            50% { transform: translateY(15px) rotate(-3deg); }
+            75% { transform: translateY(-10px) rotate(2deg); }
+            100% { left: 110%; transform: translateY(0) rotate(5deg); }
+        }
+        @keyframes swimLeft {
+            0% { right: -200px; left: auto; transform: translateY(0) scaleX(-1) rotate(-5deg); }
+            25% { transform: translateY(20px) scaleX(-1) rotate(0deg); }
+            50% { transform: translateY(-15px) scaleX(-1) rotate(3deg); }
+            75% { transform: translateY(10px) scaleX(-1) rotate(-2deg); }
+            100% { right: 110%; left: auto; transform: translateY(0) scaleX(-1) rotate(-5deg); }
+        }
+
+        .light-rays { position: absolute; top: 0; left: 0; right: 0; height: 60%; background: linear-gradient(180deg, rgba(255,255,255,0.1) 0%, transparent 100%); pointer-events: none; }
+        .light-rays::before { content: ''; position: absolute; top: 0; left: 20%; width: 200px; height: 100%; background: linear-gradient(180deg, rgba(255,255,255,0.15) 0%, transparent 70%); transform: skewX(-15deg); }
+        .light-rays::after { content: ''; position: absolute; top: 0; right: 30%; width: 150px; height: 80%; background: linear-gradient(180deg, rgba(255,255,255,0.1) 0%, transparent 60%); transform: skewX(10deg); }
+
+        .bubbles { position: absolute; width: 100%; height: 100%; overflow: hidden; pointer-events: none; }
+        .bubble { position: absolute; bottom: -50px; background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.9), rgba(255,255,255,0.2)); border-radius: 50%; animation: rise 10s ease-in infinite; }
+        @keyframes rise {
+            0% { bottom: -50px; opacity: 0; transform: translateX(0) scale(1); }
+            10% { opacity: 0.7; }
+            50% { transform: translateX(30px) scale(1.1); }
+            90% { opacity: 0.5; }
+            100% { bottom: 100%; opacity: 0; transform: translateX(-20px) scale(0.8); }
+        }
+
+        .ocean { position: absolute; bottom: 0; left: 0; width: 100%; height: 120px; overflow: hidden; }
+        .wave { position: absolute; bottom: 0; left: 0; width: 200%; height: 100%; background-repeat: repeat-x; animation: wave 8s linear infinite; }
+        .wave1 { background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120'%3E%3Cpath fill='%23f5e6d3' d='M0,60 C150,120 350,0 600,60 C850,120 1050,0 1200,60 L1200,120 L0,120 Z'/%3E%3C/svg%3E") 0 bottom; background-size: 1200px 120px; }
+        .wave2 { background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120'%3E%3Cpath fill='%23f5e6d3' opacity='0.6' d='M0,60 C150,0 350,120 600,60 C850,0 1050,120 1200,60 L1200,120 L0,120 Z'/%3E%3C/svg%3E") 0 bottom; background-size: 1200px 120px; opacity: 0.6; animation-duration: 6s; animation-direction: reverse; bottom: 5px; }
+        @keyframes wave { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+        .hero-content { text-align: center; z-index: 10; padding: 2rem; max-width: 900px; }
+        .hero-logo { max-width: 600px; width: 90%; margin-bottom: 2rem; filter: drop-shadow(0 10px 40px rgba(0,0,0,0.4)); animation: logoFloat 6s ease-in-out infinite; }
+        @keyframes logoFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+        .hero-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 2rem; }
+        .btn { padding: 1rem 2.5rem; border-radius: 50px; text-decoration: none; font-weight: 600; font-size: 1rem; transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 0.5rem; }
+        .btn-primary { background: linear-gradient(135deg, var(--coral) 0%, var(--hibiscus) 100%); color: white; box-shadow: 0 4px 20px rgba(255, 107, 107, 0.4); }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(255, 107, 107, 0.5); }
+        .btn-secondary { background: rgba(255,255,255,0.15); color: white; border: 2px solid rgba(255,255,255,0.4); backdrop-filter: blur(10px); }
+        .btn-secondary:hover { background: rgba(255,255,255,0.25); transform: translateY(-3px); }
+
+        .hero-hours { margin-top: 2.5rem; padding: 1rem 2rem; background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border-radius: 20px; display: inline-block; border: 1px solid rgba(255,255,255,0.2); }
+        .hero-hours p { color: white; font-weight: 500; }
+        .hero-hours span { color: var(--sunset); font-weight: 600; }
+
+        .scroll-indicator { position: absolute; bottom: 150px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 0.5rem; color: rgba(255,255,255,0.7); font-size: 0.85rem; animation: bounce 2s ease-in-out infinite; }
+        @keyframes bounce { 0%, 100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(10px); } }
+
+        .mission { padding: 8rem 2rem; background: var(--sand-light); position: relative; }
+        .mission::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 100px; background: linear-gradient(to bottom, var(--sand) 0%, transparent 100%); }
+        .section-container { max-width: 1200px; margin: 0 auto; }
+        .mission-content { text-align: center; max-width: 900px; margin: 0 auto; }
+        .mission-badge { display: inline-block; background: linear-gradient(135deg, var(--ocean-mid), var(--ocean-bright)); color: white; padding: 0.5rem 1.5rem; border-radius: 50px; font-size: 0.9rem; font-weight: 600; margin-bottom: 1.5rem; text-transform: uppercase; letter-spacing: 2px; }
+        .mission-content h2 { font-size: clamp(2.5rem, 5vw, 3.5rem); color: var(--ocean-deep); margin-bottom: 2rem; line-height: 1.2; }
+        .mission-content h2 span { color: var(--coral); }
+        .mission-statement { font-size: 1.3rem; line-height: 1.9; color: var(--text-dark); margin-bottom: 2rem; }
+        .mission-highlight { background: linear-gradient(135deg, var(--ocean-deep) 0%, var(--ocean-mid) 100%); color: white; padding: 3rem; border-radius: 30px; margin: 3rem 0; position: relative; overflow: hidden; }
+        .mission-highlight::before { content: '"'; position: absolute; top: -20px; left: 30px; font-size: 150px; font-family: 'Playfair Display', serif; opacity: 0.1; color: white; }
+        .mission-highlight p { font-size: 1.4rem; font-style: italic; line-height: 1.8; position: relative; z-index: 2; }
+        .mission-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 4rem; }
+        .stat-item { text-align: center; padding: 2rem; background: white; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.05); transition: transform 0.3s ease; }
+        .stat-item:hover { transform: translateY(-5px); }
+        .stat-item .number { font-family: 'Playfair Display', serif; font-size: 3rem; font-weight: 700; color: var(--ocean-mid); }
+        .stat-item .label { font-size: 1rem; color: var(--text-dark); margin-top: 0.5rem; }
+
+        .team { padding: 8rem 2rem; background: linear-gradient(135deg, var(--ocean-deep) 0%, var(--ocean-mid) 100%); position: relative; overflow: hidden; }
+        .team-pattern { position: absolute; inset: 0; opacity: 0.05; background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='30' cy='30' r='20' fill='%23ffffff' fill-opacity='1'/%3E%3C/svg%3E"); background-size: 80px 80px; }
+        .team-header { text-align: center; margin-bottom: 4rem; position: relative; z-index: 2; }
+        .team-header h2 { font-size: clamp(2.5rem, 5vw, 3.5rem); color: white; margin-bottom: 1rem; }
+        .team-header p { color: rgba(255,255,255,0.8); font-size: 1.2rem; }
+        .team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; max-width: 1000px; margin: 0 auto; position: relative; z-index: 2; }
+        .team-card { background: white; border-radius: 25px; overflow: hidden; cursor: pointer; transition: all 0.4s ease; box-shadow: 0 15px 40px rgba(0,0,0,0.2); }
+        .team-card:hover { transform: translateY(-10px); box-shadow: 0 25px 60px rgba(0,0,0,0.3); }
+        .team-card-front { padding: 2.5rem 2rem; text-align: center; }
+        .team-avatar { width: 100px; height: 100px; border-radius: 50%; background: linear-gradient(135deg, var(--ocean-bright), var(--ocean-mid)); margin: 0 auto 1.5rem; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; color: white; font-family: 'Playfair Display', serif; font-weight: 700; }
+        .team-card h3 { font-size: 1.4rem; color: var(--ocean-deep); margin-bottom: 0.5rem; }
+        .team-role { color: var(--coral); font-weight: 600; font-size: 0.95rem; margin-bottom: 1rem; }
+        .team-preview { color: var(--text-dark); opacity: 0.7; font-size: 0.95rem; line-height: 1.6; }
+        .team-expand { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--ocean-mid); font-weight: 600; margin-top: 1.5rem; padding: 0.75rem 1.5rem; background: rgba(8, 131, 149, 0.1); border-radius: 50px; transition: all 0.3s ease; }
+        .team-card:hover .team-expand { background: var(--ocean-mid); color: white; }
+
+        .team-modal { display: none; position: fixed; inset: 0; background: rgba(10, 77, 104, 0.95); z-index: 2000; align-items: center; justify-content: center; padding: 2rem; opacity: 0; transition: opacity 0.3s ease; }
+        .team-modal.active { display: flex; opacity: 1; }
+        .modal-content { background: white; border-radius: 30px; max-width: 600px; width: 100%; max-height: 90vh; overflow-y: auto; padding: 3rem; position: relative; animation: modalSlide 0.4s ease; }
+        @keyframes modalSlide { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .modal-close { position: absolute; top: 1.5rem; right: 1.5rem; width: 40px; height: 40px; border: none; background: var(--sand); border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; }
+        .modal-close:hover { background: var(--coral); color: white; }
+        .modal-avatar { width: 120px; height: 120px; border-radius: 50%; background: linear-gradient(135deg, var(--ocean-bright), var(--ocean-mid)); margin: 0 auto 1.5rem; display: flex; align-items: center; justify-content: center; font-size: 3rem; color: white; font-family: 'Playfair Display', serif; font-weight: 700; }
+        .modal-content h3 { text-align: center; font-size: 2rem; color: var(--ocean-deep); margin-bottom: 0.5rem; }
+        .modal-role { text-align: center; color: var(--coral); font-weight: 600; font-size: 1.1rem; margin-bottom: 2rem; }
+        .modal-story { font-size: 1.1rem; line-height: 1.9; color: var(--text-dark); }
+        .modal-story p { margin-bottom: 1.5rem; }
+
+        .menu { padding: 8rem 2rem; background: white; }
+        .menu-header { text-align: center; margin-bottom: 4rem; }
+        .menu-header h2 { font-size: clamp(2.5rem, 5vw, 3.5rem); color: var(--ocean-deep); margin-bottom: 1rem; }
+        .menu-header p { font-size: 1.15rem; color: var(--text-dark); opacity: 0.8; }
+        .menu-tabs { display: flex; justify-content: center; gap: 0.5rem; margin-bottom: 3rem; flex-wrap: wrap; }
+        .menu-tab { padding: 1rem 2rem; border: none; background: var(--sand); border-radius: 50px; font-family: 'Outfit', sans-serif; font-size: 1rem; font-weight: 500; color: var(--text-dark); cursor: pointer; transition: all 0.3s ease; }
+        .menu-tab:hover { background: var(--ocean-light); color: var(--ocean-deep); }
+        .menu-tab.active { background: linear-gradient(135deg, var(--ocean-mid), var(--ocean-bright)); color: white; box-shadow: 0 4px 20px rgba(8, 131, 149, 0.3); }
+        .menu-category { display: none; animation: fadeIn 0.4s ease; }
+        .menu-category.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .menu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; max-width: 1000px; margin: 0 auto; }
+        .menu-item { background: var(--sand-light); border-radius: 20px; padding: 2rem; transition: all 0.3s ease; position: relative; overflow: hidden; border: 2px solid transparent; }
+        .menu-item::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: linear-gradient(to bottom, var(--ocean-bright), var(--coral)); }
+        .menu-item:hover { transform: translateY(-5px); border-color: var(--ocean-light); box-shadow: 0 20px 50px rgba(0,0,0,0.08); }
+        .menu-item-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem; }
+        .menu-item h3 { font-size: 1.25rem; color: var(--ocean-deep); font-family: 'Playfair Display', serif; }
+        .menu-item .price { font-size: 1.2rem; font-weight: 700; color: var(--coral); white-space: nowrap; }
+        .menu-item p { color: var(--text-dark); opacity: 0.7; font-size: 0.95rem; line-height: 1.6; }
+        .menu-cta { text-align: center; margin-top: 4rem; }
+
+        .location { padding: 8rem 2rem; background: var(--sand-light); }
+        .location-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; max-width: 1200px; margin: 0 auto; align-items: center; }
+        .location-content h2 { font-size: clamp(2.5rem, 5vw, 3.5rem); color: var(--ocean-deep); margin-bottom: 2rem; }
+        .location-info { display: flex; flex-direction: column; gap: 1.5rem; }
+        .location-item { display: flex; gap: 1rem; align-items: flex-start; }
+        .location-icon { width: 55px; height: 55px; background: linear-gradient(135deg, var(--ocean-mid), var(--ocean-bright)); border-radius: 15px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .location-icon svg { width: 26px; height: 26px; color: white; }
+        .location-item h4 { font-size: 1.1rem; color: var(--ocean-deep); margin-bottom: 0.25rem; }
+        .location-item p { color: var(--text-dark); opacity: 0.7; line-height: 1.5; }
+        .location-item a { color: var(--coral); text-decoration: none; transition: color 0.3s ease; }
+        .location-item a:hover { color: var(--ocean-mid); }
+        .location-map { border-radius: 30px; overflow: hidden; box-shadow: 0 30px 60px rgba(0,0,0,0.1); height: 400px; }
+        .location-map iframe { width: 100%; height: 100%; border: none; }
+
+        .arc-connection { padding: 6rem 2rem; background: white; text-align: center; }
+        .arc-connection .section-container { max-width: 800px; }
+        .arc-logo { height: 100px; margin-bottom: 2rem; }
+        .arc-connection h2 { font-size: 2rem; color: var(--ocean-deep); margin-bottom: 1rem; }
+        .arc-connection p { font-size: 1.1rem; line-height: 1.8; color: var(--text-dark); opacity: 0.8; margin-bottom: 2rem; }
+        .arc-link { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--ocean-mid); text-decoration: none; font-weight: 600; transition: all 0.3s ease; }
+        .arc-link:hover { color: var(--coral); gap: 0.75rem; }
+
+        footer { background: var(--ocean-deep); padding: 4rem 2rem 2rem; color: white; }
+        .footer-content { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 4rem; }
+        .footer-brand h3 { font-family: 'Playfair Display', serif; font-size: 1.8rem; margin-bottom: 1rem; }
+        .footer-brand p { opacity: 0.7; line-height: 1.7; }
+        .footer-links h4, .footer-social h4 { font-size: 1.1rem; margin-bottom: 1.5rem; color: var(--sunset); }
+        .footer-links ul { list-style: none; }
+        .footer-links a { color: rgba(255,255,255,0.7); text-decoration: none; display: block; padding: 0.5rem 0; transition: color 0.3s ease; }
+        .footer-links a:hover { color: white; }
+        .social-icons { display: flex; gap: 1rem; }
+        .social-icons a { width: 45px; height: 45px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; transition: all 0.3s ease; }
+        .social-icons a:hover { background: var(--coral); transform: translateY(-3px); }
+        .footer-bottom { max-width: 1200px; margin: 3rem auto 0; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1); text-align: center; opacity: 0.7; font-size: 0.9rem; }
+
+        .mobile-menu-btn { display: none; background: none; border: none; color: white; cursor: pointer; padding: 0.5rem; }
+        .mobile-menu-btn svg { width: 28px; height: 28px; }
+
+        @media (max-width: 968px) {
+            .nav-links, .nav-cta { display: none; }
+            .mobile-menu-btn { display: block; }
+            .location-grid { grid-template-columns: 1fr; gap: 3rem; }
+            .footer-content { grid-template-columns: 1fr; gap: 2rem; text-align: center; }
+            .social-icons { justify-content: center; }
+            .team-grid { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 768px) {
+            .hero-logo { max-width: 350px; }
+            .hero-buttons { flex-direction: column; align-items: center; }
+            .mission-stats { grid-template-columns: 1fr; }
+            .menu-grid { grid-template-columns: 1fr; }
+            .menu-tab { padding: 0.75rem 1.25rem; font-size: 0.9rem; }
+            .mission-highlight { padding: 2rem; }
+            .mission-highlight p { font-size: 1.1rem; }
+            .modal-content { padding: 2rem; }
+            .sea-turtle-1 { width: 120px; }
+            .sea-turtle-2 { width: 80px; }
+            .sea-turtle-3 { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar" id="navbar">
+        <a href="#" class="nav-logo"><img src="tiki-logo.png" alt="Tiki Turtle Cafe"></a>
+        <ul class="nav-links">
+            <li><a href="#mission">Our Mission</a></li>
+            <li><a href="#team">Our Team</a></li>
+            <li><a href="#menu">Menu</a></li>
+            <li><a href="#location">Visit Us</a></li>
+        </ul>
+        <a href="https://www.clover.com/online-ordering/the-tiki-turtle-cafe-hilo" target="_blank" class="nav-cta">Order Online</a>
+        <button class="mobile-menu-btn" aria-label="Menu">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+    </nav>
+
+    <section class="hero">
+        <div class="light-rays"></div>
+        <div class="turtle-container">
+            <svg class="sea-turtle sea-turtle-1" viewBox="0 0 200 120" fill="none">
+                <ellipse cx="100" cy="60" rx="55" ry="40" fill="#3d7a5a"/>
+                <ellipse cx="100" cy="55" rx="48" ry="35" fill="#5a9a7a"/>
+                <path d="M100 25 L100 85" stroke="#3d7a5a" stroke-width="3"/>
+                <path d="M55 55 L145 55" stroke="#3d7a5a" stroke-width="2"/>
+                <path d="M65 35 Q100 55 135 35" stroke="#3d7a5a" stroke-width="2" fill="none"/>
+                <path d="M65 75 Q100 55 135 75" stroke="#3d7a5a" stroke-width="2" fill="none"/>
+                <ellipse cx="80" cy="45" rx="12" ry="10" fill="#4a8a6a" opacity="0.6"/>
+                <ellipse cx="120" cy="45" rx="12" ry="10" fill="#4a8a6a" opacity="0.6"/>
+                <ellipse cx="80" cy="70" rx="12" ry="10" fill="#4a8a6a" opacity="0.6"/>
+                <ellipse cx="120" cy="70" rx="12" ry="10" fill="#4a8a6a" opacity="0.6"/>
+                <ellipse cx="165" cy="55" rx="22" ry="16" fill="#6aaa8a"/>
+                <ellipse cx="172" cy="50" rx="4" ry="3" fill="#2a5a4a"/>
+                <circle cx="173" cy="49" r="1.5" fill="white"/>
+                <path d="M140 40 Q170 20 190 35 Q175 45 145 50" fill="#5a9a7a"/>
+                <path d="M140 75 Q170 95 190 80 Q175 70 145 65" fill="#5a9a7a"/>
+                <ellipse cx="50" cy="45" rx="18" ry="10" fill="#5a9a7a" transform="rotate(-20 50 45)"/>
+                <ellipse cx="50" cy="75" rx="18" ry="10" fill="#5a9a7a" transform="rotate(20 50 75)"/>
+                <path d="M45 60 Q30 60 25 55" stroke="#5a9a7a" stroke-width="8" stroke-linecap="round"/>
+            </svg>
+            <svg class="sea-turtle sea-turtle-2" viewBox="0 0 200 120" fill="none">
+                <ellipse cx="100" cy="60" rx="55" ry="40" fill="#2d6a4a"/>
+                <ellipse cx="100" cy="55" rx="48" ry="35" fill="#4a8a6a"/>
+                <ellipse cx="165" cy="55" rx="22" ry="16" fill="#5a9a7a"/>
+                <ellipse cx="172" cy="50" rx="4" ry="3" fill="#1a4a3a"/>
+                <circle cx="173" cy="49" r="1.5" fill="white"/>
+                <path d="M140 40 Q170 20 190 35 Q175 45 145 50" fill="#4a8a6a"/>
+                <path d="M140 75 Q170 95 190 80 Q175 70 145 65" fill="#4a8a6a"/>
+                <ellipse cx="50" cy="45" rx="18" ry="10" fill="#4a8a6a" transform="rotate(-20 50 45)"/>
+                <ellipse cx="50" cy="75" rx="18" ry="10" fill="#4a8a6a" transform="rotate(20 50 75)"/>
+            </svg>
+            <svg class="sea-turtle sea-turtle-3" viewBox="0 0 200 120" fill="none">
+                <ellipse cx="100" cy="60" rx="55" ry="40" fill="#3d7a5a"/>
+                <ellipse cx="100" cy="55" rx="48" ry="35" fill="#5a9a7a"/>
+                <ellipse cx="165" cy="55" rx="22" ry="16" fill="#6aaa8a"/>
+                <path d="M140 40 Q170 20 190 35 Q175 45 145 50" fill="#5a9a7a"/>
+                <path d="M140 75 Q170 95 190 80 Q175 70 145 65" fill="#5a9a7a"/>
+            </svg>
+        </div>
+        <div class="bubbles" id="bubbles"></div>
+        <div class="hero-content">
+            <img src="tiki-logo.png" alt="The Arc of Hilo's Tiki Turtle Cafe" class="hero-logo">
+            <div class="hero-buttons">
+                <a href="https://www.clover.com/online-ordering/the-tiki-turtle-cafe-hilo" target="_blank" class="btn btn-primary">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                    Order Online
+                </a>
+                <a href="#menu" class="btn btn-secondary">View Menu</a>
+            </div>
+            <div class="hero-hours"><p>Open <span>Monday through Friday</span> · 10 AM to 2 PM</p></div>
+        </div>
+        <div class="scroll-indicator">
+            <span>Dive In</span>
+            <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
+        </div>
+        <div class="ocean"><div class="wave wave1"></div><div class="wave wave2"></div></div>
+    </section>
+
+    <section class="mission" id="mission">
+        <div class="section-container">
+            <div class="mission-content">
+                <span class="mission-badge">Our Why</span>
+                <h2>Every Person Deserves a Chance to <span>Shine</span></h2>
+                <p class="mission-statement">We believe in a world where ability is celebrated, where potential is nurtured, and where everyone has a seat at the table. At Tiki Turtle Cafe, we are not just serving food. We are serving hope, dignity, and opportunity.</p>
+                <div class="mission-highlight">
+                    <p>When you walk through our doors, you will see something beautiful happening. Individuals with disabilities discovering their strengths, building confidence with every sandwich they craft, and realizing that their contributions matter. This is not charity. This is community. This is family. This is transformation in action.</p>
+                </div>
+                <p class="mission-statement">Through hands-on culinary training, real-world experience, and an environment overflowing with aloha, our team members develop skills that extend far beyond the kitchen. They are building independence, forming friendships, and writing their own success stories.</p>
+                <div class="mission-stats">
+                    <div class="stat-item"><div class="number">100%</div><div class="label">Made with Aloha</div></div>
+                    <div class="stat-item"><div class="number">∞</div><div class="label">Lives Transformed</div></div>
+                    <div class="stat-item"><div class="number">1</div><div class="label">Ohana</div></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="team" id="team">
+        <div class="team-pattern"></div>
+        <div class="section-container">
+            <div class="team-header">
+                <h2>Meet Our Ohana</h2>
+                <p>Click to discover the amazing people behind every delicious bite</p>
+            </div>
+            <div class="team-grid">
+                <div class="team-card" data-member="chef">
+                    <div class="team-card-front">
+                        <div class="team-avatar">AW</div>
+                        <h3>Chef Angelina Wright</h3>
+                        <p class="team-role">Head Chef & Mentor</p>
+                        <p class="team-preview">The heart and soul of our kitchen, Chef Angelina brings passion, patience, and culinary excellence to every dish and every trainee.</p>
+                        <span class="team-expand">Read Her Story <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></span>
+                    </div>
+                </div>
+                <div class="team-card" data-member="jace">
+                    <div class="team-card-front">
+                        <div class="team-avatar">J</div>
+                        <h3>Jace</h3>
+                        <p class="team-role">Team Member</p>
+                        <p class="team-preview">Jace brings energy and enthusiasm to everything he does. His dedication to learning new skills inspires everyone around him.</p>
+                        <span class="team-expand">Read His Story <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></span>
+                    </div>
+                </div>
+                <div class="team-card" data-member="matt">
+                    <div class="team-card-front">
+                        <div class="team-avatar">M</div>
+                        <h3>Matt</h3>
+                        <p class="team-role">Team Member</p>
+                        <p class="team-preview">Matt is known for his attention to detail and friendly demeanor. Customers love his positive attitude and helpful spirit.</p>
+                        <span class="team-expand">Read His Story <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></span>
+                    </div>
+                </div>
+                <div class="team-card" data-member="dayton">
+                    <div class="team-card-front">
+                        <div class="team-avatar">D</div>
+                        <h3>Dayton</h3>
+                        <p class="team-role">Team Member</p>
+                        <p class="team-preview">Dayton has grown tremendously since joining our ohana. His hard work and determination make him an invaluable part of the team.</p>
+                        <span class="team-expand">Read His Story <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></span>
+                    </div>
+                </div>
+                <div class="team-card" data-member="lisa">
+                    <div class="team-card-front">
+                        <div class="team-avatar">L</div>
+                        <h3>Lisa</h3>
+                        <p class="team-role">Team Member</p>
+                        <p class="team-preview">Lisa brightens every shift with her warm smile and caring nature. She takes pride in making every customer feel welcome.</p>
+                        <span class="team-expand">Read Her Story <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></span>
+                    </div>
+                </div>
+                <div class="team-card" data-member="ethan">
+                    <div class="team-card-front">
+                        <div class="team-avatar">E</div>
+                        <h3>Ethan</h3>
+                        <p class="team-role">Team Member</p>
+                        <p class="team-preview">Ethan approaches every task with focus and commitment. His progress has been inspiring to watch and celebrate.</p>
+                        <span class="team-expand">Read His Story <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></span>
+                    </div>
+                </div>
+                <div class="team-card" data-member="alyssa">
+                    <div class="team-card-front">
+                        <div class="team-avatar">A</div>
+                        <h3>Alyssa</h3>
+                        <p class="team-role">Team Member</p>
+                        <p class="team-preview">Alyssa is a natural at connecting with customers. Her cheerful personality and strong work ethic shine through every day.</p>
+                        <span class="team-expand">Read Her Story <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></span>
+                    </div>
+                </div>
+                <div class="team-card" data-member="genesis">
+                    <div class="team-card-front">
+                        <div class="team-avatar">G</div>
+                        <h3>Genesis</h3>
+                        <p class="team-role">Team Member</p>
+                        <p class="team-preview">Genesis brings creativity and joy to our team. She has discovered new strengths and confidence through her work at Tiki Turtle.</p>
+                        <span class="team-expand">Read Her Story <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="team-modal" id="teamModal">
+        <div class="modal-content">
+            <button class="modal-close" id="modalClose"><svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+            <div class="modal-avatar" id="modalAvatar"></div>
+            <h3 id="modalName"></h3>
+            <p class="modal-role" id="modalRole"></p>
+            <div class="modal-story" id="modalStory"></div>
+        </div>
+    </div>
+
+    <section class="menu" id="menu">
+        <div class="section-container">
+            <div class="menu-header"><h2>Our Menu</h2><p>Fresh, delicious, and made with purpose</p></div>
+            <div class="menu-tabs">
+                <button class="menu-tab active" data-category="specials">Weekly Specials</button>
+                <button class="menu-tab" data-category="sandwiches">Sandwiches</button>
+                <button class="menu-tab" data-category="salads">Salads</button>
+                <button class="menu-tab" data-category="smoothies">Smoothies</button>
+                <button class="menu-tab" data-category="treats">Treats & Drinks</button>
+            </div>
+            <div class="menu-category active" id="specials">
+                <div class="menu-grid">
+                    <div class="menu-item" style="background: linear-gradient(135deg, #fff9e6 0%, #fff 100%); border: 2px solid #ff9f43;">
+                        <div class="menu-item-header"><h3>🌟 This Week's Special</h3><span class="price">Ask Us!</span></div>
+                        <p>Our weekly special changes every week! Ask our team what delicious creation Chef Angelina has prepared this week.</p>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-header"><h3>Chicken Plate</h3><span class="price">$12.00</span></div>
+                        <p>Tender grilled chicken served with your choice of sides. A hearty and satisfying meal made with aloha.</p>
+                    </div>
+                </div>
+                <p style="text-align: center; margin-top: 2rem; color: #088395; font-style: italic;">Check back often! Our specials rotate weekly based on fresh, local ingredients.</p>
+            </div>
+            <div class="menu-category" id="sandwiches">
+                <div class="menu-grid">
+                    <div class="menu-item"><div class="menu-item-header"><h3>Ham, Turkey, or Tuna</h3><span class="price">$11.44</span></div><p>Served with lettuce, tomato, red onion & Swiss cheese. Choice of white, wheat, sweet bread, or spinach wrap.</p></div>
+                    <div class="menu-item"><div class="menu-item-header"><h3>Chicken Mac Nut Pesto</h3><span class="price">$14.04</span></div><p>Grilled chicken, mayo, red onions, lettuce, tomato, pesto, macadamia nuts & Swiss cheese.</p></div>
+                    <div class="menu-item"><div class="menu-item-header"><h3>Da Robert's Special</h3><span class="price">$14.04</span></div><p>Tuna, apples, mayo, pecans, red onion, lettuce, tomato & Swiss cheese. A local favorite!</p></div>
+                    <div class="menu-item"><div class="menu-item-header"><h3>Chicken Bacon Ranch Wrap</h3><span class="price">$14.04</span></div><p>A delicious combination of grilled chicken, crispy bacon, and creamy ranch dressing.</p></div>
+                </div>
+            </div>
+            <div class="menu-category" id="salads">
+                <div class="menu-grid">
+                    <div class="menu-item"><div class="menu-item-header"><h3>Chicken Mac Nut Pesto Salad</h3><span class="price">$13.52</span></div><p>Chicken salad over organic greens with cucumbers and tomatoes. Choice of Asian vinaigrette, ranch, zesty Italian, or honey Dijon.</p></div>
+                    <div class="menu-item"><div class="menu-item-header"><h3>Chef's Salad</h3><span class="price">$13.52</span></div><p>Turkey, ham, bacon, boiled egg, organic greens, tomato, cucumber & sprouts. Choice of dressing.</p></div>
+                </div>
+            </div>
+            <div class="menu-category" id="smoothies">
+                <div class="menu-grid">
+                    <div class="menu-item"><div class="menu-item-header"><h3>Mixed Berry</h3><span class="price">$6.50 / $7.25</span></div><p>Raspberries, blueberries, strawberries, almond milk & honey. Available in 16oz or 20oz.</p></div>
+                    <div class="menu-item"><div class="menu-item-header"><h3>Strawberry Banana</h3><span class="price">$6.50 / $7.25</span></div><p>Classic blend of banana, strawberries, almond milk & honey.</p></div>
+                    <div class="menu-item"><div class="menu-item-header"><h3>Choco-nana</h3><span class="price">$6.50 / $7.25</span></div><p>Chocolate soft serve, banana, peanut butter & almond milk. Indulgent!</p></div>
+                    <div class="menu-item"><div class="menu-item-header"><h3>Mango</h3><span class="price">$6.50 / $7.25</span></div><p>Tropical mango, pineapple, almond milk & honey. Pure island vibes.</p></div>
+                    <div class="menu-item"><div class="menu-item-header"><h3>Green Smoothie</h3><span class="price">$6.50 / $7.25</span></div><p>Our healthy green blend for those looking for a nutritious boost.</p></div>
+                </div>
+            </div>
+            <div class="menu-category" id="treats">
+                <div class="menu-grid">
+                    <div class="menu-item"><div class="menu-item-header"><h3>Dole Pineapple Soft Serve</h3><span class="price">$5.00</span></div><p>The iconic Hawaiian treat. Refreshing pineapple soft serve.</p></div>
+                    <div class="menu-item"><div class="menu-item-header"><h3>Vanilla Soft Serve</h3><span class="price">$5.00</span></div><p>Classic creamy vanilla soft serve.</p></div>
+                    <div class="menu-item"><div class="menu-item-header"><h3>Pineapple & Vanilla Twist</h3><span class="price">$5.00</span></div><p>Best of both worlds. Pineapple and vanilla swirled together.</p></div>
+                    <div class="menu-item"><div class="menu-item-header"><h3>Fountain Drinks</h3><span class="price">$2.00</span></div><p>Pepsi, Orange Crush, Starry, Diet Pepsi, or Water.</p></div>
+                </div>
+            </div>
+            <div class="menu-cta"><a href="https://www.clover.com/online-ordering/the-tiki-turtle-cafe-hilo" target="_blank" class="btn btn-primary"><svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg> Order Online Now</a></div>
+        </div>
+    </section>
+
+    <section class="location" id="location">
+        <div class="location-grid">
+            <div class="location-content">
+                <h2>Come Visit Us</h2>
+                <div class="location-info">
+                    <div class="location-item">
+                        <div class="location-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg></div>
+                        <div><h4>Address</h4><p>1099 Waianuenue Ave<br>Hilo, HI 96720</p></div>
+                    </div>
+                    <div class="location-item">
+                        <div class="location-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+                        <div><h4>Hours</h4><p>Monday through Friday<br>10 AM to 2 PM</p></div>
+                    </div>
+                    <div class="location-item">
+                        <div class="location-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg></div>
+                        <div><h4>Contact</h4><p><a href="tel:808-464-6225">808-464-6225</a><br><a href="mailto:info@tikiturtlehi.com">info@tikiturtlehi.com</a></p></div>
+                    </div>
+                </div>
+            </div>
+            <div class="location-map"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3785.1!2d-155.084!3d19.723!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2s1099%20Waianuenue%20Ave%2C%20Hilo%2C%20HI%2096720!5e0!3m2!1sen!2sus!4v1" allowfullscreen="" loading="lazy"></iframe></div>
+        </div>
+    </section>
+
+    <section class="arc-connection">
+        <div class="section-container">
+            <img src="arc-logo.png" alt="The Arc of Hilo" class="arc-logo">
+            <h2>A Program of The Arc of Hilo</h2>
+            <p>The Tiki Turtle Cafe is proudly operated by The Arc of Hilo, a nonprofit organization dedicated to promoting and protecting the human rights of people with intellectual and developmental disabilities. Through meaningful employment and training opportunities, we are building a more inclusive Hawaii, one meal at a time.</p>
+            <a href="https://thearcofhilo.org" target="_blank" class="arc-link">Learn more about The Arc of Hilo <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg></a>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-brand"><h3>Tiki Turtle Cafe</h3><p>Where every bite transforms lives. A vocational training cafe empowering individuals with disabilities through culinary excellence in Hilo, Hawaii.</p></div>
+            <div class="footer-links"><h4>Quick Links</h4><ul><li><a href="#mission">Our Mission</a></li><li><a href="#team">Our Team</a></li><li><a href="#menu">Menu</a></li><li><a href="#location">Visit Us</a></li><li><a href="https://www.clover.com/online-ordering/the-tiki-turtle-cafe-hilo" target="_blank">Order Online</a></li></ul></div>
+            <div class="footer-social"><h4>Connect</h4><div class="social-icons"><a href="#" aria-label="Facebook"><svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a><a href="#" aria-label="Instagram"><svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a></div></div>
+        </div>
+        <div class="footer-bottom"><p>© 2025 Tiki Turtle Cafe · A Program of The Arc of Hilo · Hawaii Island</p></div>
+    </footer>
+
+    <script>
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => { navbar.classList.toggle('scrolled', window.scrollY > 50); });
+
+        document.querySelectorAll('.menu-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.menu-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.menu-category').forEach(c => c.classList.remove('active'));
+                tab.classList.add('active');
+                document.getElementById(tab.dataset.category).classList.add('active');
+            });
+        });
+
+        const bubblesContainer = document.getElementById('bubbles');
+        for (let i = 0; i < 15; i++) {
+            const bubble = document.createElement('div');
+            bubble.className = 'bubble';
+            bubble.style.left = Math.random() * 100 + '%';
+            bubble.style.width = (Math.random() * 15 + 8) + 'px';
+            bubble.style.height = bubble.style.width;
+            bubble.style.animationDelay = Math.random() * 10 + 's';
+            bubble.style.animationDuration = (Math.random() * 5 + 8) + 's';
+            bubblesContainer.appendChild(bubble);
+        }
+
+        const teamData = {
+            chef: { initials: 'AW', name: 'Chef Angelina Wright', role: 'Head Chef & Mentor', story: '<p>Chef Angelina did not just bring recipes to Tiki Turtle Cafe. She brought her whole heart.</p><p>With years of culinary experience, Angelina could have worked anywhere. But she chose us. She chose to spend her days not just perfecting dishes, but perfecting the confidence of every team member who walks through our kitchen doors.</p><p>"Cooking is about more than food," she says. "It is about pride. When someone plates their first perfect sandwich, when they see a customer smile at something they made with their own hands, that is magic. That is what I live for."</p><p>Under her guidance, our trainees learn knife skills, food safety, customer service, and something even more valuable: the belief that they can do anything they set their minds to.</p>' },
+            jace: { initials: 'J', name: 'Jace', role: 'Team Member', story: '<p>Jace brings incredible energy and enthusiasm to everything he does at Tiki Turtle Cafe.</p><p>From day one, Jace showed a willingness to learn and grow that inspired everyone around him. Whether he is helping in the kitchen or greeting customers, his positive attitude is contagious.</p><p>His dedication to mastering new skills has been remarkable to witness. Every challenge is met with determination, and every success is celebrated with his signature smile.</p><p>Jace reminds us all why we do what we do. His journey at Tiki Turtle is proof that when you believe in someone, amazing things happen.</p>' },
+            matt: { initials: 'M', name: 'Matt', role: 'Team Member', story: '<p>Matt is the kind of team member every workplace hopes for.</p><p>His attention to detail and friendly demeanor make him a natural fit at Tiki Turtle. Customers often comment on how helpful and patient he is, always going the extra mile to make sure everyone leaves happy.</p><p>Since joining our ohana, Matt has grown in confidence and skill. He takes pride in his work and it shows in everything he does.</p><p>"I like being part of a team," Matt shares. "Everyone here supports each other. It feels like family."</p>' },
+            dayton: { initials: 'D', name: 'Dayton', role: 'Team Member', story: '<p>Dayton has shown us what determination and hard work can achieve.</p><p>When he first started at Tiki Turtle, the fast pace of a cafe was new to him. But Dayton never gave up. Day by day, he learned, practiced, and improved.</p><p>Now, Dayton handles tasks with confidence and efficiency. He has become someone the team can always count on, and his growth has been one of our proudest success stories.</p><p>His journey proves that with the right support and opportunity, everyone can thrive.</p>' },
+            lisa: { initials: 'L', name: 'Lisa', role: 'Team Member', story: '<p>Lisa brings warmth and sunshine to every shift at Tiki Turtle Cafe.</p><p>Her caring nature makes every customer feel like an old friend. She remembers faces, asks about families, and genuinely cares about the people she serves.</p><p>"I love making people happy," Lisa says with her ever-present smile. "When someone has a bad day and I can make them feel better, that is the best feeling."</p><p>Lisa has found her calling in hospitality, and Tiki Turtle is lucky to have her as part of our ohana.</p>' },
+            ethan: { initials: 'E', name: 'Ethan', role: 'Team Member', story: '<p>Ethan approaches every single task with focus and commitment.</p><p>His quiet determination speaks louder than words. While others might rush, Ethan takes the time to do things right, and his work reflects that care and attention.</p><p>The progress Ethan has made since joining Tiki Turtle has been inspiring to watch. Skills that once seemed challenging are now second nature, and his confidence continues to grow.</p><p>Ethan shows us that success is not always loud. Sometimes it is steady, patient, and built one day at a time.</p>' },
+            alyssa: { initials: 'A', name: 'Alyssa', role: 'Team Member', story: '<p>Alyssa is a natural when it comes to connecting with people.</p><p>Her cheerful personality lights up the cafe, and her strong work ethic sets an example for everyone. Whether she is taking orders, helping in the kitchen, or tidying up, Alyssa does it all with enthusiasm.</p><p>"I did not know I could do this," Alyssa admits. "But everyone believed in me, and now I believe in myself too."</p><p>Her transformation at Tiki Turtle has been beautiful to witness. Alyssa has found her voice, her confidence, and her place in our ohana.</p>' },
+            genesis: { initials: 'G', name: 'Genesis', role: 'Team Member', story: '<p>Genesis brings creativity and joy to everything she does at Tiki Turtle.</p><p>From the moment she joined our team, Genesis showed a spark that was impossible to ignore. She approaches challenges with curiosity and finds joy in learning new things.</p><p>Through her work at the cafe, Genesis has discovered strengths she did not know she had. Her confidence has blossomed, and her smile has become one of the things our regular customers look forward to.</p><p>"Tiki Turtle gave me a chance," Genesis says. "Now I know I can do anything."</p>' }
+        };
+
+        const modal = document.getElementById('teamModal');
+        document.querySelectorAll('.team-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const data = teamData[card.dataset.member];
+                document.getElementById('modalAvatar').textContent = data.initials;
+                document.getElementById('modalName').textContent = data.name;
+                document.getElementById('modalRole').textContent = data.role;
+                document.getElementById('modalStory').innerHTML = data.story;
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        document.getElementById('modalClose').addEventListener('click', () => { modal.classList.remove('active'); document.body.style.overflow = ''; });
+        modal.addEventListener('click', (e) => { if (e.target === modal) { modal.classList.remove('active'); document.body.style.overflow = ''; } });
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && modal.classList.contains('active')) { modal.classList.remove('active'); document.body.style.overflow = ''; } });
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        });
+    </script>
+</body>
+</html>
