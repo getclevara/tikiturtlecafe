@@ -6,6 +6,22 @@
     <title>Tiki Turtle Cafe | Where Every Bite Transforms Lives</title>
     <meta name="description" content="Tiki Turtle Cafe - A vocational training cafe by The Arc of Hilo, empowering individuals with disabilities through culinary excellence in Hawai'i.">
     
+    <!-- Open Graph / Social Sharing -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Tiki Turtle Cafe | Good Food. Great Purpose.">
+    <meta property="og:description" content="A vocational training cafe in Hilo, Hawaiʻi where every bite transforms lives. Fresh food made with aloha by The Arc of Hilo.">
+    <meta property="og:image" content="og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:url" content="https://tikiturtlehi.com">
+    <meta property="og:site_name" content="Tiki Turtle Cafe">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Tiki Turtle Cafe | Good Food. Great Purpose.">
+    <meta name="twitter:description" content="A vocational training cafe in Hilo, Hawaiʻi where every bite transforms lives.">
+    <meta name="twitter:image" content="og-image.png">
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -474,6 +490,23 @@
         .week-card {
             background: white; border-radius: 20px; overflow: hidden;
             box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            position: relative;
+        }
+        .week-card.current-week {
+            border: 3px solid var(--coral);
+            box-shadow: 0 8px 30px rgba(230, 83, 60, 0.2);
+        }
+        .this-week-badge {
+            position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+            background: var(--coral); color: white;
+            padding: 0.4rem 1rem; border-radius: 50px;
+            font-size: 0.85rem; font-weight: 700;
+            white-space: nowrap; z-index: 10;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: translateX(-50%) scale(1); }
+            50% { transform: translateX(-50%) scale(1.05); }
         }
         .week-header {
             background: linear-gradient(135deg, var(--ocean-deep), var(--ocean-mid));
@@ -481,6 +514,7 @@
         }
         .week-header h3 { font-size: 1.3rem; margin-bottom: 0.25rem; }
         .week-header p { font-size: 0.85rem; opacity: 0.8; }
+        .week-dates { font-size: 0.8rem !important; opacity: 0.9 !important; letter-spacing: 0.5px; }
         .week-days { padding: 1.5rem; }
         .day-item {
             display: flex; justify-content: space-between; align-items: center;
@@ -792,10 +826,11 @@
             </div>
             <div class="menu-category active" id="specials">
                 <div class="weekly-specials">
-                    <div class="week-card">
+                    <div class="week-card" id="week1Card">
+                        <div class="this-week-badge" id="week1Badge" style="display:none;">👉 This Week!</div>
                         <div class="week-header">
                             <h3>🌴 Week 1</h3>
-                            <p>Rotating Weekly</p>
+                            <p class="week-dates" id="week1Dates"></p>
                         </div>
                         <div class="week-days">
                             <div class="day-item"><span class="day-name">Monday</span><span class="day-dish">Hamburger Steak</span><span class="day-price">$14</span></div>
@@ -806,10 +841,11 @@
                         </div>
                         <div class="dole-flavors">🍦 <strong>Dole Flavors:</strong> Melona | Pineapple</div>
                     </div>
-                    <div class="week-card">
+                    <div class="week-card" id="week2Card">
+                        <div class="this-week-badge" id="week2Badge" style="display:none;">👉 This Week!</div>
                         <div class="week-header">
                             <h3>🌺 Week 2</h3>
-                            <p>Rotating Weekly</p>
+                            <p class="week-dates" id="week2Dates"></p>
                         </div>
                         <div class="week-days">
                             <div class="day-item"><span class="day-name">Monday</span><span class="day-dish">Shoyu Pork</span><span class="day-price">$14</span></div>
@@ -821,7 +857,7 @@
                         <div class="dole-flavors">🍦 <strong>Dole Flavors:</strong> Cherry | Pineapple</div>
                     </div>
                 </div>
-                <div class="specials-note">Our daily plate specials rotate between Week 1 & Week 2. Most plates $14, Friday specials $15. Served 10 AM - 2 PM, Mon-Fri.</div>
+                <div class="specials-note">Our daily plate specials rotate weekly through May 4th. Most plates $14, Friday specials $15. Served 10 AM - 2 PM, Mon-Fri.</div>
             </div>
             <div class="menu-category" id="sandwiches">
                 <div class="menu-grid">
@@ -1039,6 +1075,40 @@
         document.getElementById('teamScrollRight').addEventListener('click', () => {
             teamScroll.scrollBy({ left: 300, behavior: 'smooth' });
         });
+
+        // Auto-detect current week for specials
+        (function() {
+            // Configuration: First day of Week 1 (Monday Feb 23, 2026)
+            const scheduleStart = new Date('2026-02-23');
+            const scheduleEnd = new Date('2026-05-04');
+            const today = new Date();
+            
+            // Week 1 dates (Mondays): Feb 23, Mar 9, Mar 23, Apr 6, Apr 20
+            const week1Dates = ['2/23', '3/9', '3/23', '4/6', '4/20'];
+            // Week 2 dates (Mondays): Mar 2, Mar 16, Mar 30, Apr 13, Apr 27
+            const week2Dates = ['3/2', '3/16', '3/30', '4/13', '4/27'];
+            
+            // Display date lists
+            document.getElementById('week1Dates').textContent = week1Dates.join(', ');
+            document.getElementById('week2Dates').textContent = week2Dates.join(', ');
+            
+            // Calculate which week we're in
+            const msPerDay = 24 * 60 * 60 * 1000;
+            const daysSinceStart = Math.floor((today - scheduleStart) / msPerDay);
+            const weekNumber = Math.floor(daysSinceStart / 7);
+            const isWeek1 = weekNumber % 2 === 0;
+            
+            // Only highlight if we're within the schedule period
+            if (today >= scheduleStart && today <= scheduleEnd) {
+                if (isWeek1) {
+                    document.getElementById('week1Card').classList.add('current-week');
+                    document.getElementById('week1Badge').style.display = 'block';
+                } else {
+                    document.getElementById('week2Card').classList.add('current-week');
+                    document.getElementById('week2Badge').style.display = 'block';
+                }
+            }
+        })();
     </script>
 </body>
 </html>
