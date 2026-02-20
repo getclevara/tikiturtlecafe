@@ -349,6 +349,7 @@
             scroll-snap-type: x mandatory;
             -webkit-overflow-scrolling: touch;
             scrollbar-width: none;
+            flex: 1;
         }
         .team-scroll::-webkit-scrollbar { display: none; }
 
@@ -356,9 +357,8 @@
             flex: 0 0 280px; scroll-snap-align: start;
             background: white; border-radius: 24px;
             overflow: hidden; transition: all 0.4s ease;
-            cursor: pointer;
         }
-        .team-member:hover { transform: translateY(-8px); box-shadow: 0 20px 50px rgba(0,0,0,0.3); }
+        .team-member:hover { transform: translateY(-8px); box-shadow: 0 20px 50px rgba(0,0,0,0.15); }
         
         .team-photo {
             height: 200px;
@@ -377,16 +377,28 @@
         .team-info .role { color: var(--coral); font-weight: 600; font-size: 0.9rem; margin-bottom: 0.75rem; }
         .team-info p { font-size: 0.9rem; color: var(--text-dark); opacity: 0.7; line-height: 1.5; }
         
-        .team-cta {
-            display: inline-flex; align-items: center; gap: 0.4rem;
-            color: var(--ocean-mid); font-weight: 600; font-size: 0.85rem;
-            margin-top: 1rem; padding: 0.5rem 1rem;
-            background: rgba(14, 140, 160, 0.08); border-radius: 50px;
-            transition: all 0.3s ease;
-        }
-        .team-member:hover .team-cta { background: var(--ocean-mid); color: white; }
-
         .team-scroll-hint { text-align: center; margin-top: 1rem; color: rgba(255,255,255,0.5); font-size: 0.85rem; }
+
+        .team-scroll-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .team-arrow {
+            width: 50px; height: 50px;
+            background: white; border: none; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; flex-shrink: 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            color: var(--ocean-mid);
+        }
+        .team-arrow:hover { background: var(--ocean-mid); color: white; transform: scale(1.1); }
+        @media (max-width: 768px) {
+            .team-arrow { width: 40px; height: 40px; }
+            .team-arrow svg { width: 20px; height: 20px; }
+        }
 
         /* Team Modal */
         .team-modal {
@@ -746,15 +758,23 @@
                 <h2>Meet Our Ohana</h2>
                 <p>The amazing people who make the magic happen</p>
             </div>
-            <div class="team-scroll">
-                <div class="team-member"><div class="team-photo"><div class="team-photo-placeholder">AW</div></div><div class="team-info"><h3>Chef Angelina</h3><p class="role">Head Chef & Mentor</p><p>The heart of our kitchen, guiding our team with patience and passion.</p></div></div>
-                <div class="team-member"><div class="team-photo"><div class="team-photo-placeholder">A</div></div><div class="team-info"><h3>Alyssa</h3><p class="role">Team Lead & Mentor</p><p>Trains our front of house team and is a source of support for all participants.</p></div></div>
-                <div class="team-member"><div class="team-photo"><div class="team-photo-placeholder">J</div></div><div class="team-info"><h3>Jace</h3><p class="role">Team Member</p><p>Brings energy and enthusiasm to everything he does.</p></div></div>
-                <div class="team-member"><div class="team-photo"><div class="team-photo-placeholder">M</div></div><div class="team-info"><h3>Matt</h3><p class="role">Team Member</p><p>Known for his attention to detail and friendly demeanor.</p></div></div>
-                <div class="team-member"><div class="team-photo"><div class="team-photo-placeholder">D</div></div><div class="team-info"><h3>Dayton</h3><p class="role">Team Member</p><p>His hard work and determination make him invaluable.</p></div></div>
-                <div class="team-member"><div class="team-photo"><div class="team-photo-placeholder">L</div></div><div class="team-info"><h3>Lisa</h3><p class="role">Team Member</p><p>Brightens every shift with her warm smile and caring nature.</p></div></div>
-                <div class="team-member"><div class="team-photo"><div class="team-photo-placeholder">E</div></div><div class="team-info"><h3>Ethan</h3><p class="role">Team Member</p><p>Approaches every task with focus and commitment.</p></div></div>
-                <div class="team-member"><div class="team-photo"><div class="team-photo-placeholder">G</div></div><div class="team-info"><h3>Genesis</h3><p class="role">Team Member</p><p>Brings creativity and joy to our team every day.</p></div></div>
+            <div class="team-scroll-container">
+                <button class="team-arrow team-arrow-left" id="teamScrollLeft">
+                    <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                </button>
+                <div class="team-scroll" id="teamScroll">
+                    <div class="team-member"><div class="team-photo"><div class="team-photo-placeholder">AW</div></div><div class="team-info"><h3>Chef Angelina</h3><p class="role">Head Chef & Mentor</p><p>The heart of our kitchen, guiding our team with patience and passion.</p></div></div>
+                    <div class="team-member"><div class="team-photo"><div class="team-photo-placeholder">A</div></div><div class="team-info"><h3>Alyssa</h3><p class="role">Team Lead & Mentor</p><p>Trains our front of house team and is a source of support for all participants.</p></div></div>
+                    <div class="team-member"><div class="team-photo"><div class="team-photo-placeholder">J</div></div><div class="team-info"><h3>Jace</h3><p class="role">Team Member</p><p>Brings energy and enthusiasm to everything he does.</p></div></div>
+                    <div class="team-member"><div class="team-photo"><div class="team-photo-placeholder">M</div></div><div class="team-info"><h3>Matt</h3><p class="role">Team Member</p><p>Known for his attention to detail and friendly demeanor.</p></div></div>
+                    <div class="team-member"><div class="team-photo"><div class="team-photo-placeholder">D</div></div><div class="team-info"><h3>Dayton</h3><p class="role">Team Member</p><p>His hard work and determination make him invaluable.</p></div></div>
+                    <div class="team-member"><div class="team-photo"><div class="team-photo-placeholder">L</div></div><div class="team-info"><h3>Lisa</h3><p class="role">Team Member</p><p>Brightens every shift with her warm smile and caring nature.</p></div></div>
+                    <div class="team-member"><div class="team-photo"><div class="team-photo-placeholder">E</div></div><div class="team-info"><h3>Ethan</h3><p class="role">Team Member</p><p>Approaches every task with focus and commitment.</p></div></div>
+                    <div class="team-member"><div class="team-photo"><div class="team-photo-placeholder">G</div></div><div class="team-info"><h3>Genesis</h3><p class="role">Team Member</p><p>Brings creativity and joy to our team every day.</p></div></div>
+                </div>
+                <button class="team-arrow team-arrow-right" id="teamScrollRight">
+                    <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                </button>
             </div>
             <p class="team-scroll-hint">← Scroll to meet more team members →</p>
         </div>
@@ -1009,6 +1029,15 @@
                 const target = document.querySelector(this.getAttribute('href'));
                 if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
             });
+        });
+
+        // Team scroll arrows
+        const teamScroll = document.getElementById('teamScroll');
+        document.getElementById('teamScrollLeft').addEventListener('click', () => {
+            teamScroll.scrollBy({ left: -300, behavior: 'smooth' });
+        });
+        document.getElementById('teamScrollRight').addEventListener('click', () => {
+            teamScroll.scrollBy({ left: 300, behavior: 'smooth' });
         });
     </script>
 </body>
