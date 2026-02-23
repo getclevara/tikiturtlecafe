@@ -1078,34 +1078,34 @@
 
         // Auto-detect current week for specials
         (function() {
-            // Configuration: First day of Week 1 (Monday Feb 23, 2026)
+            // Configuration: First day of Week 2 (Monday Feb 23, 2026)
             const scheduleStart = new Date('2026-02-23');
             const scheduleEnd = new Date('2026-05-04');
             const today = new Date();
             
-            // Week 1 dates (Mondays): Feb 23, Mar 9, Mar 23, Apr 6, Apr 20
-            const week1Dates = ['2/23', '3/9', '3/23', '4/6', '4/20'];
-            // Week 2 dates (Mondays): Mar 2, Mar 16, Mar 30, Apr 13, Apr 27
-            const week2Dates = ['3/2', '3/16', '3/30', '4/13', '4/27'];
+            // Week 1 dates (Mondays): Mar 2, Mar 16, Mar 30, Apr 13, Apr 27
+            const week1Dates = ['3/2', '3/16', '3/30', '4/13', '4/27'];
+            // Week 2 dates (Mondays): Feb 23, Mar 9, Mar 23, Apr 6, Apr 20
+            const week2Dates = ['2/23', '3/9', '3/23', '4/6', '4/20'];
             
             // Display date lists
             document.getElementById('week1Dates').textContent = week1Dates.join(', ');
             document.getElementById('week2Dates').textContent = week2Dates.join(', ');
             
-            // Calculate which week we're in
+            // Calculate which week we're in (starts on Week 2)
             const msPerDay = 24 * 60 * 60 * 1000;
             const daysSinceStart = Math.floor((today - scheduleStart) / msPerDay);
             const weekNumber = Math.floor(daysSinceStart / 7);
-            const isWeek1 = weekNumber % 2 === 0;
+            const isWeek2 = weekNumber % 2 === 0;  // Week 2 is first (Feb 23)
             
             // Only highlight if we're within the schedule period
             if (today >= scheduleStart && today <= scheduleEnd) {
-                if (isWeek1) {
-                    document.getElementById('week1Card').classList.add('current-week');
-                    document.getElementById('week1Badge').style.display = 'block';
-                } else {
+                if (isWeek2) {
                     document.getElementById('week2Card').classList.add('current-week');
                     document.getElementById('week2Badge').style.display = 'block';
+                } else {
+                    document.getElementById('week1Card').classList.add('current-week');
+                    document.getElementById('week1Badge').style.display = 'block';
                 }
             }
         })();
