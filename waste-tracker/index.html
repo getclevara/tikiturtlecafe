@@ -1,0 +1,1953 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tiki Turtle Cafe - Waste Tracker</title>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ocean-deep: #0d5c72;
+      --ocean-mid: #0e8ca0;
+      --ocean-bright: #12b5c4;
+      --ocean-light: #a8dce5;
+      --sand: #f7f3ed;
+      --coral: #e85a5a;
+      --sunset: #f59e42;
+      --text: #1a1a1a;
+      --text-light: #666;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: linear-gradient(135deg, var(--ocean-deep) 0%, var(--ocean-mid) 100%);
+      min-height: 100vh;
+      color: var(--text);
+    }
+
+    .app-container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 20px;
+      min-height: 100vh;
+    }
+
+    /* Login Screen */
+    .login-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .login-box {
+      background: white;
+      padding: 40px;
+      border-radius: 16px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    .login-box h1 {
+      color: var(--ocean-deep);
+      font-size: 24px;
+      margin-bottom: 8px;
+    }
+
+    .login-box p {
+      color: var(--text-light);
+      margin-bottom: 30px;
+    }
+
+    .login-box input {
+      width: 100%;
+      padding: 14px 16px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 16px;
+      margin-bottom: 16px;
+      font-family: inherit;
+    }
+
+    .login-box input:focus {
+      outline: none;
+      border-color: var(--ocean-mid);
+    }
+
+    .login-btn {
+      width: 100%;
+      padding: 14px;
+      background: var(--ocean-mid);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .login-btn:hover { background: var(--ocean-deep); }
+
+    .error-msg {
+      background: #fee;
+      color: var(--coral);
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+      font-size: 14px;
+    }
+
+    /* Header */
+    .header {
+      background: white;
+      padding: 16px 24px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+
+    .header h1 {
+      color: var(--ocean-deep);
+      font-size: 20px;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 12px;
+    }
+
+    .header-btn {
+      padding: 8px 16px;
+      border-radius: 6px;
+      border: none;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-export {
+      background: var(--sunset);
+      color: white;
+    }
+
+    .btn-export:hover { background: #e08a2e; }
+
+    .btn-logout {
+      background: #eee;
+      color: var(--text);
+    }
+
+    .btn-logout:hover { background: #ddd; }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .tab {
+      padding: 11px 18px;
+      background: rgba(255,255,255,0.2);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .tab.active {
+      background: white;
+      color: var(--ocean-deep);
+    }
+
+    .tab:hover:not(.active) {
+      background: rgba(255,255,255,0.3);
+    }
+
+    /* Main Card */
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+    }
+
+    .card h2 {
+      color: var(--ocean-deep);
+      font-size: 18px;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--ocean-light);
+    }
+
+    /* Preset Items Grid */
+    .category-section {
+      margin-bottom: 24px;
+    }
+
+    .category-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-light);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+    }
+
+    .presets-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .preset-btn {
+      padding: 10px 16px;
+      background: var(--sand);
+      border: 2px solid transparent;
+      border-radius: 8px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+
+    .preset-btn:hover {
+      border-color: var(--ocean-mid);
+      background: var(--ocean-light);
+    }
+
+    .preset-btn.selected {
+      background: var(--ocean-mid);
+      color: white;
+      border-color: var(--ocean-mid);
+    }
+
+    /* Custom Item Input */
+    .custom-input-row {
+      display: flex;
+      gap: 12px;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid #eee;
+    }
+
+    .custom-input-row input {
+      flex: 1;
+      padding: 12px 14px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 15px;
+      font-family: inherit;
+    }
+
+    .custom-input-row input:focus {
+      outline: none;
+      border-color: var(--ocean-mid);
+    }
+
+    .add-custom-btn {
+      padding: 12px 20px;
+      background: var(--ocean-bright);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .add-custom-btn:hover {
+      background: var(--ocean-mid);
+    }
+
+    /* Entry Form */
+    .entry-form {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 2px solid var(--ocean-light);
+    }
+
+    @media (max-width: 600px) {
+      .entry-form { grid-template-columns: 1fr; }
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-group.full-width {
+      grid-column: 1 / -1;
+    }
+
+    .form-group label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-light);
+      margin-bottom: 6px;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      padding: 12px 14px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 15px;
+      font-family: inherit;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--ocean-mid);
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .selected-item-display {
+      background: var(--ocean-light);
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-weight: 600;
+      color: var(--ocean-deep);
+      grid-column: 1 / -1;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .clear-selection {
+      background: none;
+      border: none;
+      color: var(--ocean-deep);
+      cursor: pointer;
+      font-size: 18px;
+    }
+
+    .submit-btn {
+      grid-column: 1 / -1;
+      padding: 16px;
+      background: var(--ocean-mid);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+      font-family: inherit;
+    }
+
+    .submit-btn:hover { background: var(--ocean-deep); }
+
+    .submit-btn:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+
+    /* Entries Table */
+    .entries-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .entries-table th {
+      text-align: left;
+      padding: 12px;
+      background: var(--sand);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-light);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .entries-table td {
+      padding: 12px;
+      border-bottom: 1px solid #eee;
+      font-size: 14px;
+    }
+
+    .entries-table tr:hover td {
+      background: #fafafa;
+    }
+
+    .waste-type-badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .waste-type-badge.raw_unused { background: #e3f2fd; color: #1565c0; }
+    .waste-type-badge.prep_waste { background: #fff3e0; color: #ef6c00; }
+    .waste-type-badge.cooked_unsold { background: #fce4ec; color: #c2185b; }
+    .waste-type-badge.expired { background: #ffebee; color: #c62828; }
+    .waste-type-badge.damaged { background: #f3e5f5; color: #7b1fa2; }
+
+    .delete-btn {
+      background: none;
+      border: none;
+      color: var(--coral);
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .delete-btn:hover { color: #c00; }
+
+    /* Week / Period Navigation */
+    .week-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .week-nav button {
+      padding: 8px 16px;
+      background: var(--sand);
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 500;
+      font-family: inherit;
+    }
+
+    .week-nav button:hover { background: var(--ocean-light); }
+    .week-nav button:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    .week-label {
+      font-weight: 600;
+      color: var(--ocean-deep);
+    }
+
+    /* Stats Summary */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .stat-card {
+      background: var(--sand);
+      padding: 16px;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--ocean-deep);
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: var(--text-light);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .stat-card.highlight {
+      background: var(--coral);
+    }
+
+    .stat-card.highlight .stat-value,
+    .stat-card.highlight .stat-label {
+      color: white;
+    }
+
+    /* Empty State */
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--text-light);
+    }
+
+    .empty-state-icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+    }
+
+    /* Loading */
+    .loading {
+      text-align: center;
+      padding: 40px;
+      color: white;
+    }
+
+    /* Success Toast */
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--ocean-deep);
+      color: white;
+      padding: 16px 24px;
+      border-radius: 8px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      animation: slideIn 0.3s ease;
+      z-index: 999;
+    }
+
+    @keyframes slideIn {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    /* Toggle Pill */
+    .toggle-pill {
+      display: inline-flex;
+      background: var(--sand);
+      border-radius: 20px;
+      padding: 3px;
+      margin-bottom: 16px;
+    }
+
+    .toggle-pill button {
+      padding: 7px 18px;
+      border: none;
+      border-radius: 17px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      background: transparent;
+      color: var(--text-light);
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+
+    .toggle-pill button.active {
+      background: var(--ocean-mid);
+      color: white;
+    }
+
+    /* KPI Cards */
+    .kpi-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    @media (max-width: 768px) {
+      .kpi-row { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    .kpi-card {
+      background: white;
+      border: 1px solid #eee;
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+    }
+
+    .kpi-card.coral-highlight {
+      background: var(--coral);
+      border-color: var(--coral);
+    }
+
+    .kpi-card.coral-highlight .kpi-value,
+    .kpi-card.coral-highlight .kpi-label {
+      color: white;
+    }
+
+    .kpi-value {
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--ocean-deep);
+    }
+
+    .kpi-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-light);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-top: 2px;
+    }
+
+    .kpi-trend {
+      font-size: 12px;
+      font-weight: 600;
+      margin-top: 4px;
+    }
+
+    .kpi-trend.good { color: #22c55e; }
+    .kpi-trend.bad { color: #e85a5a; }
+
+    /* Chart Grid */
+    .chart-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    @media (max-width: 768px) {
+      .chart-grid { grid-template-columns: 1fr; }
+    }
+
+    .chart-card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+
+    .chart-card.full-width {
+      grid-column: 1 / -1;
+    }
+
+    .chart-card h3 {
+      font-size: 15px;
+      color: var(--ocean-deep);
+      margin-bottom: 12px;
+    }
+
+    .chart-container {
+      position: relative;
+      height: 260px;
+    }
+
+    .chart-container.tall {
+      height: 300px;
+    }
+
+    /* Week subtotal row */
+    .week-subtotal td {
+      background: var(--sand) !important;
+      font-weight: 700;
+      color: var(--ocean-deep);
+      border-bottom: 2px solid var(--ocean-light);
+    }
+
+    /* Item Costs Tab */
+    .item-costs-search {
+      width: 100%;
+      padding: 12px 14px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 15px;
+      font-family: inherit;
+      margin-bottom: 20px;
+    }
+
+    .item-costs-search:focus {
+      outline: none;
+      border-color: var(--ocean-mid);
+    }
+
+    .cost-item-row {
+      display: flex;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid #eee;
+      gap: 12px;
+    }
+
+    .cost-item-name {
+      flex: 1;
+      font-weight: 500;
+    }
+
+    .cost-item-cost {
+      font-weight: 700;
+      color: var(--ocean-deep);
+      min-width: 70px;
+      text-align: right;
+    }
+
+    .cost-item-unit {
+      font-size: 13px;
+      color: var(--text-light);
+      min-width: 60px;
+    }
+
+    .cost-item-updated {
+      font-size: 11px;
+      color: var(--text-light);
+      min-width: 110px;
+      text-align: right;
+    }
+
+    .cost-item-updated.stale {
+      color: var(--coral);
+    }
+
+    .cost-edit-btn {
+      padding: 5px 12px;
+      background: var(--sand);
+      border: none;
+      border-radius: 6px;
+      font-size: 13px;
+      cursor: pointer;
+      font-family: inherit;
+      font-weight: 500;
+    }
+
+    .cost-edit-btn:hover { background: var(--ocean-light); }
+
+    .cost-inline-input {
+      width: 80px;
+      padding: 5px 8px;
+      border: 2px solid var(--ocean-mid);
+      border-radius: 6px;
+      font-size: 14px;
+      font-family: inherit;
+      text-align: right;
+    }
+
+    .cost-save-btn {
+      padding: 5px 12px;
+      background: var(--ocean-mid);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 13px;
+      cursor: pointer;
+      font-family: inherit;
+      font-weight: 600;
+    }
+
+    .cost-save-btn:hover { background: var(--ocean-deep); }
+
+    .cost-cancel-btn {
+      padding: 5px 10px;
+      background: #eee;
+      border: none;
+      border-radius: 6px;
+      font-size: 13px;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .tip-box {
+      margin-top: 20px;
+      padding: 14px 18px;
+      background: var(--sand);
+      border-radius: 8px;
+      font-size: 13px;
+      color: var(--text-light);
+      line-height: 1.5;
+    }
+
+    /* Responsive table scroll */
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    @media (max-width: 600px) {
+      .header { flex-direction: column; gap: 12px; text-align: center; }
+      .header-actions { justify-content: center; }
+      .kpi-value { font-size: 22px; }
+      .tabs { gap: 4px; }
+      .tab { padding: 10px 12px; font-size: 13px; }
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    // ============================================
+    // CONFIGURATION
+    // ============================================
+    const SUPABASE_URL = 'https://dstynyumakryhnxobctw.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRzdHlueXVtYWtyeWhueG9iY3R3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyODQyOTMsImV4cCI6MjA5MDg2MDI5M30.0K_GfYNjnPrwOgjIZpU8oH4dfIQv34tP5JQU6aK8K3Y';
+    const ACCESS_PIN = '9901';
+    // ============================================
+
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    const { useState, useEffect, useRef, useCallback, useMemo } = React;
+
+    // Waste type labels
+    const WASTE_TYPES = {
+      raw_unused: 'Raw/Unused',
+      prep_waste: 'Prep Waste',
+      cooked_unsold: 'Cooked/Unsold',
+      expired: 'Expired',
+      damaged: 'Damaged'
+    };
+
+    const WASTE_TYPE_COLORS = {
+      raw_unused: '#1565c0',
+      prep_waste: '#ef6c00',
+      cooked_unsold: '#c2185b',
+      expired: '#c62828',
+      damaged: '#7b1fa2'
+    };
+
+    const CATEGORY_COLORS = ['#0d5c72', '#0e8ca0', '#12b5c4', '#e85a5a', '#f59e42', '#d64d7a', '#a8dce5', '#c9b99a'];
+
+    // Category labels (in display order)
+    const CATEGORIES = {
+      raw_protein: '🥩 Raw Proteins',
+      cooked_protein: '🍗 Cooked Proteins',
+      produce: '🥬 Produce',
+      prepared_side: '🍚 Prepared Sides',
+      dole_mix: '🍦 Dole Whip Mixes',
+      bread: '🍞 Breads',
+      condiment: '🫙 Condiments & Sauces',
+      other: '📝 Other'
+    };
+
+    const CATEGORY_EMOJIS = {
+      raw_protein: '🥩',
+      cooked_protein: '🍗',
+      produce: '🥬',
+      prepared_side: '🍚',
+      dole_mix: '🍦',
+      bread: '🍞',
+      condiment: '🫙',
+      other: '📝'
+    };
+
+    const CATEGORY_ORDER = ['raw_protein', 'cooked_protein', 'produce', 'prepared_side', 'dole_mix', 'bread', 'condiment', 'other'];
+
+    // ============================================
+    // UTILITY FUNCTIONS
+    // ============================================
+
+    function getWeekRange(offset) {
+      const now = new Date();
+      const dayOfWeek = now.getDay();
+      const startOfWeek = new Date(now);
+      startOfWeek.setDate(now.getDate() - dayOfWeek + (offset * 7));
+      startOfWeek.setHours(0, 0, 0, 0);
+      const endOfWeek = new Date(startOfWeek);
+      endOfWeek.setDate(startOfWeek.getDate() + 6);
+      endOfWeek.setHours(23, 59, 59, 999);
+      return { start: startOfWeek, end: endOfWeek };
+    }
+
+    function getMonthRange(offset) {
+      const now = new Date();
+      const start = new Date(now.getFullYear(), now.getMonth() + offset, 1);
+      const end = new Date(now.getFullYear(), now.getMonth() + offset + 1, 0);
+      end.setHours(23, 59, 59, 999);
+      return { start, end };
+    }
+
+    function formatWeekLabel(offset) {
+      const { start, end } = getWeekRange(offset);
+      const opts = { month: 'short', day: 'numeric' };
+      return `${start.toLocaleDateString('en-US', opts)} - ${end.toLocaleDateString('en-US', opts)}`;
+    }
+
+    function formatMonthLabel(offset) {
+      const { start } = getMonthRange(offset);
+      return start.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+    }
+
+    function dateStr(d) {
+      return d.toISOString().split('T')[0];
+    }
+
+    function daysSince(dateString) {
+      if (!dateString) return null;
+      const d = new Date(dateString);
+      const now = new Date();
+      return Math.floor((now - d) / (1000 * 60 * 60 * 24));
+    }
+
+    function getWeeksOfMonth(monthOffset) {
+      const { start, end } = getMonthRange(monthOffset);
+      const weeks = [];
+      let weekStart = new Date(start);
+      // go to start of the week (Sunday) containing the 1st
+      const dayOfWeek = weekStart.getDay();
+      // We want weeks starting from Sunday that overlap this month
+      // First week starts on the 1st
+      while (weekStart <= end) {
+        const weekEnd = new Date(weekStart);
+        weekEnd.setDate(weekStart.getDate() + 6);
+        const clampedStart = weekStart < start ? start : new Date(weekStart);
+        const clampedEnd = weekEnd > end ? end : new Date(weekEnd);
+        weeks.push({ start: clampedStart, end: clampedEnd });
+        weekStart = new Date(weekEnd);
+        weekStart.setDate(weekStart.getDate() + 1);
+      }
+      return weeks;
+    }
+
+    // ============================================
+    // LOGIN COMPONENT
+    // ============================================
+    function Login({ onLogin }) {
+      const [pin, setPin] = useState('');
+      const [error, setError] = useState('');
+
+      const handleSubmit = (e) => {
+        e.preventDefault();
+        if (pin === ACCESS_PIN) {
+          sessionStorage.setItem('waste_tracker_auth', 'true');
+          onLogin();
+        } else {
+          setError('Incorrect PIN');
+          setPin('');
+        }
+      };
+
+      return (
+        <div className="login-container">
+          <div className="login-box">
+            <h1>🐢 Waste Tracker</h1>
+            <p>Tiki Turtle Cafe</p>
+            {error && <div className="error-msg">{error}</div>}
+            <form onSubmit={handleSubmit}>
+              <input
+                type="password"
+                inputMode="numeric"
+                pattern="[0-9]*"
+                placeholder="Enter PIN"
+                value={pin}
+                onChange={(e) => setPin(e.target.value)}
+                autoFocus
+                style={{ textAlign: 'center', fontSize: '24px', letterSpacing: '8px' }}
+              />
+              <button type="submit" className="login-btn">Enter</button>
+            </form>
+          </div>
+        </div>
+      );
+    }
+
+    // ============================================
+    // LOG WASTE TAB
+    // ============================================
+    function LogWasteTab({ presets, onEntryLogged }) {
+      const [selectedItem, setSelectedItem] = useState(null);
+      const [customItem, setCustomItem] = useState('');
+      const [quantity, setQuantity] = useState('');
+      const [unit, setUnit] = useState('lbs');
+      const [wasteType, setWasteType] = useState('raw_unused');
+      const [reason, setReason] = useState('');
+      const [notes, setNotes] = useState('');
+
+      const presetsByCategory = useMemo(() => {
+        const grouped = {};
+        presets.forEach(p => {
+          if (!grouped[p.category]) grouped[p.category] = [];
+          grouped[p.category].push(p);
+        });
+        Object.keys(grouped).forEach(cat => {
+          grouped[cat].sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0));
+        });
+        return grouped;
+      }, [presets]);
+
+      const handlePresetClick = (preset) => {
+        setSelectedItem(preset);
+        setCustomItem('');
+        setUnit(preset.default_unit);
+      };
+
+      const handleCustomAdd = () => {
+        if (customItem.trim()) {
+          setSelectedItem({ name: customItem.trim(), custom: true });
+        }
+      };
+
+      const clearSelection = () => {
+        setSelectedItem(null);
+        setCustomItem('');
+      };
+
+      const handleSubmit = async (e) => {
+        e.preventDefault();
+        if (!selectedItem || !quantity) return;
+
+        const preset = selectedItem.custom ? null : presets.find(p => p.id === selectedItem.id);
+        const estCost = preset ? (parseFloat(quantity) * preset.estimated_unit_cost) : 0;
+
+        const { error } = await supabase.from('waste_entries').insert({
+          item_name: selectedItem.name,
+          preset_item_id: preset?.id || null,
+          waste_type: wasteType,
+          quantity: parseFloat(quantity),
+          unit,
+          estimated_cost: estCost,
+          reason,
+          notes,
+          logged_by: 'staff'
+        });
+
+        if (!error) {
+          setSelectedItem(null);
+          setCustomItem('');
+          setQuantity('');
+          setReason('');
+          setNotes('');
+          onEntryLogged();
+        }
+      };
+
+      return (
+        <div className="card">
+          <h2>Select Item</h2>
+
+          {CATEGORY_ORDER.filter(cat => presetsByCategory[cat]?.length > 0).map(cat => (
+            <div className="category-section" key={cat}>
+              <div className="category-label">{CATEGORIES[cat]}</div>
+              <div className="presets-grid">
+                {presetsByCategory[cat].map(item => (
+                  <button
+                    key={item.id}
+                    className={`preset-btn ${selectedItem?.id === item.id ? 'selected' : ''}`}
+                    onClick={() => handlePresetClick(item)}
+                  >
+                    {item.name}
+                  </button>
+                ))}
+              </div>
+            </div>
+          ))}
+
+          <div className="custom-input-row">
+            <input
+              type="text"
+              placeholder="Or type custom item..."
+              value={customItem}
+              onChange={(e) => setCustomItem(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && handleCustomAdd()}
+            />
+            <button className="add-custom-btn" onClick={handleCustomAdd}>Add</button>
+          </div>
+
+          {selectedItem && (
+            <form className="entry-form" onSubmit={handleSubmit}>
+              <div className="selected-item-display">
+                <span>📦 {selectedItem.name}</span>
+                <button type="button" className="clear-selection" onClick={clearSelection}>✕</button>
+              </div>
+
+              <div className="form-group">
+                <label>Quantity</label>
+                <input
+                  type="number"
+                  step="0.25"
+                  min="0"
+                  placeholder="0"
+                  value={quantity}
+                  onChange={(e) => setQuantity(e.target.value)}
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Unit</label>
+                <select value={unit} onChange={(e) => setUnit(e.target.value)}>
+                  <option value="lbs">lbs</option>
+                  <option value="portions">portions</option>
+                  <option value="each">each</option>
+                  <option value="cups">cups</option>
+                  <option value="gallons">gallons</option>
+                  <option value="containers">containers</option>
+                  <option value="loaves">loaves</option>
+                  <option value="packs">packs</option>
+                  <option value="sheets">sheets</option>
+                </select>
+              </div>
+
+              <div className="form-group">
+                <label>Waste Type</label>
+                <select value={wasteType} onChange={(e) => setWasteType(e.target.value)}>
+                  {Object.entries(WASTE_TYPES).map(([key, label]) => (
+                    <option key={key} value={key}>{label}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="form-group">
+                <label>Reason (optional)</label>
+                <select value={reason} onChange={(e) => setReason(e.target.value)}>
+                  <option value="">Select reason...</option>
+                  <option value="overproduction">Made too much</option>
+                  <option value="slow_day">Slow day</option>
+                  <option value="expired">Expired/spoiled</option>
+                  <option value="dropped">Dropped/damaged</option>
+                  <option value="quality">Quality issue</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+
+              <div className="form-group full-width">
+                <label>Notes (optional)</label>
+                <textarea
+                  placeholder="Any details..."
+                  value={notes}
+                  onChange={(e) => setNotes(e.target.value)}
+                />
+              </div>
+
+              <button type="submit" className="submit-btn" disabled={!quantity}>
+                Log Waste Entry
+              </button>
+            </form>
+          )}
+        </div>
+      );
+    }
+
+    // ============================================
+    // DASHBOARD TAB (NEW)
+    // ============================================
+    function DashboardTab({ presets }) {
+      const [mode, setMode] = useState('week');
+      const [weekOffset, setWeekOffset] = useState(0);
+      const [monthOffset, setMonthOffset] = useState(0);
+      const [entries, setEntries] = useState([]);
+      const [prevEntries, setPrevEntries] = useState([]);
+      const [loading, setLoading] = useState(true);
+
+      const dailyBarRef = useRef(null);
+      const donutRef = useRef(null);
+      const topItemsRef = useRef(null);
+      const wasteTypeRef = useRef(null);
+      const dailyChartInstance = useRef(null);
+      const donutChartInstance = useRef(null);
+      const topItemsChartInstance = useRef(null);
+      const wasteTypeChartInstance = useRef(null);
+
+      const offset = mode === 'week' ? weekOffset : monthOffset;
+
+      const getRange = useCallback(() => {
+        return mode === 'week' ? getWeekRange(offset) : getMonthRange(offset);
+      }, [mode, offset]);
+
+      const getPrevRange = useCallback(() => {
+        return mode === 'week' ? getWeekRange(offset - 1) : getMonthRange(offset - 1);
+      }, [mode, offset]);
+
+      useEffect(() => {
+        const load = async () => {
+          setLoading(true);
+          const { start, end } = getRange();
+          const prev = getPrevRange();
+
+          const [curr, prevRes] = await Promise.all([
+            supabase.from('waste_entries').select('*')
+              .gte('entry_date', dateStr(start))
+              .lte('entry_date', dateStr(end))
+              .order('entry_date', { ascending: true }),
+            supabase.from('waste_entries').select('*')
+              .gte('entry_date', dateStr(prev.start))
+              .lte('entry_date', dateStr(prev.end))
+          ]);
+
+          setEntries(curr.data || []);
+          setPrevEntries(prevRes.data || []);
+          setLoading(false);
+        };
+        load();
+      }, [mode, offset]);
+
+      // Build a preset_item_id -> category map
+      const presetCategoryMap = useMemo(() => {
+        const m = {};
+        presets.forEach(p => { m[p.id] = p.category; });
+        return m;
+      }, [presets]);
+
+      // KPI computations
+      const totalCost = entries.reduce((s, e) => s + (e.estimated_cost || 0), 0);
+      const prevTotalCost = prevEntries.reduce((s, e) => s + (e.estimated_cost || 0), 0);
+      const totalEntries_count = entries.length;
+      const prevTotalEntries = prevEntries.length;
+      const avgPerEntry = totalEntries_count > 0 ? totalCost / totalEntries_count : 0;
+
+      const costByWasteType = {};
+      entries.forEach(e => {
+        costByWasteType[e.waste_type] = (costByWasteType[e.waste_type] || 0) + (e.estimated_cost || 0);
+      });
+      const topWasteType = Object.entries(costByWasteType).sort((a, b) => b[1] - a[1])[0];
+
+      function trendArrow(current, previous) {
+        // For waste: less is good (green), more is bad (red)
+        if (previous === 0 && current === 0) return null;
+        if (previous === 0) return <span className="kpi-trend bad">▲ new</span>;
+        const pct = ((current - previous) / previous * 100).toFixed(0);
+        if (current < previous) {
+          return <span className="kpi-trend good">▼ {Math.abs(pct)}%</span>;
+        } else if (current > previous) {
+          return <span className="kpi-trend bad">▲ {pct}%</span>;
+        }
+        return <span className="kpi-trend" style={{color:'#888'}}>— 0%</span>;
+      }
+
+      // ---- CHARTS ----
+      useEffect(() => {
+        if (loading) return;
+
+        // === Daily $ Loss Stacked Bar ===
+        if (dailyBarRef.current) {
+          if (dailyChartInstance.current) dailyChartInstance.current.destroy();
+
+          let labels, datasets;
+          const wasteTypes = Object.keys(WASTE_TYPES);
+
+          if (mode === 'week') {
+            const { start } = getRange();
+            labels = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            const dayData = {};
+            wasteTypes.forEach(wt => { dayData[wt] = Array(7).fill(0); });
+
+            entries.forEach(e => {
+              const d = new Date(e.entry_date + 'T12:00:00');
+              const idx = d.getDay();
+              if (dayData[e.waste_type]) dayData[e.waste_type][idx] += (e.estimated_cost || 0);
+            });
+
+            datasets = wasteTypes.map(wt => ({
+              label: WASTE_TYPES[wt],
+              data: dayData[wt],
+              backgroundColor: WASTE_TYPE_COLORS[wt],
+              borderRadius: 3
+            }));
+          } else {
+            // Month view: bars per week
+            const weeks = getWeeksOfMonth(monthOffset);
+            labels = weeks.map((w, i) => {
+              const s = w.start.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+              return `Wk ${i + 1}`;
+            });
+            const weekData = {};
+            wasteTypes.forEach(wt => { weekData[wt] = Array(weeks.length).fill(0); });
+
+            entries.forEach(e => {
+              const ed = new Date(e.entry_date + 'T12:00:00');
+              for (let i = 0; i < weeks.length; i++) {
+                if (ed >= weeks[i].start && ed <= weeks[i].end) {
+                  if (weekData[e.waste_type]) weekData[e.waste_type][i] += (e.estimated_cost || 0);
+                  break;
+                }
+              }
+            });
+
+            datasets = wasteTypes.map(wt => ({
+              label: WASTE_TYPES[wt],
+              data: weekData[wt],
+              backgroundColor: WASTE_TYPE_COLORS[wt],
+              borderRadius: 3
+            }));
+          }
+
+          dailyChartInstance.current = new Chart(dailyBarRef.current, {
+            type: 'bar',
+            data: { labels, datasets },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: { position: 'bottom', labels: { boxWidth: 12, padding: 10, font: { size: 11 } } },
+                tooltip: {
+                  callbacks: {
+                    label: (ctx) => `${ctx.dataset.label}: $${ctx.raw.toFixed(2)}`
+                  }
+                }
+              },
+              scales: {
+                x: { stacked: true, grid: { display: false } },
+                y: { stacked: true, ticks: { callback: v => '$' + v } }
+              }
+            }
+          });
+        }
+
+        // === Donut: Waste by Category ===
+        if (donutRef.current) {
+          if (donutChartInstance.current) donutChartInstance.current.destroy();
+
+          const catCosts = {};
+          entries.forEach(e => {
+            const cat = e.preset_item_id ? (presetCategoryMap[e.preset_item_id] || 'other') : 'other';
+            const label = CATEGORIES[cat] || CATEGORIES.other;
+            catCosts[label] = (catCosts[label] || 0) + (e.estimated_cost || 0);
+          });
+
+          const sortedCats = Object.entries(catCosts).sort((a, b) => b[1] - a[1]);
+          const catLabels = sortedCats.map(c => c[0]);
+          const catData = sortedCats.map(c => c[1]);
+          const catColors = sortedCats.map((_, i) => CATEGORY_COLORS[i % CATEGORY_COLORS.length]);
+
+          donutChartInstance.current = new Chart(donutRef.current, {
+            type: 'doughnut',
+            data: {
+              labels: catLabels,
+              datasets: [{
+                data: catData,
+                backgroundColor: catColors,
+                borderWidth: 2,
+                borderColor: '#fff'
+              }]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              cutout: '55%',
+              plugins: {
+                legend: { position: 'bottom', labels: { boxWidth: 12, padding: 8, font: { size: 11 } } },
+                tooltip: {
+                  callbacks: {
+                    label: (ctx) => `${ctx.label}: $${ctx.raw.toFixed(2)}`
+                  }
+                }
+              }
+            }
+          });
+        }
+
+        // === Top 5 Costliest Items ===
+        if (topItemsRef.current) {
+          if (topItemsChartInstance.current) topItemsChartInstance.current.destroy();
+
+          const itemCosts = {};
+          entries.forEach(e => {
+            itemCosts[e.item_name] = (itemCosts[e.item_name] || 0) + (e.estimated_cost || 0);
+          });
+
+          const sorted = Object.entries(itemCosts).sort((a, b) => b[1] - a[1]).slice(0, 5).reverse();
+          const itemLabels = sorted.map(s => s[0]);
+          const itemData = sorted.map(s => s[1]);
+          const oceanGradient = ['#a8dce5', '#12b5c4', '#0e8ca0', '#0d5c72', '#083d4d'];
+
+          topItemsChartInstance.current = new Chart(topItemsRef.current, {
+            type: 'bar',
+            data: {
+              labels: itemLabels,
+              datasets: [{
+                data: itemData,
+                backgroundColor: itemData.map((_, i) => oceanGradient[i % oceanGradient.length]),
+                borderRadius: 4
+              }]
+            },
+            options: {
+              indexAxis: 'y',
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: { display: false },
+                tooltip: { callbacks: { label: ctx => '$' + ctx.raw.toFixed(2) } }
+              },
+              scales: {
+                x: { ticks: { callback: v => '$' + v }, grid: { color: '#f0f0f0' } },
+                y: { grid: { display: false } }
+              }
+            }
+          });
+        }
+
+        // === Waste by Type Horizontal Bar ===
+        if (wasteTypeRef.current) {
+          if (wasteTypeChartInstance.current) wasteTypeChartInstance.current.destroy();
+
+          const wtKeys = Object.keys(WASTE_TYPES).filter(k => costByWasteType[k]);
+          const wtLabels = wtKeys.map(k => WASTE_TYPES[k]);
+          const wtData = wtKeys.map(k => costByWasteType[k] || 0);
+          const wtColors = wtKeys.map(k => WASTE_TYPE_COLORS[k]);
+
+          wasteTypeChartInstance.current = new Chart(wasteTypeRef.current, {
+            type: 'bar',
+            data: {
+              labels: wtLabels,
+              datasets: [{
+                data: wtData,
+                backgroundColor: wtColors,
+                borderRadius: 4
+              }]
+            },
+            options: {
+              indexAxis: 'y',
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: { display: false },
+                tooltip: { callbacks: { label: ctx => '$' + ctx.raw.toFixed(2) } }
+              },
+              scales: {
+                x: { ticks: { callback: v => '$' + v }, grid: { color: '#f0f0f0' } },
+                y: { grid: { display: false } }
+              }
+            }
+          });
+        }
+
+        return () => {
+          if (dailyChartInstance.current) dailyChartInstance.current.destroy();
+          if (donutChartInstance.current) donutChartInstance.current.destroy();
+          if (topItemsChartInstance.current) topItemsChartInstance.current.destroy();
+          if (wasteTypeChartInstance.current) wasteTypeChartInstance.current.destroy();
+        };
+      }, [entries, loading, mode]);
+
+      const navLabel = mode === 'week' ? formatWeekLabel(weekOffset) : formatMonthLabel(monthOffset);
+
+      return (
+        <>
+          <div className="card">
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12 }}>
+              <div className="toggle-pill">
+                <button className={mode === 'week' ? 'active' : ''} onClick={() => setMode('week')}>Week</button>
+                <button className={mode === 'month' ? 'active' : ''} onClick={() => setMode('month')}>Month</button>
+              </div>
+            </div>
+
+            <div className="week-nav">
+              <button onClick={() => mode === 'week' ? setWeekOffset(weekOffset - 1) : setMonthOffset(monthOffset - 1)}>← Previous</button>
+              <span className="week-label">{navLabel}</span>
+              <button
+                onClick={() => mode === 'week' ? setWeekOffset(weekOffset + 1) : setMonthOffset(monthOffset + 1)}
+                disabled={mode === 'week' ? weekOffset >= 0 : monthOffset >= 0}
+              >Next →</button>
+            </div>
+
+            {loading ? (
+              <div style={{ textAlign: 'center', padding: 40, color: '#888' }}>Loading dashboard...</div>
+            ) : (
+              <div className="kpi-row">
+                <div className="kpi-card coral-highlight">
+                  <div className="kpi-value">${totalCost.toFixed(0)}</div>
+                  <div className="kpi-label">Total $ Lost</div>
+                  {trendArrow(totalCost, prevTotalCost)}
+                </div>
+                <div className="kpi-card">
+                  <div className="kpi-value">{totalEntries_count}</div>
+                  <div className="kpi-label">Total Entries</div>
+                  {trendArrow(totalEntries_count, prevTotalEntries)}
+                </div>
+                <div className="kpi-card">
+                  <div className="kpi-value">${avgPerEntry.toFixed(2)}</div>
+                  <div className="kpi-label">Avg $ / Entry</div>
+                </div>
+                <div className="kpi-card">
+                  <div className="kpi-value" style={{ fontSize: 16 }}>{topWasteType ? WASTE_TYPES[topWasteType[0]] : '—'}</div>
+                  <div className="kpi-label">Top Waste Type</div>
+                  {topWasteType && <div style={{ fontSize: 12, color: '#888', marginTop: 2 }}>${topWasteType[1].toFixed(0)}</div>}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {!loading && (
+            <>
+              <div className="chart-card full-width" style={{ marginBottom: 20 }}>
+                <h3>Daily $ Loss by Waste Type</h3>
+                <div className="chart-container tall">
+                  <canvas ref={dailyBarRef}></canvas>
+                </div>
+              </div>
+
+              <div className="chart-grid">
+                <div className="chart-card">
+                  <h3>Waste by Category</h3>
+                  <div className="chart-container">
+                    <canvas ref={donutRef}></canvas>
+                  </div>
+                </div>
+                <div className="chart-card">
+                  <h3>Waste by Type</h3>
+                  <div className="chart-container">
+                    <canvas ref={wasteTypeRef}></canvas>
+                  </div>
+                </div>
+              </div>
+
+              <div className="chart-card full-width" style={{ marginBottom: 20 }}>
+                <h3>Top 5 Costliest Items</h3>
+                <div className="chart-container">
+                  <canvas ref={topItemsRef}></canvas>
+                </div>
+              </div>
+            </>
+          )}
+        </>
+      );
+    }
+
+    // ============================================
+    // HISTORY TAB
+    // ============================================
+    function HistoryTab() {
+      const [mode, setMode] = useState('week');
+      const [weekOffset, setWeekOffset] = useState(0);
+      const [monthOffset, setMonthOffset] = useState(0);
+      const [entries, setEntries] = useState([]);
+      const [prevEntries, setPrevEntries] = useState([]);
+      const [loading, setLoading] = useState(true);
+
+      const offset = mode === 'week' ? weekOffset : monthOffset;
+
+      const getRange = useCallback(() => {
+        return mode === 'week' ? getWeekRange(weekOffset) : getMonthRange(monthOffset);
+      }, [mode, weekOffset, monthOffset]);
+
+      const getPrevRange = useCallback(() => {
+        return mode === 'week' ? getWeekRange(weekOffset - 1) : getMonthRange(monthOffset - 1);
+      }, [mode, weekOffset, monthOffset]);
+
+      useEffect(() => {
+        const load = async () => {
+          setLoading(true);
+          const { start, end } = getRange();
+          const prev = getPrevRange();
+
+          const [curr, prevRes] = await Promise.all([
+            supabase.from('waste_entries').select('*')
+              .gte('entry_date', dateStr(start))
+              .lte('entry_date', dateStr(end))
+              .order('entry_date', { ascending: false }),
+            supabase.from('waste_entries').select('*')
+              .gte('entry_date', dateStr(prev.start))
+              .lte('entry_date', dateStr(prev.end))
+          ]);
+
+          setEntries(curr.data || []);
+          setPrevEntries(prevRes.data || []);
+          setLoading(false);
+        };
+        load();
+      }, [mode, weekOffset, monthOffset]);
+
+      const handleDelete = async (id) => {
+        if (confirm('Delete this entry?')) {
+          await supabase.from('waste_entries').delete().eq('id', id);
+          // Reload
+          const { start, end } = getRange();
+          const { data } = await supabase.from('waste_entries').select('*')
+            .gte('entry_date', dateStr(start))
+            .lte('entry_date', dateStr(end))
+            .order('entry_date', { ascending: false });
+          setEntries(data || []);
+        }
+      };
+
+      const totalCost = entries.reduce((s, e) => s + (e.estimated_cost || 0), 0);
+      const prevTotalCost = prevEntries.reduce((s, e) => s + (e.estimated_cost || 0), 0);
+      const totalCount = entries.length;
+      const prevTotalCount = prevEntries.length;
+
+      const costByType = {};
+      entries.forEach(e => { costByType[e.waste_type] = (costByType[e.waste_type] || 0) + 1; });
+
+      function trendArrow(current, previous) {
+        if (previous === 0 && current === 0) return null;
+        if (previous === 0) return <span className="kpi-trend bad" style={{ fontSize: 11 }}> ▲</span>;
+        if (current < previous) return <span className="kpi-trend good" style={{ fontSize: 11 }}> ▼ {Math.abs(((current - previous) / previous * 100).toFixed(0))}%</span>;
+        if (current > previous) return <span className="kpi-trend bad" style={{ fontSize: 11 }}> ▲ {((current - previous) / previous * 100).toFixed(0)}%</span>;
+        return null;
+      }
+
+      const exportCSV = () => {
+        const { start } = getRange();
+        const headers = ['Date', 'Item', 'Type', 'Quantity', 'Unit', 'Est. Cost', 'Reason', 'Notes', 'Logged By'];
+        const rows = entries.map(e => [
+          e.entry_date,
+          e.item_name,
+          WASTE_TYPES[e.waste_type],
+          e.quantity,
+          e.unit,
+          `$${(e.estimated_cost || 0).toFixed(2)}`,
+          e.reason || '',
+          e.notes || '',
+          e.logged_by || ''
+        ]);
+        const csv = [headers, ...rows].map(r => r.map(c => `"${c}"`).join(',')).join('\n');
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `waste-report-${dateStr(start)}.csv`;
+        a.click();
+      };
+
+      const navLabel = mode === 'week' ? formatWeekLabel(weekOffset) : formatMonthLabel(monthOffset);
+
+      // For month view: group by week
+      const entriesByWeek = useMemo(() => {
+        if (mode !== 'month') return null;
+        const weeks = getWeeksOfMonth(monthOffset);
+        return weeks.map((w, i) => {
+          const weekEntries = entries.filter(e => {
+            const ed = new Date(e.entry_date + 'T12:00:00');
+            return ed >= w.start && ed <= w.end;
+          });
+          const weekTotal = weekEntries.reduce((s, e) => s + (e.estimated_cost || 0), 0);
+          return { ...w, entries: weekEntries, total: weekTotal, index: i + 1 };
+        }).filter(w => w.entries.length > 0);
+      }, [entries, mode, monthOffset]);
+
+      const renderEntryRow = (entry) => (
+        <tr key={entry.id}>
+          <td>{new Date(entry.entry_date + 'T12:00:00').toLocaleDateString('en-US', { weekday: 'short', month: 'numeric', day: 'numeric' })}</td>
+          <td><strong>{entry.item_name}</strong></td>
+          <td>
+            <span className={`waste-type-badge ${entry.waste_type}`}>
+              {WASTE_TYPES[entry.waste_type]}
+            </span>
+          </td>
+          <td>{entry.quantity} {entry.unit}</td>
+          <td>${(entry.estimated_cost || 0).toFixed(2)}</td>
+          <td>
+            <button className="delete-btn" onClick={() => handleDelete(entry.id)}>🗑</button>
+          </td>
+        </tr>
+      );
+
+      return (
+        <>
+          <div className="card">
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12, marginBottom: 12 }}>
+              <div className="toggle-pill">
+                <button className={mode === 'week' ? 'active' : ''} onClick={() => setMode('week')}>Week</button>
+                <button className={mode === 'month' ? 'active' : ''} onClick={() => setMode('month')}>Month</button>
+              </div>
+              <button className="header-btn btn-export" onClick={exportCSV} style={{ fontSize: 13 }}>📥 Export CSV</button>
+            </div>
+
+            <div className="week-nav">
+              <button onClick={() => mode === 'week' ? setWeekOffset(weekOffset - 1) : setMonthOffset(monthOffset - 1)}>← Previous</button>
+              <span className="week-label">{navLabel}</span>
+              <button
+                onClick={() => mode === 'week' ? setWeekOffset(weekOffset + 1) : setMonthOffset(monthOffset + 1)}
+                disabled={mode === 'week' ? weekOffset >= 0 : monthOffset >= 0}
+              >Next →</button>
+            </div>
+
+            <div className="stats-row">
+              <div className="stat-card">
+                <div className="stat-value">{totalCount}{trendArrow(totalCount, prevTotalCount)}</div>
+                <div className="stat-label">Entries</div>
+              </div>
+              <div className="stat-card highlight">
+                <div className="stat-value">${totalCost.toFixed(0)}</div>
+                <div className="stat-label">Est. Loss {trendArrow(totalCost, prevTotalCost)}</div>
+              </div>
+              <div className="stat-card">
+                <div className="stat-value">{costByType.cooked_unsold || 0}</div>
+                <div className="stat-label">Cooked/Unsold</div>
+              </div>
+              <div className="stat-card">
+                <div className="stat-value">{costByType.expired || 0}</div>
+                <div className="stat-label">Expired</div>
+              </div>
+            </div>
+          </div>
+
+          <div className="card">
+            <h2>Entries</h2>
+
+            {loading ? (
+              <div style={{ textAlign: 'center', padding: 40, color: '#888' }}>Loading...</div>
+            ) : entries.length === 0 ? (
+              <div className="empty-state">
+                <div className="empty-state-icon">🎉</div>
+                <p>No waste logged this period!</p>
+              </div>
+            ) : mode === 'week' ? (
+              <div className="table-wrap">
+                <table className="entries-table">
+                  <thead>
+                    <tr>
+                      <th>Date</th>
+                      <th>Item</th>
+                      <th>Type</th>
+                      <th>Qty</th>
+                      <th>Est. $</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {entries.map(renderEntryRow)}
+                  </tbody>
+                </table>
+              </div>
+            ) : (
+              <div className="table-wrap">
+                <table className="entries-table">
+                  <thead>
+                    <tr>
+                      <th>Date</th>
+                      <th>Item</th>
+                      <th>Type</th>
+                      <th>Qty</th>
+                      <th>Est. $</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {entriesByWeek && entriesByWeek.map(week => (
+                      <React.Fragment key={week.index}>
+                        <tr className="week-subtotal">
+                          <td colSpan="4">
+                            Week {week.index} — {week.start.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} to {week.end.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                          </td>
+                          <td>${week.total.toFixed(2)}</td>
+                          <td>{week.entries.length} entries</td>
+                        </tr>
+                        {week.entries.map(renderEntryRow)}
+                      </React.Fragment>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+        </>
+      );
+    }
+
+    // ============================================
+    // ITEM COSTS TAB (NEW)
+    // ============================================
+    function ItemCostsTab({ presets, onPresetsUpdated }) {
+      const [search, setSearch] = useState('');
+      const [editingId, setEditingId] = useState(null);
+      const [editValue, setEditValue] = useState('');
+
+      const filtered = useMemo(() => {
+        if (!search.trim()) return presets;
+        const q = search.toLowerCase();
+        return presets.filter(p => p.name.toLowerCase().includes(q) || (CATEGORIES[p.category] || '').toLowerCase().includes(q));
+      }, [presets, search]);
+
+      const groupedByCategory = useMemo(() => {
+        const grouped = {};
+        filtered.forEach(p => {
+          if (!grouped[p.category]) grouped[p.category] = [];
+          grouped[p.category].push(p);
+        });
+        return grouped;
+      }, [filtered]);
+
+      const handleEdit = (item) => {
+        setEditingId(item.id);
+        setEditValue(String(item.estimated_unit_cost));
+      };
+
+      const handleSave = async (item) => {
+        const newCost = parseFloat(editValue);
+        if (isNaN(newCost) || newCost < 0) return;
+
+        await supabase.from('preset_items').update({
+          estimated_unit_cost: newCost,
+          cost_updated_at: new Date().toISOString()
+        }).eq('id', item.id);
+
+        setEditingId(null);
+        onPresetsUpdated();
+      };
+
+      const handleCancel = () => {
+        setEditingId(null);
+      };
+
+      function updatedBadge(dateString) {
+        const days = daysSince(dateString);
+        if (days === null) return <span className="cost-item-updated stale">Not yet updated</span>;
+        if (days === 0) return <span className="cost-item-updated">Updated today</span>;
+        if (days === 1) return <span className="cost-item-updated">Updated yesterday</span>;
+        if (days <= 14) return <span className="cost-item-updated">Updated {days}d ago</span>;
+        return <span className="cost-item-updated stale">Updated {days}d ago</span>;
+      }
+
+      return (
+        <div className="card">
+          <h2>Item Costs</h2>
+
+          <input
+            className="item-costs-search"
+            type="text"
+            placeholder="Search items..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+
+          {CATEGORY_ORDER.filter(cat => groupedByCategory[cat]?.length > 0).map(cat => (
+            <div className="category-section" key={cat}>
+              <div className="category-label">{CATEGORIES[cat]}</div>
+              {groupedByCategory[cat].map(item => (
+                <div className="cost-item-row" key={item.id}>
+                  <span className="cost-item-name">{CATEGORY_EMOJIS[item.category] || '📝'} {item.name}</span>
+                  {editingId === item.id ? (
+                    <>
+                      <span style={{ color: '#888', fontSize: 13 }}>$</span>
+                      <input
+                        className="cost-inline-input"
+                        type="number"
+                        step="0.01"
+                        min="0"
+                        value={editValue}
+                        onChange={(e) => setEditValue(e.target.value)}
+                        autoFocus
+                        onKeyDown={(e) => { if (e.key === 'Enter') handleSave(item); if (e.key === 'Escape') handleCancel(); }}
+                      />
+                      <span className="cost-item-unit">/ {item.default_unit}</span>
+                      <button className="cost-save-btn" onClick={() => handleSave(item)}>Save</button>
+                      <button className="cost-cancel-btn" onClick={handleCancel}>Cancel</button>
+                    </>
+                  ) : (
+                    <>
+                      <span className="cost-item-cost">${item.estimated_unit_cost.toFixed(2)}</span>
+                      <span className="cost-item-unit">/ {item.default_unit}</span>
+                      {updatedBadge(item.cost_updated_at)}
+                      <button className="cost-edit-btn" onClick={() => handleEdit(item)}>Edit</button>
+                    </>
+                  )}
+                </div>
+              ))}
+            </div>
+          ))}
+
+          <div className="tip-box">
+            Tip: Update costs from your latest invoices for accurate waste reporting.
+          </div>
+        </div>
+      );
+    }
+
+    // ============================================
+    // MAIN DASHBOARD SHELL
+    // ============================================
+    function MainApp({ onLogout }) {
+      const [activeTab, setActiveTab] = useState('log');
+      const [presets, setPresets] = useState([]);
+      const [toast, setToast] = useState('');
+
+      useEffect(() => {
+        loadPresets();
+      }, []);
+
+      const loadPresets = async () => {
+        const { data } = await supabase
+          .from('preset_items')
+          .select('*')
+          .eq('active', true)
+          .order('category')
+          .order('sort_order');
+        if (data) setPresets(data);
+      };
+
+      const showToast = (msg) => {
+        setToast(msg);
+        setTimeout(() => setToast(''), 3000);
+      };
+
+      const handleEntryLogged = () => {
+        showToast('✓ Entry logged!');
+      };
+
+      return (
+        <div className="app-container">
+          <div className="header">
+            <h1>🐢 Tiki Turtle Waste Tracker</h1>
+            <div className="header-actions">
+              <button className="header-btn btn-logout" onClick={onLogout}>Logout</button>
+            </div>
+          </div>
+
+          <div className="tabs">
+            <button className={`tab ${activeTab === 'log' ? 'active' : ''}`} onClick={() => setActiveTab('log')}>
+              + Log Waste
+            </button>
+            <button className={`tab ${activeTab === 'dashboard' ? 'active' : ''}`} onClick={() => setActiveTab('dashboard')}>
+              📊 Dashboard
+            </button>
+            <button className={`tab ${activeTab === 'history' ? 'active' : ''}`} onClick={() => setActiveTab('history')}>
+              📋 History
+            </button>
+            <button className={`tab ${activeTab === 'costs' ? 'active' : ''}`} onClick={() => setActiveTab('costs')}>
+              💰 Item Costs
+            </button>
+          </div>
+
+          {activeTab === 'log' && (
+            <LogWasteTab presets={presets} onEntryLogged={handleEntryLogged} />
+          )}
+
+          {activeTab === 'dashboard' && (
+            <DashboardTab presets={presets} />
+          )}
+
+          {activeTab === 'history' && (
+            <HistoryTab />
+          )}
+
+          {activeTab === 'costs' && (
+            <ItemCostsTab presets={presets} onPresetsUpdated={loadPresets} />
+          )}
+
+          {toast && <div className="toast">{toast}</div>}
+        </div>
+      );
+    }
+
+    // ============================================
+    // APP ROOT
+    // ============================================
+    function App() {
+      const [isLoggedIn, setIsLoggedIn] = useState(false);
+      const [loading, setLoading] = useState(true);
+
+      useEffect(() => {
+        const auth = sessionStorage.getItem('waste_tracker_auth');
+        setIsLoggedIn(auth === 'true');
+        setLoading(false);
+      }, []);
+
+      const handleLogout = () => {
+        sessionStorage.removeItem('waste_tracker_auth');
+        setIsLoggedIn(false);
+      };
+
+      const handleLogin = () => {
+        setIsLoggedIn(true);
+      };
+
+      if (loading) {
+        return <div className="loading">Loading...</div>;
+      }
+
+      if (!isLoggedIn) {
+        return <Login onLogin={handleLogin} />;
+      }
+
+      return <MainApp onLogout={handleLogout} />;
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>
