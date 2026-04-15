@@ -1157,17 +1157,58 @@ function App({ onLogout }) {
     })();
   }, []);
 
+  /* ── Process sales rows into weeks + aggregated items ── */
+  const processSalesRows = useCallback((rows) => {
+    /* Sort weeks chronologically by parsing "Mon DD" labels */
+    const MONTHS = {Jan:0,Feb:1,Mar:2,Apr:3,May:4,Jun:5,Jul:6,Aug:7,Sep:8,Oct:9,Nov:10,Dec:11};
+    const parseLabel = (l) => {
+      const parts = (l||'').split(' ');
+      const m = MONTHS[parts[0]] ?? 0;
+      const d = parseInt(parts[1]) || 1;
+      return m * 100 + d;
+    };
+    const weeks = rows
+      .map(r => ({ label: r.week_label, gross: r.gross, net: r.net }))
+      .sort((a, b) => parseLabel(a.label) - parseLabel(b.label));
+
+    /* Aggregate item-level data across all weeks */
+    const itemMap = {};
+    const weekLabels = weeks.map(w => w.label);
+    for (const row of rows) {
+      const rowItems = row.items || [];
+      for (const it of rowItems) {
+        const name = it.n || it.name;
+        if (!name) continue;
+        if (!itemMap[name]) {
+          itemMap[name] = { name, cat: it.c || it.cat || 'Other', sold: 0, net: 0, w: [] };
+        }
+        itemMap[name].sold += (it.s || it.sold || 0);
+        itemMap[name].net += (it.g || it.gross || it.net || 0);
+      }
+    }
+    /* Build weekly sold arrays for trend bars */
+    for (const row of rows) {
+      const rowItemNames = new Set((row.items||[]).map(i => i.n || i.name));
+      for (const name of Object.keys(itemMap)) {
+        const found = (row.items||[]).find(i => (i.n || i.name) === name);
+        itemMap[name].w.push(found ? (found.s || found.sold || 0) : 0);
+      }
+    }
+    const items = Object.values(itemMap).filter(i => i.sold >= 3).sort((a, b) => b.net - a.net);
+
+    /* Fall back to INITIAL_SALES.items if no item-level data in DB */
+    return { weeks, items: items.length > 0 ? items : INITIAL_SALES.items };
+  }, []);
+
   /* ── Load sales on mount ────────────────────────── */
   useEffect(() => {
     (async () => {
       const rows = await loadSales();
       if (rows.length > 0) {
-        const weeks = rows.map(r => ({ label: r.week_label, gross: r.gross, net: r.net }));
-        // Merge item data from INITIAL_SALES since DB might not have item-level detail
-        setSalesData({ weeks, items: INITIAL_SALES.items });
+        setSalesData(processSalesRows(rows));
       }
     })();
-  }, []);
+  }, [processSalesRows]);
 
   /* ── Poll for remote changes ────────────────────── */
   useEffect(() => {
@@ -1298,10 +1339,9 @@ function App({ onLogout }) {
   const reloadSales = useCallback(async () => {
     const rows = await loadSales();
     if (rows.length > 0) {
-      const weeks = rows.map(r => ({ label: r.week_label, gross: r.gross, net: r.net }));
-      setSalesData(prev => ({ ...prev, weeks }));
+      setSalesData(processSalesRows(rows));
     }
-  }, []);
+  }, [processSalesRows]);
 
   /* ── Count ordered items for badge ──────────────── */
   const orderedCount = Object.values(quantities).filter(v => v > 0).length + customItems.length;
