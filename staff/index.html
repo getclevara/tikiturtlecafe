@@ -1,0 +1,1216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<title>Tiki Turtle Cafe - Kitchen Ops</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#070d18;--navy:#0c1628;--navy-l:#12203a;--navy-m:#1a2d4a;
+  --gold:#d4a843;--gold-l:#e8c36a;--teal:#1a8a7d;--teal-l:#25b5a4;
+  --coral:#e85d4a;--white:#eee8dc;--gray:#6b7a8d;--gray-l:#8a97a8;
+  --border:#1e3050;--card:#0f1a2e;
+}
+html,body,#root{height:100%;width:100%;overflow:hidden}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--white);-webkit-font-smoothing:antialiased}
+
+/* LOGIN */
+.login-wrap{display:flex;align-items:center;justify-content:center;height:100vh;background:var(--bg);padding:20px}
+.login-box{background:var(--navy);border:1px solid var(--border);border-radius:16px;padding:40px 32px;width:100%;max-width:360px;text-align:center}
+.login-emoji{font-size:48px;margin-bottom:12px}
+.login-title{font-size:22px;font-weight:700;color:var(--gold);letter-spacing:1px;margin-bottom:4px}
+.login-sub{font-size:13px;color:var(--gray-l);margin-bottom:28px}
+.login-input{width:100%;padding:14px 16px;background:var(--navy-l);border:1px solid var(--border);border-radius:10px;color:var(--white);font-size:20px;text-align:center;letter-spacing:12px;outline:none;font-family:'DM Sans',sans-serif;margin-bottom:16px}
+.login-input::placeholder{letter-spacing:4px;font-size:14px;color:var(--gray)}
+.login-input:focus{border-color:var(--gold)}
+.login-btn{width:100%;padding:14px;background:var(--gold);color:var(--bg);font-weight:700;font-size:15px;border:none;border-radius:10px;cursor:pointer;font-family:'DM Sans',sans-serif}
+.login-btn:active{opacity:0.85}
+.login-err{color:var(--coral);font-size:13px;margin-top:12px}
+
+/* APP SHELL */
+.app{display:flex;flex-direction:column;height:100vh;overflow:hidden}
+.header{background:var(--navy);border-bottom:1px solid var(--border);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.header-left{display:flex;align-items:center;gap:10px}
+.header-emoji{font-size:28px}
+.header-title{font-size:16px;font-weight:700;color:var(--gold);line-height:1.1}
+.header-sub{font-size:11px;color:var(--gray-l);display:flex;align-items:center;gap:6px}
+.sync-dot{width:7px;height:7px;border-radius:50%;display:inline-block}
+.sync-ok{background:#10b981}
+.sync-err{background:var(--coral)}
+.sync-load{background:var(--gold);animation:pulse 1s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+.logout-btn{background:var(--navy-l);border:1px solid var(--border);color:var(--gray-l);padding:6px 14px;border-radius:8px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif}
+.logout-btn:active{background:var(--navy-m)}
+
+/* TABS */
+.tab-bar{display:flex;background:var(--navy);border-bottom:1px solid var(--border);flex-shrink:0}
+.tab{flex:1;padding:12px 8px;text-align:center;font-size:13px;font-weight:600;color:var(--gray);cursor:pointer;border-bottom:2px solid transparent;transition:all .2s}
+.tab.active{color:var(--gold);border-bottom-color:var(--gold)}
+.tab .badge{display:inline-block;background:var(--gold);color:var(--bg);font-size:10px;font-weight:700;padding:1px 6px;border-radius:10px;margin-left:4px;vertical-align:middle}
+
+/* CONTENT */
+.content{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.content::-webkit-scrollbar{width:6px}
+.content::-webkit-scrollbar-thumb{background:var(--navy-m);border-radius:3px}
+.pad{padding:12px 14px 100px}
+
+/* SPECIALS */
+.specials-toggle{display:flex;gap:8px;margin-bottom:12px}
+.spec-btn{flex:1;padding:10px;border-radius:10px;border:1px solid var(--border);background:var(--navy);color:var(--gray-l);font-size:13px;font-weight:600;cursor:pointer;text-align:center;font-family:'DM Sans',sans-serif}
+.spec-btn.active{background:var(--navy-m);border-color:var(--gold);color:var(--gold)}
+.specials-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:6px;margin-bottom:16px}
+.spec-card{background:var(--navy-l);border:1px solid var(--border);border-radius:8px;padding:8px 10px;font-size:12px}
+.spec-day{font-weight:700;color:var(--gold);font-size:11px;text-transform:uppercase}
+.spec-name{color:var(--white);margin-top:2px;line-height:1.3}
+.spec-price{color:var(--teal-l);font-weight:600;font-size:11px;margin-top:2px}
+
+/* SEARCH */
+.search-wrap{position:relative;margin-bottom:14px}
+.search-input{width:100%;padding:12px 14px 12px 38px;background:var(--navy-l);border:1px solid var(--border);border-radius:10px;color:var(--white);font-size:14px;outline:none;font-family:'DM Sans',sans-serif}
+.search-input:focus{border-color:var(--gold)}
+.search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--gray);font-size:16px}
+.search-clear{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--gray);cursor:pointer;font-size:18px;padding:4px}
+
+/* CATEGORY */
+.cat-header{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:var(--navy-l);border:1px solid var(--border);border-radius:10px;margin-bottom:6px;cursor:pointer;user-select:none}
+.cat-title{font-size:14px;font-weight:700;color:var(--white)}
+.cat-count{font-size:11px;color:var(--gray-l);margin-left:8px}
+.cat-count .hl{color:var(--gold);font-weight:700}
+.cat-chevron{color:var(--gray);font-size:14px;transition:transform .2s}
+.cat-chevron.open{transform:rotate(90deg)}
+.cat-items{margin-bottom:12px}
+
+/* ITEM ROW */
+.item-row{display:flex;align-items:center;padding:8px 12px;border-bottom:1px solid var(--border);gap:8px}
+.item-row.has-qty{background:rgba(212,168,67,0.06)}
+.item-info{flex:1;min-width:0}
+.item-name{font-size:13px;color:var(--white);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.item-note{font-size:11px;color:var(--gray);margin-top:1px}
+.item-unit{font-size:11px;color:var(--gray-l);font-weight:600;width:28px;text-align:center;flex-shrink:0}
+.qty-ctrl{display:flex;align-items:center;gap:4px;flex-shrink:0}
+.qty-btn{width:36px;height:36px;border-radius:8px;border:1px solid var(--border);background:var(--navy-l);color:var(--white);font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:'DM Sans',sans-serif;touch-action:manipulation}
+.qty-btn:active{background:var(--navy-m)}
+.qty-btn.minus{color:var(--coral)}
+.qty-btn.plus{color:var(--teal-l)}
+.qty-input{width:44px;text-align:center;padding:6px 2px;background:var(--navy);border:1px solid var(--border);border-radius:6px;color:var(--white);font-size:14px;font-weight:600;font-family:'DM Sans',sans-serif;outline:none}
+.qty-input:focus{border-color:var(--gold)}
+
+/* CUSTOM ITEMS */
+.custom-section{margin-top:20px;padding:14px;background:var(--navy-l);border:1px solid var(--border);border-radius:12px}
+.custom-title{font-size:14px;font-weight:700;color:var(--gold);margin-bottom:10px}
+.custom-add{display:flex;gap:6px;margin-bottom:10px}
+.custom-add input{flex:1;padding:10px;background:var(--navy);border:1px solid var(--border);border-radius:8px;color:var(--white);font-size:13px;outline:none;font-family:'DM Sans',sans-serif}
+.custom-add input:focus{border-color:var(--gold)}
+.custom-add button{padding:10px 16px;background:var(--gold);color:var(--bg);font-weight:700;font-size:13px;border:none;border-radius:8px;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap}
+.custom-item{display:flex;align-items:center;justify-content:space-between;padding:8px 10px;background:var(--navy);border-radius:8px;margin-bottom:4px}
+.custom-item-info{font-size:13px;color:var(--white)}
+.custom-item-info span{color:var(--gray-l);margin-left:6px;font-size:11px}
+.custom-rm{background:none;border:none;color:var(--coral);cursor:pointer;font-size:18px;padding:4px}
+
+/* SUMMARY */
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px}
+.stat-card{background:var(--navy-l);border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center}
+.stat-val{font-size:22px;font-weight:700;color:var(--gold)}
+.stat-label{font-size:11px;color:var(--gray-l);margin-top:2px}
+.action-row{display:flex;gap:8px;margin-bottom:16px}
+.action-btn{flex:1;padding:12px;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;text-align:center;border:none;font-family:'DM Sans',sans-serif}
+.action-btn.print{background:var(--teal);color:var(--white)}
+.action-btn.clear{background:var(--navy-l);border:1px solid var(--coral);color:var(--coral)}
+.summary-cat{margin-bottom:16px}
+.summary-cat-title{font-size:14px;font-weight:700;color:var(--gold);margin-bottom:6px;padding-bottom:4px;border-bottom:1px solid var(--border)}
+.summary-table{width:100%;border-collapse:collapse}
+.summary-table th{text-align:left;font-size:11px;color:var(--gray-l);font-weight:600;padding:4px 8px;border-bottom:1px solid var(--border)}
+.summary-table td{font-size:13px;padding:6px 8px;border-bottom:1px solid rgba(30,48,80,0.5)}
+.summary-table td.qty{color:var(--gold);font-weight:700;text-align:center;width:50px}
+.summary-table td.unit{color:var(--gray-l);text-align:center;width:40px}
+.summary-table td.note{color:var(--gray);font-size:11px}
+.summary-custom{margin-top:16px;padding:14px;background:var(--navy-l);border:1px solid var(--border);border-radius:12px}
+
+/* SALES DASHBOARD */
+.upload-bar{display:flex;gap:8px;align-items:center;margin-bottom:14px;flex-wrap:wrap}
+.upload-bar label{font-size:13px;color:var(--gray-l);font-weight:600}
+.upload-bar input[type=file]{font-size:12px;color:var(--gray-l)}
+.upload-msg{font-size:12px;padding:6px 10px;border-radius:6px;margin-bottom:10px}
+.upload-msg.ok{background:rgba(26,138,125,0.15);color:var(--teal-l)}
+.upload-msg.err{background:rgba(232,93,74,0.15);color:var(--coral)}
+.chart-wrap{background:var(--navy-l);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:14px}
+.chart-title{font-size:13px;font-weight:700;color:var(--white);margin-bottom:10px}
+.pie-legend{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;justify-content:center}
+.pie-legend-item{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--gray-l)}
+.pie-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+
+/* RANKINGS */
+.rank-table{width:100%;border-collapse:collapse}
+.rank-table th{text-align:left;font-size:11px;color:var(--gray-l);font-weight:600;padding:6px 6px;border-bottom:1px solid var(--border);white-space:nowrap}
+.rank-table td{font-size:12px;padding:6px 6px;border-bottom:1px solid rgba(30,48,80,0.4);vertical-align:middle}
+.rank-num{color:var(--gold);font-weight:700;width:24px}
+.rank-name{max-width:120px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rank-cat{color:var(--gray-l);font-size:11px}
+.mini-bars{display:flex;align-items:flex-end;gap:1px;height:18px}
+.mini-bar{width:6px;background:var(--gold);border-radius:1px;min-height:2px;opacity:0.7}
+
+/* TIMESTAMP */
+.timestamp{text-align:center;padding:8px;font-size:11px;color:var(--gray);flex-shrink:0;border-top:1px solid var(--border);background:var(--navy)}
+
+/* EMPTY STATE */
+.empty-state{text-align:center;padding:40px 20px;color:var(--gray)}
+.empty-state .em{font-size:36px;margin-bottom:10px}
+.empty-state p{font-size:14px}
+
+@media(max-width:400px){
+  .specials-grid{grid-template-columns:1fr 1fr}
+  .stats-row{grid-template-columns:1fr 1fr 1fr}
+  .stat-val{font-size:18px}
+}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+/* ═══════════════════════════════════════════════════════
+   TIKI TURTLE CAFE — Kitchen Operations
+   Single-file React app with Supabase backend
+   ═══════════════════════════════════════════════════════ */
+
+const SUPABASE_URL = 'https://dstynyumakryhnxobctw.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRzdHlueXVtYWtyeWhueG9iY3R3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyODQyOTMsImV4cCI6MjA5MDg2MDI5M30.0K_GfYNjnPrwOgjIZpU8oH4dfIQv34tP5JQU6aK8K3Y';
+
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+const { useState, useEffect, useRef, useCallback, useMemo } = React;
+
+const CC = ["#d4a843","#1a8a7d","#e85d4a","#5b8def","#a855f7","#f59e0b","#10b981"];
+
+/* ── PIN ──────────────────────────────────────────── */
+const CORRECT_PIN = '9901';
+const AUTH_KEY = 'kitchen_ops_auth';
+
+/* ── MASTER ITEMS ─────────────────────────────────── */
+const MASTER_ITEMS = [
+  {name:"Cabbage, Green (head)",unit:"LB",cat:"Produce"},
+  {name:"Cabbage, Red",unit:"EA",cat:"Produce"},
+  {name:"Carrots, Jumbo 5#",unit:"BG",cat:"Produce"},
+  {name:"Cucumber",unit:"LB",cat:"Produce"},
+  {name:"Tomatoes, Loose",unit:"CS",cat:"Produce",note:"25# case"},
+  {name:"Onion, Red",unit:"LB",cat:"Produce"},
+  {name:"Onion, Yellow",unit:"BG",cat:"Produce",note:"25# bag"},
+  {name:"Sprouts, Clover",unit:"BG",cat:"Produce",note:"2.5# bag"},
+  {name:"Bell Pepper, Green",unit:"LB",cat:"Produce"},
+  {name:"Bell Pepper, Yellow",unit:"LB",cat:"Produce"},
+  {name:"Bell Pepper, Red",unit:"LB",cat:"Produce"},
+  {name:"Peeled Garlic",unit:"BG",cat:"Produce"},
+  {name:"Fresh Apples",unit:"BG",cat:"Produce"},
+  {name:"Bananas",unit:"BG",cat:"Produce"},
+  {name:"Pineapple",unit:"EA",cat:"Produce"},
+  {name:"Celery",unit:"EA",cat:"Produce"},
+  {name:"Lettuce, Green Leaf",unit:"EA",cat:"Produce"},
+  {name:"Lemons",unit:"EA",cat:"Produce"},
+  {name:"Limes",unit:"EA",cat:"Produce"},
+  {name:"Cilantro",unit:"BN",cat:"Produce"},
+  {name:"Jalapeno",unit:"LB",cat:"Produce"},
+  {name:"Boneless Shoulder Pork",unit:"CS",cat:"Meat",note:"~60# case"},
+  {name:"Chicken Thighs (bone-in tray)",unit:"CS",cat:"Meat",note:"~55 LB"},
+  {name:"BNLS/SKNLS Chicken Thighs",unit:"CS",cat:"Meat",note:"4/10 LB"},
+  {name:"Applewood Bacon",unit:"CS",cat:"Meat",note:"1/15 LB"},
+  {name:"Ground Beef",unit:"LB",cat:"Meat"},
+  {name:"Hot Dogs",unit:"EA",cat:"Meat"},
+  {name:"Spam",unit:"EA",cat:"Meat"},
+  {name:"Canned Chicken",unit:"CS",cat:"Meat"},
+  {name:"Ham (deli)",unit:"LB",cat:"Meat"},
+  {name:"Turkey (deli)",unit:"LB",cat:"Meat"},
+  {name:"Chunk Light Tuna Pouch",unit:"CS",cat:"Seafood",note:"6/43 OZ"},
+  {name:"Albacore Tuna",unit:"EA",cat:"Seafood"},
+  {name:"Mahi Portion 2-4oz",unit:"CS",cat:"Seafood",note:"1/10#"},
+  {name:"Japan White Bread",unit:"EA",cat:"Bread"},
+  {name:"Japan Wheat Bread",unit:"EA",cat:"Bread"},
+  {name:"Spinach Herb Wraps",unit:"CS",cat:"Bread",note:"6/12 CT"},
+  {name:"Sourdough Bread",unit:"EA",cat:"Bread"},
+  {name:"Sweet Bread",unit:"EA",cat:"Bread"},
+  {name:"Hot Dog Buns",unit:"CS",cat:"Bread"},
+  {name:"Swiss Cheese (sliced)",unit:"EA",cat:"Dairy"},
+  {name:"Mayonnaise",unit:"EA",cat:"Dairy"},
+  {name:"Almond Milk (unsweetened)",unit:"CS",cat:"Dairy"},
+  {name:"Buttermilk",unit:"EA",cat:"Dairy"},
+  {name:"Sour Cream",unit:"EA",cat:"Dairy"},
+  {name:"Basil Pesto (Kirkland)",unit:"EA",cat:"Condiments"},
+  {name:"Italian Dressing",unit:"EA",cat:"Condiments"},
+  {name:"Dijon Mustard",unit:"EA",cat:"Condiments"},
+  {name:"Apple Cider Vinegar",unit:"EA",cat:"Condiments"},
+  {name:"Soy Sauce",unit:"EA",cat:"Condiments"},
+  {name:"Honey",unit:"EA",cat:"Condiments"},
+  {name:"Artichoke Hearts",unit:"EA",cat:"Condiments"},
+  {name:"Sundried Tomatoes",unit:"EA",cat:"Condiments"},
+  {name:"Condiment Picnic Pack",unit:"EA",cat:"Condiments"},
+  {name:"Canned Pinto Beans",unit:"EA",cat:"Dry Goods"},
+  {name:"Pecan Halves",unit:"EA",cat:"Dry Goods"},
+  {name:"Mac Nuts",unit:"EA",cat:"Dry Goods"},
+  {name:"Sushi Rice",unit:"LB",cat:"Dry Goods"},
+  {name:"Nori Sheets",unit:"PK",cat:"Dry Goods"},
+  {name:"Rotini Pasta",unit:"EA",cat:"Dry Goods"},
+  {name:"Sourdough Croutons",unit:"EA",cat:"Dry Goods"},
+  {name:"Olives, Sliced",unit:"EA",cat:"Dry Goods"},
+  {name:"Mango, Frozen",unit:"BG",cat:"Frozen"},
+  {name:"Pineapple, Frozen",unit:"BG",cat:"Frozen"},
+  {name:"Strawberries, Frozen",unit:"BG",cat:"Frozen"},
+  {name:"Variety Pack Chips 54ct",unit:"EA",cat:"Snacks"},
+  {name:"Hawaiian Brand Chips (box)",unit:"EA",cat:"Snacks"},
+  {name:"Orange Juice, Gallon",unit:"EA",cat:"Beverages"},
+  {name:"Mango Nectar",unit:"EA",cat:"Beverages"},
+  {name:"PINEAPPLE Dole Soft Serve",unit:"CS",cat:"Dole",note:"4/4.4#"},
+  {name:"VANILLA Frostline",unit:"CS",cat:"Dole",note:"6/6#"},
+  {name:"STRAWBERRY Dole",unit:"CS",cat:"Dole",note:"4/4.4#"},
+  {name:"MANGO Dole",unit:"CS",cat:"Dole",note:"4/4.5#"},
+  {name:"CHOCOLATE Frostline",unit:"CS",cat:"Dole",note:"6/6#"},
+  {name:"WATERMELON Dole",unit:"CS",cat:"Dole",note:"4/4#"},
+  {name:"ORANGE Dole",unit:"CS",cat:"Dole",note:"4/4#"},
+  {name:"PEACH Dole",unit:"CS",cat:"Dole",note:"4/4#"},
+  {name:"CHERRY Dole",unit:"CS",cat:"Dole",note:"4/4#"},
+  {name:"Honeydew Powder",unit:"CS",cat:"Dole",note:"10/2.2#"},
+  {name:'8" White 3-Comp Container',unit:"CS",cat:"Containers",note:"150/CS"},
+  {name:'8x8" Clear Container',unit:"CS",cat:"Containers",note:"2/125"},
+  {name:'9x6" White Hoagie Container',unit:"CS",cat:"Containers",note:"4/50"},
+  {name:'5x5" Clear Container',unit:"CS",cat:"Containers",note:"4/125"},
+  {name:'6" Waffle Cone',unit:"CS",cat:"Cups/Cones",note:"12/18"},
+  {name:"9oz Cup",unit:"CS",cat:"Cups/Cones",note:"20/50"},
+  {name:"Dome Lid 9oz",unit:"CS",cat:"Cups/Cones"},
+  {name:"16oz Cup",unit:"CS",cat:"Cups/Cones",note:"20/50"},
+  {name:"Flat Lid 12-24oz",unit:"CS",cat:"Cups/Cones"},
+  {name:"2oz Portion Cup",unit:"CS",cat:"Cups/Cones"},
+  {name:"Portion Cup Lid",unit:"CS",cat:"Cups/Cones"},
+  {name:"Cup Jacket Kraft",unit:"CS",cat:"Cups/Cones",note:"40/2"},
+  {name:'7" White Forks',unit:"CS",cat:"Supplies",note:"10/100"},
+  {name:'6" White Spoons',unit:"CS",cat:"Supplies",note:"10/100"},
+  {name:'3.5" Wooden Spoon 100pk',unit:"EA",cat:"Supplies"},
+  {name:"Napkins 2-PLY Interfold",unit:"CS",cat:"Supplies",note:"24/250"},
+  {name:"Food Tray 1/4#",unit:"CS",cat:"Supplies",note:"4/250"},
+  {name:"Gloves Nitrile BLK XL",unit:"CS",cat:"Supplies",note:"1000ct"},
+  {name:"Gloves Nitrile BLK LG",unit:"CS",cat:"Supplies",note:"1000ct"},
+  {name:"Gloves Medium",unit:"CS",cat:"Supplies"},
+  {name:"Plastic Wrap",unit:"EA",cat:"Supplies"},
+  {name:"Aluminum Foil",unit:"EA",cat:"Supplies"},
+];
+
+const CAT_ORDER = ["Produce","Meat","Seafood","Bread","Dairy","Condiments","Dry Goods","Frozen","Snacks","Beverages","Dole","Containers","Cups/Cones","Supplies"];
+
+/* ── SPECIALS ──────────────────────────────────────── */
+const SPECIALS = {
+  week1:[{day:"Mon",name:"Pulled Pork Sandwich w/ Fries",price:13},{day:"Tue",name:"Tacos w/ Beans & Rice",price:14},{day:"Wed",name:"Roast Pork",price:14},{day:"Thu",name:"Shoyu Chicken",price:13},{day:"Fri",name:"Mahi Katsu",price:15}],
+  week2:[{day:"Mon",name:"Hurricane Chicken",price:14},{day:"Tue",name:"Tacos w/ Beans & Rice",price:14},{day:"Wed",name:"Sweet & Sour Pork",price:14},{day:"Thu",name:"Burgers w/ Fries",price:14},{day:"Fri",name:"Pastele Stew",price:14}],
+};
+
+/* ── INITIAL SALES ────────────────────────────────── */
+const INITIAL_SALES = {
+  weeks:[
+    {label:"Jan 05",gross:3929,net:3727},{label:"Jan 12",gross:4054,net:3848},{label:"Jan 26",gross:4626,net:4396},
+    {label:"Feb 02",gross:4771,net:4571},{label:"Feb 09",gross:4576,net:4364},{label:"Feb 16",gross:3232,net:3075},
+    {label:"Mar 02",gross:4528,net:4318},{label:"Mar 09",gross:5733,net:5454},{label:"Mar 16",gross:4950,net:4709},
+    {label:"Mar 23",gross:3685,net:3494},{label:"Apr 05",gross:4296,net:4095},
+  ],
+  items:[
+    {name:"Dole Soft Serve Cup",cat:"Dessert",sold:1940,net:9896,w:[148,170,154,195,156,232,215,200,163,102,205]},
+    {name:"Chicken Mac Nut Pesto",cat:"Sandwich",sold:239,net:3164,w:[16,17,13,17,19,26,12,30,26,23,30]},
+    {name:"Deli Sandwich",cat:"Sandwich",sold:370,net:2607,w:[33,37,24,26,41,40,25,36,37,35,36]},
+    {name:"Dole Soft Serve Cone",cat:"Dessert",sold:373,net:1900,w:[25,35,32,31,35,25,23,22,55,68,22]},
+    {name:"Chicken Bacon Ranch",cat:"Sandwich",sold:131,net:1803,w:[15,16,3,5,3,4,13,26,17,23,6]},
+    {name:"Fountain Drink",cat:"Drinks",sold:708,net:1416,w:[63,63,49,90,80,90,91,78,45,0,78]},
+    {name:"Robert's Special",cat:"Sandwich",sold:104,net:1401,w:[10,9,5,11,16,11,8,8,7,11,8]},
+    {name:"Mango Pineapple Smoothie",cat:"Smoothie",sold:165,net:1263,w:[15,14,11,18,20,11,4,14,18,26,14]},
+    {name:"Hotdog",cat:"Sandwich",sold:215,net:1035,w:[21,19,22,15,8,15,32,28,26,26,3]},
+    {name:"Chicken Pesto Salad",cat:"Salad",sold:67,net:877,w:[5,5,1,4,6,8,5,7,8,11,7]},
+    {name:"Chef's Salad",cat:"Salad",sold:57,net:638,w:[9,5,6,4,6,4,1,4,4,10,4]},
+    {name:"Chips",cat:"Sides",sold:554,net:556,w:[49,45,59,51,43,60,44,35,66,67,35]},
+    {name:"Strawberry Banana Smoothie",cat:"Smoothie",sold:49,net:368,w:[2,5,4,7,15,2,4,4,3,0,4]},
+    {name:"Spam Musubi",cat:"Sides",sold:100,net:306,w:[10,8,0,16,0,15,8,0,15,14,14]},
+    {name:"Hot Coffee",cat:"Drinks",sold:47,net:151,w:[3,3,8,3,1,2,3,7,7,3,7]},
+  ],
+};
+
+/* ══════════════════════════════════════════════════════
+   UTILITY FUNCTIONS
+   ══════════════════════════════════════════════════════ */
+
+function getWeekMonday() {
+  const d = new Date();
+  const day = d.getDay();
+  const diff = day === 0 ? 1 : (day === 1 ? 0 : 8 - day);
+  d.setDate(d.getDate() + diff);
+  return d.toISOString().split('T')[0];
+}
+
+function fmtDate(iso) {
+  if (!iso) return '';
+  const d = new Date(iso + 'T00:00:00');
+  return d.toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' });
+}
+
+function fmtMoney(n) {
+  return '$' + (n||0).toLocaleString();
+}
+
+function fmtTime(iso) {
+  if (!iso) return '';
+  const d = new Date(iso);
+  return d.toLocaleString('en-US', { month:'short', day:'numeric', hour:'numeric', minute:'2-digit' });
+}
+
+/* ── Clover CSV Parser ─────────────────────────────── */
+function parseCloverCSV(text) {
+  const lines = text.replace(/\r\n/g,"\n").replace(/\r/g,"\n").split("\n");
+  const dateRange = (lines[1]||"").replace(/"/g,"").trim();
+  let gross = 0, net = 0, currentCat = null;
+  const items = [];
+
+  for (const line of lines) {
+    if (line.startsWith("Gross Sales,")) gross = parseFloat(line.split(",")[1].replace(/["\$,]/g,"")) || 0;
+    if (line.startsWith("Net Sales,")) net = parseFloat(line.split(",")[1].replace(/["\$,]/g,"")) || 0;
+  }
+
+  for (const line of lines) {
+    if (!line.trim()) continue;
+    const row = [];
+    let inQuote = false, field = "";
+    for (let i = 0; i < line.length; i++) {
+      const ch = line[i];
+      if (ch === '"') { inQuote = !inQuote; continue; }
+      if (ch === ',' && !inQuote) { row.push(field.trim()); field = ""; continue; }
+      field += ch;
+    }
+    row.push(field.trim());
+
+    if (row[0] && row.length <= 2 && !row[0].startsWith("Items") && !row[0].startsWith("Categories") && !row[0].startsWith("The report") && !row[0].startsWith("Requested") && !row[0].startsWith("Filters") && !row[0].startsWith("Gross") && !row[0].startsWith("Net") && !row[0].startsWith("COGS") && !row[0].startsWith("TOTAL") && !row[0].startsWith("Category")) {
+      currentCat = row[0]; continue;
+    }
+
+    if (row.length >= 5 && !row[0] && row[1] && row[1] !== " " && row[2] && row[2].startsWith("$")) {
+      const name = row[1];
+      if (name === "Name" || name.startsWith("Total") || name.includes("Rounded Change")) continue;
+      const soldStr = row[4];
+      if (!soldStr || soldStr === " ") continue;
+      try {
+        const sold = parseInt(soldStr);
+        const itemGross = parseFloat(row[2].replace(/[\$,]/g,"")) || 0;
+        const itemNet = parseFloat(row[3].replace(/[\$,]/g,"")) || 0;
+        if (!isNaN(sold)) items.push({ name, cat: currentCat || "Other", sold, gross: itemGross, net: itemNet });
+      } catch(e) {}
+    }
+  }
+
+  let label = dateRange;
+  try {
+    const start = dateRange.split(" - ")[0].trim();
+    const d = new Date(start);
+    if (!isNaN(d)) label = d.toLocaleDateString("en-US", { month:"short", day:"2-digit" });
+  } catch(e) {}
+
+  return { label, dateRange, gross, net, items, totalSold: items.reduce((s,i) => s + i.sold, 0) };
+}
+
+/* ══════════════════════════════════════════════════════
+   SUPABASE DATA LAYER
+   ══════════════════════════════════════════════════════ */
+
+async function loadOrder() {
+  const weekOf = getWeekMonday();
+  try {
+    const { data } = await sb.from('kitchen_orders')
+      .select('*').eq('week_of', weekOf).single();
+    return data;
+  } catch(e) { return null; }
+}
+
+async function saveOrder(quantities, customItems, specialWeek) {
+  const weekOf = getWeekMonday();
+  try {
+    await sb.from('kitchen_orders')
+      .upsert({
+        week_of: weekOf,
+        special_week: specialWeek,
+        quantities: quantities,
+        custom_items: customItems,
+        updated_at: new Date().toISOString()
+      }, { onConflict: 'week_of' });
+    return true;
+  } catch(e) { return false; }
+}
+
+async function loadSales() {
+  try {
+    const { data } = await sb.from('kitchen_sales')
+      .select('*').order('week_label', { ascending: true });
+    return data || [];
+  } catch(e) { return []; }
+}
+
+async function upsertSalesWeek(parsed) {
+  try {
+    await sb.from('kitchen_sales')
+      .upsert({
+        week_label: parsed.label,
+        date_range: parsed.dateRange,
+        gross: Math.round(parsed.gross),
+        net: Math.round(parsed.net),
+        items: parsed.items.map(i => ({ n: i.name, s: i.sold, g: i.gross })),
+        uploaded_at: new Date().toISOString()
+      }, { onConflict: 'week_label' });
+    return true;
+  } catch(e) { return false; }
+}
+
+
+/* ══════════════════════════════════════════════════════
+   LOGIN COMPONENT
+   ══════════════════════════════════════════════════════ */
+
+function Login({ onAuth }) {
+  const [pin, setPin] = useState('');
+  const [err, setErr] = useState('');
+  const inputRef = useRef(null);
+
+  useEffect(() => { inputRef.current?.focus(); }, []);
+
+  const submit = (e) => {
+    e && e.preventDefault();
+    if (pin === CORRECT_PIN) {
+      sessionStorage.setItem(AUTH_KEY, 'true');
+      onAuth();
+    } else {
+      setErr('Incorrect PIN');
+      setPin('');
+      inputRef.current?.focus();
+    }
+  };
+
+  const handleKey = (e) => {
+    if (e.key === 'Enter') submit();
+  };
+
+  return (
+    <div className="login-wrap">
+      <div className="login-box">
+        <div className="login-emoji">&#x1F422;</div>
+        <div className="login-title">TIKI TURTLE CAFE</div>
+        <div className="login-sub">Kitchen Operations</div>
+        <input
+          ref={inputRef}
+          className="login-input"
+          type="password"
+          inputMode="numeric"
+          maxLength={4}
+          placeholder="PIN"
+          value={pin}
+          onChange={e => { setErr(''); setPin(e.target.value.replace(/\D/g,'')); }}
+          onKeyDown={handleKey}
+        />
+        <button className="login-btn" onClick={submit}>Unlock</button>
+        {err && <div className="login-err">{err}</div>}
+      </div>
+    </div>
+  );
+}
+
+
+/* ══════════════════════════════════════════════════════
+   ORDER TAB
+   ══════════════════════════════════════════════════════ */
+
+function OrderTab({ quantities, setQty, specialWeek, setSpecialWeek, customItems, addCustom, removeCustom }) {
+  const [search, setSearch] = useState('');
+  const [collapsed, setCollapsed] = useState({});
+
+  const specials = SPECIALS[specialWeek] || SPECIALS.week1;
+
+  const filtered = useMemo(() => {
+    if (!search.trim()) return MASTER_ITEMS;
+    const q = search.toLowerCase();
+    return MASTER_ITEMS.filter(it =>
+      it.name.toLowerCase().includes(q) || it.cat.toLowerCase().includes(q) || (it.note||'').toLowerCase().includes(q)
+    );
+  }, [search]);
+
+  const grouped = useMemo(() => {
+    const g = {};
+    for (const it of filtered) {
+      if (!g[it.cat]) g[it.cat] = [];
+      g[it.cat].push(it);
+    }
+    return g;
+  }, [filtered]);
+
+  const toggleCat = (cat) => setCollapsed(prev => ({ ...prev, [cat]: !prev[cat] }));
+
+  const [customName, setCustomName] = useState('');
+  const [customQty, setCustomQty] = useState('');
+  const [customUnit, setCustomUnit] = useState('');
+
+  const handleAddCustom = () => {
+    if (!customName.trim()) return;
+    addCustom({ name: customName.trim(), qty: parseInt(customQty)||1, unit: customUnit.trim()||'EA' });
+    setCustomName(''); setCustomQty(''); setCustomUnit('');
+  };
+
+  return (
+    <div className="pad">
+      {/* Specials Toggle */}
+      <div className="specials-toggle">
+        <button className={`spec-btn ${specialWeek==='week1'?'active':''}`} onClick={() => setSpecialWeek('week1')}>
+          Week 1 Specials
+        </button>
+        <button className={`spec-btn ${specialWeek==='week2'?'active':''}`} onClick={() => setSpecialWeek('week2')}>
+          Week 2 Specials
+        </button>
+      </div>
+      <div className="specials-grid">
+        {specials.map(s => (
+          <div className="spec-card" key={s.day}>
+            <div className="spec-day">{s.day}</div>
+            <div className="spec-name">{s.name}</div>
+            <div className="spec-price">${s.price}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* Search */}
+      <div className="search-wrap">
+        <span className="search-icon">&#x1F50D;</span>
+        <input
+          className="search-input"
+          placeholder="Search items..."
+          value={search}
+          onChange={e => setSearch(e.target.value)}
+        />
+        {search && <button className="search-clear" onClick={() => setSearch('')}>&times;</button>}
+      </div>
+
+      {/* Category sections */}
+      {CAT_ORDER.filter(c => grouped[c]).map(cat => {
+        const items = grouped[cat];
+        const withQty = items.filter(it => (quantities[it.name]||0) > 0).length;
+        const isOpen = !collapsed[cat];
+
+        return (
+          <div key={cat}>
+            <div className="cat-header" onClick={() => toggleCat(cat)}>
+              <div style={{display:'flex',alignItems:'center'}}>
+                <span className="cat-title">{cat}</span>
+                <span className="cat-count">
+                  {withQty > 0 ? <span className="hl">{withQty}</span> : null}
+                  {withQty > 0 ? ` / ${items.length}` : ` (${items.length})`}
+                </span>
+              </div>
+              <span className={`cat-chevron ${isOpen?'open':''}`}>&#x25B6;</span>
+            </div>
+            {isOpen && (
+              <div className="cat-items">
+                {items.map(it => {
+                  const q = quantities[it.name] || 0;
+                  return (
+                    <div className={`item-row ${q > 0 ? 'has-qty' : ''}`} key={it.name}>
+                      <div className="item-info">
+                        <div className="item-name">{it.name}</div>
+                        {it.note && <div className="item-note">{it.note}</div>}
+                      </div>
+                      <span className="item-unit">{it.unit}</span>
+                      <div className="qty-ctrl">
+                        <button className="qty-btn minus" onClick={() => setQty(it.name, Math.max(0, q-1))}>-</button>
+                        <input
+                          className="qty-input"
+                          type="number"
+                          inputMode="numeric"
+                          min="0"
+                          value={q || ''}
+                          placeholder="0"
+                          onChange={e => setQty(it.name, Math.max(0, parseInt(e.target.value)||0))}
+                        />
+                        <button className="qty-btn plus" onClick={() => setQty(it.name, q+1)}>+</button>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        );
+      })}
+
+      {/* Custom items */}
+      <div className="custom-section">
+        <div className="custom-title">Custom Items</div>
+        <div className="custom-add">
+          <input placeholder="Item name" value={customName} onChange={e => setCustomName(e.target.value)} />
+          <input placeholder="Qty" value={customQty} onChange={e => setCustomQty(e.target.value)} style={{width:56,flex:'none'}} type="number" inputMode="numeric" />
+          <input placeholder="Unit" value={customUnit} onChange={e => setCustomUnit(e.target.value)} style={{width:56,flex:'none'}} />
+          <button onClick={handleAddCustom}>Add</button>
+        </div>
+        {customItems.map((ci, i) => (
+          <div className="custom-item" key={i}>
+            <div className="custom-item-info">
+              {ci.name} <span>{ci.qty} {ci.unit}</span>
+            </div>
+            <button className="custom-rm" onClick={() => removeCustom(i)}>&times;</button>
+          </div>
+        ))}
+        {customItems.length === 0 && <div style={{fontSize:12,color:'var(--gray)',textAlign:'center',padding:8}}>No custom items added</div>}
+      </div>
+    </div>
+  );
+}
+
+
+/* ══════════════════════════════════════════════════════
+   SUMMARY TAB
+   ══════════════════════════════════════════════════════ */
+
+function SummaryTab({ quantities, customItems, specialWeek, clearAll }) {
+  const weekOf = getWeekMonday();
+  const specials = SPECIALS[specialWeek] || SPECIALS.week1;
+
+  const ordered = useMemo(() => {
+    const result = [];
+    for (const it of MASTER_ITEMS) {
+      const q = quantities[it.name] || 0;
+      if (q > 0) result.push({ ...it, qty: q });
+    }
+    return result;
+  }, [quantities]);
+
+  const totalItems = ordered.length + customItems.length;
+
+  const grouped = useMemo(() => {
+    const g = {};
+    for (const it of ordered) {
+      if (!g[it.cat]) g[it.cat] = [];
+      g[it.cat].push(it);
+    }
+    return g;
+  }, [ordered]);
+
+  const handlePrint = () => {
+    const win = window.open('', '_blank');
+    if (!win) return;
+
+    const catSections = CAT_ORDER.filter(c => grouped[c]).map(cat => {
+      const items = grouped[cat];
+      const rows = items.map(it =>
+        `<tr><td>${it.name}</td><td style="text-align:center;font-weight:700">${it.qty}</td><td style="text-align:center;color:#666">${it.unit}</td><td style="color:#999;font-size:12px">${it.note||''}</td><td style="width:30px"></td></tr>`
+      ).join('');
+      return `<div style="margin-bottom:20px"><h3 style="margin:0 0 6px;font-size:15px;color:#333;border-bottom:2px solid #ddd;padding-bottom:4px">${cat}</h3><table style="width:100%;border-collapse:collapse"><thead><tr style="font-size:12px;color:#999"><th style="text-align:left;padding:4px">Item</th><th style="width:50px">Qty</th><th style="width:40px">Unit</th><th>Notes</th><th style="width:30px">&#x2610;</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+    }).join('');
+
+    const customSection = customItems.length > 0 ?
+      `<div style="margin-bottom:20px"><h3 style="margin:0 0 6px;font-size:15px;color:#333;border-bottom:2px solid #ddd;padding-bottom:4px">Custom Items</h3><table style="width:100%;border-collapse:collapse"><thead><tr style="font-size:12px;color:#999"><th style="text-align:left;padding:4px">Item</th><th style="width:50px">Qty</th><th style="width:40px">Unit</th><th>Notes</th><th style="width:30px">&#x2610;</th></tr></thead><tbody>${customItems.map(ci => `<tr><td>${ci.name}</td><td style="text-align:center;font-weight:700">${ci.qty}</td><td style="text-align:center;color:#666">${ci.unit}</td><td></td><td></td></tr>`).join('')}</tbody></table></div>` : '';
+
+    const specialChips = specials.map(s =>
+      `<span style="display:inline-block;background:#f0f0f0;padding:4px 10px;border-radius:12px;font-size:12px;margin:2px">${s.day}: ${s.name} ($${s.price})</span>`
+    ).join(' ');
+
+    const html = `<!DOCTYPE html><html><head><title>Weekly Order</title><style>body{font-family:Helvetica,Arial,sans-serif;max-width:800px;margin:0 auto;padding:20px;color:#222}@media print{body{padding:10px}}</style></head><body>
+      <div style="text-align:center;margin-bottom:20px">
+        <h1 style="margin:0;font-size:22px">TIKI TURTLE CAFE &mdash; Weekly Order</h1>
+        <div style="color:#666;font-size:13px;margin-top:6px">Week of ${fmtDate(weekOf)} &middot; ${specialWeek === 'week1' ? 'Week 1' : 'Week 2'} Specials &middot; ${totalItems} items &middot; Printed ${new Date().toLocaleString()}</div>
+        <div style="margin-top:8px">${specialChips}</div>
+      </div>
+      ${catSections}${customSection}
+      <div style="text-align:center;margin-top:30px;padding-top:10px;border-top:1px solid #ddd;font-size:11px;color:#999">The Arc of Hilo &middot; Tiki Turtle Cafe &middot; Kitchen Operations</div>
+    </body></html>`;
+
+    win.document.write(html);
+    win.document.close();
+    setTimeout(() => win.print(), 400);
+  };
+
+  return (
+    <div className="pad">
+      <div className="stats-row">
+        <div className="stat-card">
+          <div className="stat-val">{totalItems}</div>
+          <div className="stat-label">Total Items</div>
+        </div>
+        <div className="stat-card">
+          <div className="stat-val" style={{fontSize:16}}>{fmtDate(weekOf)}</div>
+          <div className="stat-label">Week Of</div>
+        </div>
+        <div className="stat-card">
+          <div className="stat-val" style={{fontSize:16}}>{specialWeek === 'week1' ? 'Week 1' : 'Week 2'}</div>
+          <div className="stat-label">Specials</div>
+        </div>
+      </div>
+
+      <div className="action-row">
+        <button className="action-btn print" onClick={handlePrint}>Print / PDF</button>
+        <button className="action-btn clear" onClick={clearAll}>Clear All</button>
+      </div>
+
+      {totalItems === 0 ? (
+        <div className="empty-state">
+          <div className="em">&#x1F4CB;</div>
+          <p>No items ordered yet. Go to Weekly Order to add items.</p>
+        </div>
+      ) : (
+        <>
+          {CAT_ORDER.filter(c => grouped[c]).map(cat => (
+            <div className="summary-cat" key={cat}>
+              <div className="summary-cat-title">{cat}</div>
+              <table className="summary-table">
+                <thead><tr><th>Item</th><th style={{textAlign:'center',width:50}}>Qty</th><th style={{textAlign:'center',width:40}}>Unit</th><th>Notes</th></tr></thead>
+                <tbody>
+                  {grouped[cat].map(it => (
+                    <tr key={it.name}>
+                      <td>{it.name}</td>
+                      <td className="qty">{it.qty}</td>
+                      <td className="unit">{it.unit}</td>
+                      <td className="note">{it.note||''}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ))}
+
+          {customItems.length > 0 && (
+            <div className="summary-custom">
+              <div className="summary-cat-title">Custom Items</div>
+              <table className="summary-table">
+                <thead><tr><th>Item</th><th style={{textAlign:'center',width:50}}>Qty</th><th style={{textAlign:'center',width:40}}>Unit</th></tr></thead>
+                <tbody>
+                  {customItems.map((ci,i) => (
+                    <tr key={i}>
+                      <td>{ci.name}</td>
+                      <td className="qty">{ci.qty}</td>
+                      <td className="unit">{ci.unit}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </>
+      )}
+    </div>
+  );
+}
+
+
+/* ══════════════════════════════════════════════════════
+   SALES DASHBOARD TAB
+   ══════════════════════════════════════════════════════ */
+
+function DashTab({ salesData, onUpload }) {
+  const [uploadMsg, setUploadMsg] = useState(null);
+  const revenueRef = useRef(null);
+  const pieRef = useRef(null);
+  const revenueChart = useRef(null);
+  const pieChart = useRef(null);
+
+  const weeks = salesData.weeks || INITIAL_SALES.weeks;
+  const items = salesData.items || INITIAL_SALES.items;
+
+  const totalGross = weeks.reduce((s,w) => s + w.gross, 0);
+  const bestWeek = weeks.reduce((best,w) => w.gross > (best?.gross||0) ? w : best, null);
+  const last3 = weeks.slice(-3);
+  const prev3 = weeks.slice(-6,-3);
+  const last3avg = last3.length ? last3.reduce((s,w) => s + w.gross, 0) / last3.length : 0;
+  const prev3avg = prev3.length ? prev3.reduce((s,w) => s + w.gross, 0) / prev3.length : 0;
+  const trend3 = prev3avg ? ((last3avg - prev3avg) / prev3avg * 100).toFixed(1) : '0.0';
+  const trendUp = parseFloat(trend3) >= 0;
+
+  /* Category breakdown for pie */
+  const catTotals = useMemo(() => {
+    const m = {};
+    for (const it of items) {
+      m[it.cat] = (m[it.cat]||0) + (it.net||it.sold||0);
+    }
+    return Object.entries(m).map(([name,value]) => ({ name, value })).sort((a,b) => b.value - a.value);
+  }, [items]);
+
+  /* Chart.js — Revenue Line Chart */
+  useEffect(() => {
+    if (!revenueRef.current) return;
+    if (revenueChart.current) revenueChart.current.destroy();
+    const ctx = revenueRef.current.getContext('2d');
+    const goldGrad = ctx.createLinearGradient(0, 0, 0, 200);
+    goldGrad.addColorStop(0, 'rgba(212,168,67,0.25)');
+    goldGrad.addColorStop(1, 'rgba(212,168,67,0)');
+    revenueChart.current = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: weeks.map(w => w.label),
+        datasets: [
+          { label: 'Gross', data: weeks.map(w => w.gross), borderColor: '#d4a843', backgroundColor: goldGrad, fill: true, tension: 0.3, pointRadius: 3, pointBackgroundColor: '#d4a843', borderWidth: 2 },
+          { label: 'Net', data: weeks.map(w => w.net), borderColor: '#25b5a4', backgroundColor: 'transparent', fill: false, tension: 0.3, pointRadius: 3, pointBackgroundColor: '#25b5a4', borderWidth: 2 },
+        ]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { labels: { color: '#8a97a8', font: { size: 11 } } }, tooltip: { backgroundColor: '#0f1a2e', borderColor: '#1e3050', borderWidth: 1, titleColor: '#eee8dc', bodyColor: '#eee8dc', callbacks: { label: c => c.dataset.label + ': $' + c.raw.toLocaleString() } } },
+        scales: { x: { ticks: { color: '#6b7a8d', font: { size: 10 } }, grid: { color: '#1e3050' } }, y: { ticks: { color: '#6b7a8d', font: { size: 10 }, callback: v => '$' + (v/1000).toFixed(1) + 'k' }, grid: { color: '#1e3050' } } }
+      }
+    });
+    return () => { if (revenueChart.current) revenueChart.current.destroy(); };
+  }, [weeks]);
+
+  /* Chart.js — Category Doughnut */
+  useEffect(() => {
+    if (!pieRef.current) return;
+    if (pieChart.current) pieChart.current.destroy();
+    const ctx = pieRef.current.getContext('2d');
+    pieChart.current = new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+        labels: catTotals.map(c => c.name),
+        datasets: [{ data: catTotals.map(c => c.value), backgroundColor: catTotals.map((_,i) => CC[i%CC.length]), borderColor: '#0f1a2e', borderWidth: 2 }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false, cutout: '55%',
+        plugins: { legend: { display: false }, tooltip: { backgroundColor: '#0f1a2e', borderColor: '#1e3050', borderWidth: 1, titleColor: '#eee8dc', bodyColor: '#eee8dc', callbacks: { label: c => c.label + ': $' + c.raw.toLocaleString() } } }
+      }
+    });
+    return () => { if (pieChart.current) pieChart.current.destroy(); };
+  }, [catTotals]);
+
+  /* Handle file upload */
+  const handleFiles = async (e) => {
+    const files = Array.from(e.target.files);
+    if (!files.length) return;
+    setUploadMsg({ type: 'ok', text: `Processing ${files.length} file(s)...` });
+    let count = 0;
+    for (const file of files) {
+      try {
+        const text = await file.text();
+        const parsed = parseCloverCSV(text);
+        if (parsed.gross > 0) {
+          const ok = await upsertSalesWeek(parsed);
+          if (ok) count++;
+        }
+      } catch(err) {
+        console.error('CSV parse error', err);
+      }
+    }
+    if (count > 0) {
+      setUploadMsg({ type: 'ok', text: `Uploaded ${count} week(s) successfully.` });
+      onUpload();
+    } else {
+      setUploadMsg({ type: 'err', text: 'No valid sales data found in uploaded files.' });
+    }
+    e.target.value = '';
+  };
+
+  return (
+    <div className="pad">
+      {/* Upload bar */}
+      <div className="upload-bar">
+        <label>Upload Clover Sales Reports:</label>
+        <input type="file" accept=".csv" multiple onChange={handleFiles} />
+      </div>
+      {uploadMsg && <div className={`upload-msg ${uploadMsg.type}`}>{uploadMsg.text}</div>}
+
+      {/* Stats row */}
+      <div className="stats-row">
+        <div className="stat-card">
+          <div className="stat-val">{fmtMoney(totalGross)}</div>
+          <div className="stat-label">Total Gross</div>
+        </div>
+        <div className="stat-card">
+          <div className="stat-val" style={{fontSize:16}}>{bestWeek?.label || '-'}</div>
+          <div className="stat-label">Best Week ({fmtMoney(bestWeek?.gross)})</div>
+        </div>
+        <div className="stat-card">
+          <div className="stat-val" style={{color:trendUp?'var(--teal-l)':'var(--coral)',fontSize:18}}>
+            {trendUp?'+':''}{trend3}%
+          </div>
+          <div className="stat-label">3-Week Trend</div>
+        </div>
+      </div>
+
+      {/* Weekly Revenue Chart */}
+      <div className="chart-wrap">
+        <div className="chart-title">Weekly Revenue</div>
+        <div style={{height:220}}>
+          <canvas ref={revenueRef} />
+        </div>
+      </div>
+
+      {/* Category Pie */}
+      <div className="chart-wrap">
+        <div className="chart-title">Sales by Category</div>
+        <div style={{height:220}}>
+          <canvas ref={pieRef} />
+        </div>
+        <div className="pie-legend">
+          {catTotals.map((c,i) => (
+            <div className="pie-legend-item" key={c.name}>
+              <div className="pie-dot" style={{background:CC[i%CC.length]}} />
+              {c.name}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Item Rankings */}
+      <div className="chart-wrap">
+        <div className="chart-title">Item Rankings</div>
+        <div style={{overflowX:'auto'}}>
+          <table className="rank-table">
+            <thead>
+              <tr><th>#</th><th>Item</th><th>Cat</th><th>Sold</th><th>Net</th><th>Avg/wk</th><th>Trend</th></tr>
+            </thead>
+            <tbody>
+              {items.sort((a,b) => (b.net||0) - (a.net||0)).map((it, idx) => {
+                const wks = it.w || [];
+                const last6 = wks.slice(-6);
+                const maxVal = Math.max(...last6, 1);
+                const avgWk = wks.length ? (it.sold / wks.length).toFixed(0) : '-';
+                return (
+                  <tr key={it.name}>
+                    <td className="rank-num">{idx+1}</td>
+                    <td className="rank-name">{it.name}</td>
+                    <td className="rank-cat">{it.cat}</td>
+                    <td>{it.sold}</td>
+                    <td>{fmtMoney(it.net)}</td>
+                    <td>{avgWk}</td>
+                    <td>
+                      <div className="mini-bars">
+                        {last6.map((v,j) => (
+                          <div key={j} className="mini-bar" style={{height: Math.max(2, (v/maxVal)*18) + 'px'}} />
+                        ))}
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
+/* ══════════════════════════════════════════════════════
+   MAIN APP COMPONENT
+   ══════════════════════════════════════════════════════ */
+
+function App({ onLogout }) {
+  const [tab, setTab] = useState('order');
+  const [quantities, setQuantities] = useState({});
+  const [customItems, setCustomItems] = useState([]);
+  const [specialWeek, setSpecialWeek] = useState('week1');
+  const [syncStatus, setSyncStatus] = useState('load'); // 'ok' | 'err' | 'load'
+  const [lastUpdated, setLastUpdated] = useState(null);
+  const [salesData, setSalesData] = useState({ weeks: INITIAL_SALES.weeks, items: INITIAL_SALES.items });
+
+  const saveTimer = useRef(null);
+  const localUpdatedAt = useRef(null);
+  const isInitialLoad = useRef(true);
+
+  /* ── Load order on mount ────────────────────────── */
+  useEffect(() => {
+    (async () => {
+      setSyncStatus('load');
+      const order = await loadOrder();
+      if (order) {
+        setQuantities(order.quantities || {});
+        setCustomItems(order.custom_items || []);
+        setSpecialWeek(order.special_week || 'week1');
+        localUpdatedAt.current = order.updated_at;
+        setLastUpdated(order.updated_at);
+      }
+      isInitialLoad.current = false;
+      setSyncStatus('ok');
+    })();
+  }, []);
+
+  /* ── Load sales on mount ────────────────────────── */
+  useEffect(() => {
+    (async () => {
+      const rows = await loadSales();
+      if (rows.length > 0) {
+        const weeks = rows.map(r => ({ label: r.week_label, gross: r.gross, net: r.net }));
+        // Merge item data from INITIAL_SALES since DB might not have item-level detail
+        setSalesData({ weeks, items: INITIAL_SALES.items });
+      }
+    })();
+  }, []);
+
+  /* ── Poll for remote changes ────────────────────── */
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      try {
+        const order = await loadOrder();
+        if (order && order.updated_at && localUpdatedAt.current) {
+          if (new Date(order.updated_at) > new Date(localUpdatedAt.current)) {
+            setQuantities(order.quantities || {});
+            setCustomItems(order.custom_items || []);
+            setSpecialWeek(order.special_week || 'week1');
+            localUpdatedAt.current = order.updated_at;
+            setLastUpdated(order.updated_at);
+          }
+        }
+        setSyncStatus('ok');
+      } catch(e) {
+        setSyncStatus('err');
+      }
+    }, 30000);
+    return () => clearInterval(interval);
+  }, []);
+
+  /* ── Debounced save ─────────────────────────────── */
+  const doSave = useCallback(async (q, ci, sw) => {
+    setSyncStatus('load');
+    const ok = await saveOrder(q, ci, sw);
+    const now = new Date().toISOString();
+    localUpdatedAt.current = now;
+    setLastUpdated(now);
+    setSyncStatus(ok ? 'ok' : 'err');
+  }, []);
+
+  const scheduleSave = useCallback((q, ci, sw) => {
+    if (isInitialLoad.current) return;
+    if (saveTimer.current) clearTimeout(saveTimer.current);
+    saveTimer.current = setTimeout(() => doSave(q, ci, sw), 500);
+  }, [doSave]);
+
+  /* ── Setters ────────────────────────────────────── */
+  const setQty = useCallback((name, val) => {
+    setQuantities(prev => {
+      const next = { ...prev };
+      if (val === 0) { delete next[name]; } else { next[name] = val; }
+      scheduleSave(next, customItems, specialWeek);
+      return next;
+    });
+  }, [customItems, specialWeek, scheduleSave]);
+
+  const handleSetSpecialWeek = useCallback((sw) => {
+    setSpecialWeek(sw);
+    scheduleSave(quantities, customItems, sw);
+  }, [quantities, customItems, scheduleSave]);
+
+  const addCustom = useCallback((item) => {
+    setCustomItems(prev => {
+      const next = [...prev, item];
+      scheduleSave(quantities, next, specialWeek);
+      return next;
+    });
+  }, [quantities, specialWeek, scheduleSave]);
+
+  const removeCustom = useCallback((idx) => {
+    setCustomItems(prev => {
+      const next = prev.filter((_,i) => i !== idx);
+      scheduleSave(quantities, next, specialWeek);
+      return next;
+    });
+  }, [quantities, specialWeek, scheduleSave]);
+
+  const clearAll = useCallback(() => {
+    if (!confirm('Clear all quantities and custom items?')) return;
+    setQuantities({});
+    setCustomItems([]);
+    scheduleSave({}, [], specialWeek);
+  }, [specialWeek, scheduleSave]);
+
+  /* ── Reload sales ───────────────────────────────── */
+  const reloadSales = useCallback(async () => {
+    const rows = await loadSales();
+    if (rows.length > 0) {
+      const weeks = rows.map(r => ({ label: r.week_label, gross: r.gross, net: r.net }));
+      setSalesData(prev => ({ ...prev, weeks }));
+    }
+  }, []);
+
+  /* ── Count ordered items for badge ──────────────── */
+  const orderedCount = Object.values(quantities).filter(v => v > 0).length + customItems.length;
+
+  return (
+    <div className="app">
+      {/* Header */}
+      <div className="header">
+        <div className="header-left">
+          <span className="header-emoji">&#x1F422;</span>
+          <div>
+            <div className="header-title">TIKI TURTLE CAFE</div>
+            <div className="header-sub">
+              Kitchen Ops
+              <span className={`sync-dot ${syncStatus === 'ok' ? 'sync-ok' : syncStatus === 'err' ? 'sync-err' : 'sync-load'}`} />
+              {syncStatus === 'ok' ? 'Synced' : syncStatus === 'err' ? 'Offline' : 'Saving...'}
+            </div>
+          </div>
+        </div>
+        <button className="logout-btn" onClick={onLogout}>Logout</button>
+      </div>
+
+      {/* Tab bar */}
+      <div className="tab-bar">
+        <div className={`tab ${tab==='order'?'active':''}`} onClick={() => setTab('order')}>Weekly Order</div>
+        <div className={`tab ${tab==='summary'?'active':''}`} onClick={() => setTab('summary')}>
+          Summary
+          {orderedCount > 0 && <span className="badge">{orderedCount}</span>}
+        </div>
+        <div className={`tab ${tab==='sales'?'active':''}`} onClick={() => setTab('sales')}>Sales</div>
+      </div>
+
+      {/* Content */}
+      <div className="content">
+        {tab === 'order' && (
+          <OrderTab
+            quantities={quantities}
+            setQty={setQty}
+            specialWeek={specialWeek}
+            setSpecialWeek={handleSetSpecialWeek}
+            customItems={customItems}
+            addCustom={addCustom}
+            removeCustom={removeCustom}
+          />
+        )}
+        {tab === 'summary' && (
+          <SummaryTab
+            quantities={quantities}
+            customItems={customItems}
+            specialWeek={specialWeek}
+            clearAll={clearAll}
+          />
+        )}
+        {tab === 'sales' && (
+          <DashTab
+            salesData={salesData}
+            onUpload={reloadSales}
+          />
+        )}
+      </div>
+
+      {/* Timestamp footer */}
+      <div className="timestamp">
+        {lastUpdated ? `Last updated: ${fmtTime(lastUpdated)}` : 'No data saved yet'} &middot; Week of {fmtDate(getWeekMonday())}
+      </div>
+    </div>
+  );
+}
+
+
+/* ══════════════════════════════════════════════════════
+   ROOT
+   ══════════════════════════════════════════════════════ */
+
+function Root() {
+  const [authed, setAuthed] = useState(sessionStorage.getItem(AUTH_KEY) === 'true');
+
+  const handleLogout = () => {
+    sessionStorage.removeItem(AUTH_KEY);
+    setAuthed(false);
+  };
+
+  if (!authed) return <Login onAuth={() => setAuthed(true)} />;
+  return <App onLogout={handleLogout} />;
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<Root />);
+</script>
+</body>
+</html>
