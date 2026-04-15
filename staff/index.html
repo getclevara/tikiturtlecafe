@@ -401,8 +401,11 @@ function parseCloverCSV(text) {
     }
 
     if (row.length >= 5 && !row[0] && row[1] && row[1] !== " " && row[2] && row[2].startsWith("$")) {
-      const name = row[1];
+      let name = row[1];
       if (name === "Name" || name.startsWith("Total") || name.includes("Rounded Change")) continue;
+      /* Normalize daily specials: "Tuesday Special - Pork Tacos w/ beans & rice" → "Pork Tacos w/ beans & rice" */
+      const specMatch = name.match(/^(?:Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday)\s+Special\s*[-–—]\s*(.+)$/i);
+      if (specMatch) { name = specMatch[1].trim(); }
       const soldStr = row[4];
       if (!soldStr || soldStr === " ") continue;
       try {
@@ -421,7 +424,20 @@ function parseCloverCSV(text) {
     if (!isNaN(d)) label = d.toLocaleDateString("en-US", { month:"short", day:"2-digit" });
   } catch(e) {}
 
-  return { label, dateRange, gross, net, items, totalSold: items.reduce((s,i) => s + i.sold, 0) };
+  /* Merge duplicates (same normalized name within one CSV) */
+  const merged = {};
+  for (const it of items) {
+    if (merged[it.name]) {
+      merged[it.name].sold += it.sold;
+      merged[it.name].gross += it.gross;
+      merged[it.name].net += it.net;
+    } else {
+      merged[it.name] = { ...it };
+    }
+  }
+  const deduped = Object.values(merged);
+
+  return { label, dateRange, gross, net, items: deduped, totalSold: deduped.reduce((s,i) => s + i.sold, 0) };
 }
 
 /* ══════════════════════════════════════════════════════
