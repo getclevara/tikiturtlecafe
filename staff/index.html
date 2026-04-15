@@ -115,6 +115,17 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--white);-w
 .custom-item-info span{color:var(--gray-l);margin-left:6px;font-size:11px}
 .custom-rm{background:none;border:none;color:var(--coral);cursor:pointer;font-size:18px;padding:4px}
 
+/* TEMPLATES */
+.tpl-bar{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;align-items:center}
+.tpl-bar select{flex:1;min-width:140px;padding:10px 12px;background:var(--navy);border:1px solid var(--border);border-radius:8px;color:var(--white);font-size:13px;font-family:'DM Sans',sans-serif;outline:none;cursor:pointer;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%236b7a8d'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center}
+.tpl-bar select:focus{border-color:var(--gold)}
+.tpl-btn{padding:10px 16px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;border:none;font-family:'DM Sans',sans-serif;white-space:nowrap}
+.tpl-btn.load{background:var(--teal);color:var(--white)}
+.tpl-btn.save{background:var(--gold);color:var(--bg)}
+.tpl-btn.del{background:var(--navy-l);border:1px solid var(--coral);color:var(--coral)}
+.tpl-btn:disabled{opacity:0.4;cursor:default}
+.tpl-msg{font-size:12px;color:var(--teal-l);padding:6px 0}
+
 /* SUMMARY */
 .stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px}
 .stat-card{background:var(--navy-l);border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center}
@@ -464,6 +475,35 @@ async function upsertSalesWeek(parsed) {
   } catch(e) { return false; }
 }
 
+/* ── Template helpers ──────────────────────────────── */
+async function loadTemplates() {
+  try {
+    const { data } = await sb.from('kitchen_templates')
+      .select('*').order('name');
+    return data || [];
+  } catch(e) { return []; }
+}
+
+async function saveTemplate(name, quantities, specialWeek) {
+  try {
+    await sb.from('kitchen_templates')
+      .upsert({
+        name,
+        quantities,
+        special_week: specialWeek,
+        updated_at: new Date().toISOString()
+      }, { onConflict: 'name' });
+    return true;
+  } catch(e) { return false; }
+}
+
+async function deleteTemplate(name) {
+  try {
+    await sb.from('kitchen_templates').delete().eq('name', name);
+    return true;
+  } catch(e) { return false; }
+}
+
 
 /* ══════════════════════════════════════════════════════
    LOGIN COMPONENT
@@ -521,19 +561,22 @@ function Login({ onAuth }) {
    ORDER TAB
    ══════════════════════════════════════════════════════ */
 
-function OrderTab({ quantities, setQty, specialWeek, setSpecialWeek, customItems, addCustom, removeCustom }) {
+function OrderTab({ quantities, setQty, specialWeek, setSpecialWeek, customItems, addCustom, removeCustom, masterItems, templates, onLoadTemplate, onSaveTemplate, onDeleteTemplate }) {
   const [search, setSearch] = useState('');
   const [collapsed, setCollapsed] = useState({});
+  const [selectedTpl, setSelectedTpl] = useState('');
+  const [tplMsg, setTplMsg] = useState('');
 
   const specials = SPECIALS[specialWeek] || SPECIALS.week1;
+  const itemList = masterItems || MASTER_ITEMS;
 
   const filtered = useMemo(() => {
-    if (!search.trim()) return MASTER_ITEMS;
+    if (!search.trim()) return itemList;
     const q = search.toLowerCase();
-    return MASTER_ITEMS.filter(it =>
+    return itemList.filter(it =>
       it.name.toLowerCase().includes(q) || it.cat.toLowerCase().includes(q) || (it.note||'').toLowerCase().includes(q)
     );
-  }, [search]);
+  }, [search, itemList]);
 
   const grouped = useMemo(() => {
     const g = {};
@@ -576,6 +619,37 @@ function OrderTab({ quantities, setQty, specialWeek, setSpecialWeek, customItems
           </div>
         ))}
       </div>
+
+      {/* Templates */}
+      <div className="tpl-bar">
+        <select value={selectedTpl} onChange={e => setSelectedTpl(e.target.value)}>
+          <option value="">-- Saved Lists --</option>
+          {(templates||[]).map(t => <option key={t.name} value={t.name}>{t.name}</option>)}
+        </select>
+        <button className="tpl-btn load" disabled={!selectedTpl} onClick={async () => {
+          const tpl = (templates||[]).find(t => t.name === selectedTpl);
+          if (tpl) {
+            onLoadTemplate(tpl);
+            setTplMsg(`Loaded "${tpl.name}"`);
+            setTimeout(() => setTplMsg(''), 3000);
+          }
+        }}>Load</button>
+        <button className="tpl-btn save" onClick={async () => {
+          const name = prompt('Save current order as:', specialWeek === 'week1' ? 'Week 1 Standard' : 'Week 2 Standard');
+          if (name && name.trim()) {
+            const ok = await onSaveTemplate(name.trim());
+            if (ok) { setTplMsg(`Saved "${name.trim()}"`); setTimeout(() => setTplMsg(''), 3000); }
+          }
+        }}>Save List</button>
+        {selectedTpl && <button className="tpl-btn del" onClick={async () => {
+          if (confirm(`Delete "${selectedTpl}"?`)) {
+            await onDeleteTemplate(selectedTpl);
+            setSelectedTpl('');
+            setTplMsg('Deleted'); setTimeout(() => setTplMsg(''), 3000);
+          }
+        }}>Delete</button>}
+      </div>
+      {tplMsg && <div className="tpl-msg">{tplMsg}</div>}
 
       {/* Search */}
       <div className="search-wrap">
@@ -668,13 +742,14 @@ function OrderTab({ quantities, setQty, specialWeek, setSpecialWeek, customItems
    SUMMARY TAB
    ══════════════════════════════════════════════════════ */
 
-function SummaryTab({ quantities, customItems, specialWeek, clearAll }) {
+function SummaryTab({ quantities, customItems, specialWeek, clearAll, masterItems }) {
   const weekOf = getWeekMonday();
   const specials = SPECIALS[specialWeek] || SPECIALS.week1;
+  const itemList = masterItems || MASTER_ITEMS;
 
   const ordered = useMemo(() => {
     const result = [];
-    for (const it of MASTER_ITEMS) {
+    for (const it of itemList) {
       const q = quantities[it.name] || 0;
       if (q > 0) result.push({ ...it, qty: q });
     }
@@ -1006,10 +1081,31 @@ function App({ onLogout }) {
   const [syncStatus, setSyncStatus] = useState('load'); // 'ok' | 'err' | 'load'
   const [lastUpdated, setLastUpdated] = useState(null);
   const [salesData, setSalesData] = useState({ weeks: INITIAL_SALES.weeks, items: INITIAL_SALES.items });
+  const [masterItems, setMasterItems] = useState(MASTER_ITEMS);
+  const [templates, setTemplates] = useState([]);
 
   const saveTimer = useRef(null);
   const localUpdatedAt = useRef(null);
   const isInitialLoad = useRef(true);
+
+  /* ── Load master items from Supabase ────────────── */
+  useEffect(() => {
+    (async () => {
+      try {
+        const { data } = await sb.from('kitchen_items')
+          .select('name, unit, pack_size, category, sort_order')
+          .eq('active', true)
+          .order('category').order('sort_order');
+        if (data && data.length > 0) {
+          setMasterItems(data.map(r => ({
+            name: r.name, unit: r.unit || 'EA',
+            cat: r.category, note: r.pack_size || '',
+            sort_order: r.sort_order || 0
+          })));
+        }
+      } catch(e) { console.warn('Failed to load kitchen_items, using defaults'); }
+    })();
+  }, []);
 
   /* ── Load order on mount ────────────────────────── */
   useEffect(() => {
@@ -1025,6 +1121,14 @@ function App({ onLogout }) {
       }
       isInitialLoad.current = false;
       setSyncStatus('ok');
+    })();
+  }, []);
+
+  /* ── Load templates on mount ─────────────────────── */
+  useEffect(() => {
+    (async () => {
+      const tpls = await loadTemplates();
+      setTemplates(tpls);
     })();
   }, []);
 
@@ -1099,6 +1203,29 @@ function App({ onLogout }) {
       scheduleSave(quantities, next, specialWeek);
       return next;
     });
+    /* Also save to kitchen_items so it appears in the master list for everyone */
+    (async () => {
+      try {
+        await sb.from('kitchen_items').upsert({
+          name: item.name,
+          unit: item.unit || 'EA',
+          category: 'Custom',
+          sort_order: 99
+        }, { onConflict: 'name' });
+        /* Refresh master items */
+        const { data } = await sb.from('kitchen_items')
+          .select('name, unit, pack_size, category, sort_order')
+          .eq('active', true)
+          .order('category').order('sort_order');
+        if (data && data.length > 0) {
+          setMasterItems(data.map(r => ({
+            name: r.name, unit: r.unit || 'EA',
+            cat: r.category, note: r.pack_size || '',
+            sort_order: r.sort_order || 0
+          })));
+        }
+      } catch(e) { console.warn('Failed to save custom item to master list', e); }
+    })();
   }, [quantities, specialWeek, scheduleSave]);
 
   const removeCustom = useCallback((idx) => {
@@ -1115,6 +1242,32 @@ function App({ onLogout }) {
     setCustomItems([]);
     scheduleSave({}, [], specialWeek);
   }, [specialWeek, scheduleSave]);
+
+  /* ── Template handlers ──────────────────────────── */
+  const handleLoadTemplate = useCallback((tpl) => {
+    setQuantities(tpl.quantities || {});
+    setSpecialWeek(tpl.special_week || 'week1');
+    setCustomItems([]);
+    scheduleSave(tpl.quantities || {}, [], tpl.special_week || 'week1');
+  }, [scheduleSave]);
+
+  const handleSaveTemplate = useCallback(async (name) => {
+    const ok = await saveTemplate(name, quantities, specialWeek);
+    if (ok) {
+      const tpls = await loadTemplates();
+      setTemplates(tpls);
+    }
+    return ok;
+  }, [quantities, specialWeek]);
+
+  const handleDeleteTemplate = useCallback(async (name) => {
+    const ok = await deleteTemplate(name);
+    if (ok) {
+      const tpls = await loadTemplates();
+      setTemplates(tpls);
+    }
+    return ok;
+  }, []);
 
   /* ── Reload sales ───────────────────────────────── */
   const reloadSales = useCallback(async () => {
@@ -1167,6 +1320,11 @@ function App({ onLogout }) {
             customItems={customItems}
             addCustom={addCustom}
             removeCustom={removeCustom}
+            masterItems={masterItems}
+            templates={templates}
+            onLoadTemplate={handleLoadTemplate}
+            onSaveTemplate={handleSaveTemplate}
+            onDeleteTemplate={handleDeleteTemplate}
           />
         )}
         {tab === 'summary' && (
@@ -1175,6 +1333,7 @@ function App({ onLogout }) {
             customItems={customItems}
             specialWeek={specialWeek}
             clearAll={clearAll}
+            masterItems={masterItems}
           />
         )}
         {tab === 'sales' && (

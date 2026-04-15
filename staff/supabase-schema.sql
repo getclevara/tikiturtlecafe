@@ -166,6 +166,19 @@ INSERT INTO kitchen_items (name, unit, pack_size, category, sort_order) VALUES
   ('Aluminum Foil', 'EA', '', 'Supplies', 10)
 ON CONFLICT (name) DO NOTHING;
 
+-- Saved order templates (e.g. "Week 1 Standard", "Week 2 Standard")
+CREATE TABLE IF NOT EXISTS kitchen_templates (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  name TEXT NOT NULL UNIQUE,
+  special_week TEXT DEFAULT 'week1',
+  quantities JSONB DEFAULT '{}',
+  created_at TIMESTAMPTZ DEFAULT now(),
+  updated_at TIMESTAMPTZ DEFAULT now()
+);
+
+ALTER TABLE kitchen_templates ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "anon_kitchen_templates" ON kitchen_templates FOR ALL USING (true) WITH CHECK (true);
+
 -- ═══════════════════════════════════════════════════════════
 -- SEED: Initial Sales Data (11 weeks)
 -- ═══════════════════════════════════════════════════════════
