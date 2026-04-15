@@ -380,8 +380,8 @@ function parseCloverCSV(text) {
   const items = [];
 
   for (const line of lines) {
-    if (line.startsWith("Gross Sales,")) gross = parseFloat(line.split(",")[1].replace(/["\$,]/g,"")) || 0;
-    if (line.startsWith("Net Sales,")) net = parseFloat(line.split(",")[1].replace(/["\$,]/g,"")) || 0;
+    if (line.startsWith("Gross Sales,")) gross = parseFloat(line.split(",").slice(1).join(",").replace(/["\$,]/g,"")) || 0;
+    if (line.startsWith("Net Sales,")) net = parseFloat(line.split(",").slice(1).join(",").replace(/["\$,]/g,"")) || 0;
   }
 
   for (const line of lines) {
@@ -403,15 +403,60 @@ function parseCloverCSV(text) {
     if (row.length >= 5 && !row[0] && row[1] && row[1] !== " " && row[2] && row[2].startsWith("$")) {
       let name = row[1];
       if (name === "Name" || name.startsWith("Total") || name.includes("Rounded Change")) continue;
-      /* Normalize daily specials: "Tuesday Special - Pork Tacos w/ beans & rice" → "Pork Tacos w/ beans & rice" */
-      const specMatch = name.match(/^(?:Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday)\s+Special\s*[-–—]\s*(.+)$/i);
-      if (specMatch) { name = specMatch[1].trim(); }
+      /* Strip day prefixes from specials:
+         "Tuesday Special - Pork Tacos w/ beans & rice" → "Pork Tacos w/ beans & rice"
+         "Monday - Lasagna" → "Lasagna"
+         "Thursday Beef Burritos" → "Beef Burritos"
+         "Monday Special: Spaghetti w/ Fresh Garlic Bread" → "Spaghetti w/ Fresh Garlic Bread" */
+      const DAYS = '(?:Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday)';
+      name = name
+        .replace(new RegExp('^' + DAYS + '\\s+Special\\s*[-–—:]\\s*', 'i'), '')
+        .replace(new RegExp('^' + DAYS + '\\s*[-–—]\\s*', 'i'), '')
+        .replace(new RegExp('^' + DAYS + '\\s+', 'i'), '')
+        .trim();
+      /* Normalize known variations to canonical names */
+      const NORMALIZE = {
+        "Burger & Fries": "Burgers w/ Fries",
+        "Burger N' Fries": "Burgers w/ Fries",
+        "Hamburger Steak With Gravy": "Burgers w/ Fries",
+        "Mahi Mahi Katsu": "Mahi Katsu",
+        "Korean Mahi Katsu": "Mahi Katsu",
+        "Blackened Mahi Plate": "Mahi Katsu",
+        "Garlic Butter Mahi": "Mahi Katsu",
+        "Shoyu  Chicken": "Shoyu Chicken",
+        "Shoyu Chicken Bowl": "Shoyu Chicken",
+        "Beef Tacos w/ beans & rice": "Tacos w/ Beans & Rice",
+        "Chicken Tacos w/ beans & rice": "Tacos w/ Beans & Rice",
+        "Pork Tacos w/ beans & rice": "Tacos w/ Beans & Rice",
+        "3 Beef Tacos": "Tacos w/ Beans & Rice",
+        "3 Chicken Tacos": "Tacos w/ Beans & Rice",
+        "Beef Street Tacos": "Tacos w/ Beans & Rice",
+        "Chicken Tacos With Beans And Rice": "Tacos w/ Beans & Rice",
+        "Beef Burritos": "Burritos",
+        "Chicken Burritos": "Burritos",
+        "Pork Burrito": "Burritos",
+        "Beef Stew Plate": "Beef Stew",
+        "Pepper Chicken": "Pepper Chicken/Pork",
+        "Pepper Pork": "Pepper Chicken/Pork",
+        "Korean Chicken": "Korean Chicken",
+        "Baked Chicken With Gravy": "Baked Chicken",
+        "Pulled Pork Sandwich N Fries": "Pulled Pork Sandwich w/ Fries",
+        "Roastbpork bowl": "Roast Pork Bowl",
+        "roast pork bowl": "Roast Pork Bowl",
+        "roast pork gravy bowl": "Roast Pork Bowl",
+        "Deli Sandwhich": "Deli Sandwich",
+        "Chicken Salad with a Mac Nut Pesto": "Chicken Mac Nut Pesto",
+        "Robert Special Salad": "Robert's Special Salad",
+        "Combo P!ate - Shoyu Chicken And Roast Pork With Gravy": "Combo Plate",
+        "Spaghetti w/ Fresh Garlic Bread": "Baked Spaghetti",
+      };
+      if (NORMALIZE[name]) name = NORMALIZE[name];
       const soldStr = row[4];
       if (!soldStr || soldStr === " ") continue;
       try {
         const sold = parseInt(soldStr);
-        const itemGross = parseFloat(row[2].replace(/[\$,]/g,"")) || 0;
-        const itemNet = parseFloat(row[3].replace(/[\$,]/g,"")) || 0;
+        const itemGross = parseFloat(row[2].replace(/["\$,]/g,"")) || 0;
+        const itemNet = parseFloat(row[3].replace(/["\$,]/g,"")) || 0;
         if (!isNaN(sold)) items.push({ name, cat: currentCat || "Other", sold, gross: itemGross, net: itemNet });
       } catch(e) {}
     }
@@ -484,7 +529,7 @@ async function upsertSalesWeek(parsed) {
         date_range: parsed.dateRange,
         gross: Math.round(parsed.gross),
         net: Math.round(parsed.net),
-        items: parsed.items.map(i => ({ n: i.name, s: i.sold, g: i.gross })),
+        items: parsed.items.map(i => ({ n: i.name, s: i.sold, g: i.gross, c: i.cat })),
         uploaded_at: new Date().toISOString()
       }, { onConflict: 'week_label' });
     return true;
