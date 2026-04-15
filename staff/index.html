@@ -767,38 +767,47 @@ function SummaryTab({ quantities, customItems, specialWeek, clearAll, masterItem
     return g;
   }, [ordered]);
 
-  const handlePrint = () => {
-    const win = window.open('', '_blank');
-    if (!win) return;
-
+  const buildPrintHTML = () => {
     const catSections = CAT_ORDER.filter(c => grouped[c]).map(cat => {
       const items = grouped[cat];
       const rows = items.map(it =>
-        `<tr><td>${it.name}</td><td style="text-align:center;font-weight:700">${it.qty}</td><td style="text-align:center;color:#666">${it.unit}</td><td style="color:#999;font-size:12px">${it.note||''}</td><td style="width:30px"></td></tr>`
+        `<tr><td>${it.name}</td><td style="text-align:center;font-weight:700">${it.qty}</td><td style="text-align:center;color:#666">${it.unit}</td><td style="color:#999;font-size:12px">${it.note||''}</td><td style="width:30px">&#x2610;</td></tr>`
       ).join('');
       return `<div style="margin-bottom:20px"><h3 style="margin:0 0 6px;font-size:15px;color:#333;border-bottom:2px solid #ddd;padding-bottom:4px">${cat}</h3><table style="width:100%;border-collapse:collapse"><thead><tr style="font-size:12px;color:#999"><th style="text-align:left;padding:4px">Item</th><th style="width:50px">Qty</th><th style="width:40px">Unit</th><th>Notes</th><th style="width:30px">&#x2610;</th></tr></thead><tbody>${rows}</tbody></table></div>`;
     }).join('');
 
     const customSection = customItems.length > 0 ?
-      `<div style="margin-bottom:20px"><h3 style="margin:0 0 6px;font-size:15px;color:#333;border-bottom:2px solid #ddd;padding-bottom:4px">Custom Items</h3><table style="width:100%;border-collapse:collapse"><thead><tr style="font-size:12px;color:#999"><th style="text-align:left;padding:4px">Item</th><th style="width:50px">Qty</th><th style="width:40px">Unit</th><th>Notes</th><th style="width:30px">&#x2610;</th></tr></thead><tbody>${customItems.map(ci => `<tr><td>${ci.name}</td><td style="text-align:center;font-weight:700">${ci.qty}</td><td style="text-align:center;color:#666">${ci.unit}</td><td></td><td></td></tr>`).join('')}</tbody></table></div>` : '';
+      `<div style="margin-bottom:20px"><h3 style="margin:0 0 6px;font-size:15px;color:#333;border-bottom:2px solid #ddd;padding-bottom:4px">Custom Items</h3><table style="width:100%;border-collapse:collapse"><thead><tr style="font-size:12px;color:#999"><th style="text-align:left;padding:4px">Item</th><th style="width:50px">Qty</th><th style="width:40px">Unit</th><th>Notes</th><th style="width:30px">&#x2610;</th></tr></thead><tbody>${customItems.map(ci => `<tr><td>${ci.name}</td><td style="text-align:center;font-weight:700">${ci.qty}</td><td style="text-align:center;color:#666">${ci.unit}</td><td></td><td>&#x2610;</td></tr>`).join('')}</tbody></table></div>` : '';
 
     const specialChips = specials.map(s =>
       `<span style="display:inline-block;background:#f0f0f0;padding:4px 10px;border-radius:12px;font-size:12px;margin:2px">${s.day}: ${s.name} ($${s.price})</span>`
     ).join(' ');
 
-    const html = `<!DOCTYPE html><html><head><title>Weekly Order</title><style>body{font-family:Helvetica,Arial,sans-serif;max-width:800px;margin:0 auto;padding:20px;color:#222}@media print{body{padding:10px}}</style></head><body>
+    return `<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Weekly Order</title><style>body{font-family:Helvetica,Arial,sans-serif;max-width:800px;margin:0 auto;padding:20px;color:#222}@media print{body{padding:10px}.no-print{display:none!important}}</style></head><body>
       <div style="text-align:center;margin-bottom:20px">
         <h1 style="margin:0;font-size:22px">TIKI TURTLE CAFE &mdash; Weekly Order</h1>
-        <div style="color:#666;font-size:13px;margin-top:6px">Week of ${fmtDate(weekOf)} &middot; ${specialWeek === 'week1' ? 'Week 1' : 'Week 2'} Specials &middot; ${totalItems} items &middot; Printed ${new Date().toLocaleString()}</div>
+        <div style="color:#666;font-size:13px;margin-top:6px">Week of ${fmtDate(weekOf)} &middot; ${specialWeek === 'week1' ? 'Week 1' : 'Week 2'} Specials &middot; ${totalItems} items &middot; ${new Date().toLocaleString()}</div>
         <div style="margin-top:8px">${specialChips}</div>
       </div>
       ${catSections}${customSection}
       <div style="text-align:center;margin-top:30px;padding-top:10px;border-top:1px solid #ddd;font-size:11px;color:#999">The Arc of Hilo &middot; Tiki Turtle Cafe &middot; Kitchen Operations</div>
     </body></html>`;
+  };
 
-    win.document.write(html);
-    win.document.close();
-    setTimeout(() => win.print(), 400);
+  const handlePrint = () => {
+    const html = buildPrintHTML();
+    /* Try opening in new tab (works on desktop + most mobile) */
+    const blob = new Blob([html], { type: 'text/html' });
+    const url = URL.createObjectURL(blob);
+    const win = window.open(url, '_blank');
+    if (win) {
+      /* Desktop: auto-trigger print dialog after load */
+      win.addEventListener('afterprint', () => URL.revokeObjectURL(url));
+      win.onload = () => setTimeout(() => win.print(), 300);
+    } else {
+      /* Fallback if popup blocked: navigate current page (user can go back) */
+      window.location.href = url;
+    }
   };
 
   return (
