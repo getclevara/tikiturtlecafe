@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Bus Order Summary | Tiki Turtle Cafe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+  :root{
+    --ocean-deep:#0d5c72; --ocean-mid:#0e8ca0; --ocean-bright:#12b5c4; --ocean-light:#a8dce5;
+    --sand:#f7f3ed; --sand-warm:#fff8f0; --coral:#e85a5a; --cream:#fffcf7;
+    --text-dark:#1a3a4a; --text-light:#fff;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text-dark);line-height:1.6;}
+  h1,h2,h3,h4{font-family:'Playfair Display',serif;}
+  .header{background:linear-gradient(135deg,var(--ocean-deep),var(--ocean-mid));color:#fff;text-align:center;padding:1.5rem 1.25rem;}
+  .header h1{font-size:1.55rem;font-weight:700;}
+  .header .date-badge{display:inline-block;margin-top:.5rem;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.35);padding:.35rem 1rem;border-radius:50px;font-size:.9rem;font-weight:600;}
+  .wrap{max-width:760px;margin:0 auto;padding:1.25rem;}
+  .card{background:#fff;border-radius:18px;box-shadow:0 4px 20px rgba(13,92,114,.08);padding:1.25rem 1.4rem;margin-bottom:1.25rem;}
+  .gate{max-width:340px;margin:5rem auto;text-align:center;}
+  .gate input{width:100%;text-align:center;font-size:1.6rem;letter-spacing:.4rem;border:1.5px solid #dfe7ea;border-radius:12px;padding:.8rem;background:var(--sand-warm);font-family:inherit;}
+  .gate input:focus{outline:none;border-color:var(--ocean-bright);}
+  .btn{background:var(--coral);color:#fff;border:none;border-radius:50px;padding:.8rem 1.6rem;font-family:inherit;font-size:1rem;font-weight:700;cursor:pointer;margin-top:1rem;}
+  .btn.ghost{background:var(--sand);color:var(--ocean-deep);}
+  .btn.full{display:block;width:100%;margin-top:0;}
+  .btn:disabled{opacity:.5;cursor:default;}
+  .gate-err{color:#a02929;font-size:.9rem;margin-top:.75rem;min-height:1.2em;}
+  h2.section{font-size:1.25rem;color:var(--ocean-deep);margin-bottom:.85rem;display:flex;align-items:center;gap:.5rem;}
+  .tally-row{display:flex;justify-content:space-between;align-items:baseline;padding:.45rem 0;border-bottom:1px solid #f0ebe3;}
+  .tally-row:last-child{border-bottom:none;}
+  .tally-name{font-weight:600;}
+  .tally-qty{font-weight:700;color:var(--ocean-mid);font-size:1.05rem;}
+  .tally-cat{font-size:.78rem;text-transform:uppercase;letter-spacing:.05em;color:#9aa7ac;margin:1rem 0 .25rem;font-weight:600;}
+  .tally-cat:first-child{margin-top:0;}
+  .order{border:1px solid #eee5da;border-radius:14px;padding:.9rem 1.1rem;margin-bottom:.85rem;background:var(--sand-warm);}
+  .order-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:.35rem;}
+  .order-name{font-weight:700;font-size:1.05rem;color:var(--ocean-deep);}
+  .order-total{font-weight:700;color:var(--coral);}
+  .order-items{font-size:.9rem;opacity:.8;}
+  .order-opts{font-size:.82rem;opacity:.7;padding-left:1rem;font-style:italic;}
+  .order-notes{font-size:.85rem;margin-top:.4rem;padding:.4rem .6rem;background:#fff;border-radius:8px;border-left:3px solid var(--sunset,#f59e42);}
+  .grand{display:flex;justify-content:space-between;font-size:1.05rem;padding:.3rem 0;}
+  .grand.big{border-top:2px solid #ece5db;margin-top:.6rem;padding-top:.7rem;font-weight:700;font-size:1.5rem;color:var(--ocean-deep);font-family:'Playfair Display',serif;}
+  .meta{font-size:.85rem;opacity:.65;}
+  .toolbar{display:flex;gap:.6rem;flex-wrap:wrap;align-items:flex-end;margin-bottom:1.25rem;}
+  .toolbar .btn{margin-top:0;}
+  .datepick-label{display:flex;flex-direction:column;font-size:.78rem;font-weight:600;color:var(--ocean-deep);gap:.25rem;margin-right:auto;}
+  .datepick{border:1.5px solid #dfe7ea;border-radius:50px;padding:.6rem 1rem;font-family:inherit;font-size:.95rem;background:#fff;color:var(--text-dark);}
+  .driver-badge{display:inline-block;background:var(--ocean-deep);color:#fff;font-size:.68rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:.15rem .5rem;border-radius:50px;margin-left:.5rem;vertical-align:middle;}
+  .order.driver{border-color:var(--ocean-bright);background:#eef9fb;}
+  .empty{text-align:center;padding:3rem 1rem;opacity:.6;}
+  .ok-msg{color:#1d7a4d;font-size:.9rem;margin-top:.6rem;display:none;}
+  @media print{.toolbar,.header .date-badge{display:none;}.card{box-shadow:none;border:1px solid #eee;}}
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>🚌 Bus Order Summary</h1>
+  <span class="date-badge" id="dateBadge"></span>
+</div>
+
+<div id="gate" class="gate">
+  <div class="card">
+    <h2 class="section" style="justify-content:center;">Staff PIN</h2>
+    <input type="password" id="pin" inputmode="numeric" maxlength="6" placeholder="••••">
+    <button class="btn" id="pinBtn">View Orders</button>
+    <div class="gate-err" id="gateErr"></div>
+  </div>
+</div>
+
+<div id="content" class="wrap" style="display:none;">
+  <div class="toolbar">
+    <label class="datepick-label">Viewing date
+      <input type="date" id="viewDate" class="datepick">
+    </label>
+    <button class="btn ghost" id="refreshBtn">↻ Refresh</button>
+    <button class="btn ghost" onclick="window.print()">🖨 Print</button>
+    <button class="btn" id="emailBtn">✉ Email this to cafe</button>
+  </div>
+  <div class="ok-msg" id="okMsg">Sent! Check binil@empowerpotential.co</div>
+  <div id="body"></div>
+</div>
+
+<script>
+const SUPABASE_URL='https://dstynyumakryhnxobctw.supabase.co';
+const SUPABASE_ANON_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRzdHlueXVtYWtyeWhueG9iY3R3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyODQyOTMsImV4cCI6MjA5MDg2MDI5M30.0K_GfYNjnPrwOgjIZpU8oH4dfIQv34tP5JQU6aK8K3Y';
+const CORRECT_PIN='2026';
+const WEB3FORMS_KEY='YOUR_WEB3FORMS_ACCESS_KEY'; // ← paste your free key from web3forms.com
+const CAFE_EMAIL='binil@empowerpotential.co';
+const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+const fmt=n=>'$'+Number(n).toFixed(2);
+
+// Category lookup for grouping the tally
+const CAT={
+  'Tacos w/ Beans & Rice':'Tacos',
+  'Chicken Mac Nut Pesto':'Sandwiches',"Da Robert's Special":'Sandwiches','Chicken Bacon Ranch':'Sandwiches','Deli Sandwich':'Sandwiches',
+  "Chef's Salad":'Salads','Chicken Pesto Salad':'Salads','Chicken Bacon Ranch Salad':'Salads',"Da Robert's Special Salad":'Salads',
+  'Pepsi':'Soft Drinks','Diet Pepsi':'Soft Drinks','Root Beer':'Soft Drinks','Orange Bang':'Soft Drinks','Fruit Punch':'Soft Drinks','Starry':'Soft Drinks',
+  'Mango Pineapple':'Smoothies','Strawberry Banana':'Smoothies',
+  'Dole Whip':'Treats'
+};
+const CAT_ORDER=['Tacos','Sandwiches','Salads','Soft Drinks','Smoothies','Treats','Other'];
+
+function upcomingTuesday(d=new Date()){
+  const r=new Date(d.getFullYear(),d.getMonth(),d.getDate());
+  r.setDate(r.getDate()+((2-r.getDay()+7)%7));
+  return r;
+}
+function toISO(d){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
+function friendly(iso){if(!iso)return '';const [y,m,d]=iso.split('-').map(Number);return new Date(y,m-1,d).toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});}
+const viewDateEl=document.getElementById('viewDate');
+viewDateEl.value=toISO(upcomingTuesday());
+function selectedISO(){return viewDateEl.value;}
+function selectedLabel(){return friendly(selectedISO());}
+document.getElementById('dateBadge').textContent=selectedLabel();
+viewDateEl.addEventListener('change',()=>{document.getElementById('dateBadge').textContent=selectedLabel();load();});
+
+let ORDERS=[];
+
+/* ── PIN gate ───────────────────────────────────────── */
+const pinEl=document.getElementById('pin');
+function tryPin(){
+  if(pinEl.value===CORRECT_PIN){
+    sessionStorage.setItem('bus_summary_auth','1');
+    document.getElementById('gate').style.display='none';
+    document.getElementById('content').style.display='block';
+    load();
+  }else{
+    document.getElementById('gateErr').textContent='Incorrect PIN';
+  }
+}
+document.getElementById('pinBtn').onclick=tryPin;
+pinEl.addEventListener('keydown',e=>{if(e.key==='Enter')tryPin();});
+if(sessionStorage.getItem('bus_summary_auth')==='1'){
+  document.getElementById('gate').style.display='none';
+  document.getElementById('content').style.display='block';
+}
+
+/* ── Load + render ──────────────────────────────────── */
+document.getElementById('refreshBtn').onclick=load;
+async function load(){
+  document.getElementById('body').innerHTML='<div class="empty">Loading orders…</div>';
+  const {data,error}=await sb.from('tour_orders').select('*').eq('service_date',selectedISO()).order('created_at');
+  if(error){document.getElementById('body').innerHTML='<div class="empty">Error loading orders. Try refresh.</div>';console.error(error);return;}
+  ORDERS=data||[];
+  render();
+}
+function render(){
+  const body=document.getElementById('body');
+  if(ORDERS.length===0){body.innerHTML='<div class="card empty">No orders yet for '+selectedLabel()+'.<br>Share the order link with the group!</div>';return;}
+
+  // Item tally
+  const tally={};
+  ORDERS.forEach(o=>(o.items||[]).forEach(it=>{tally[it.name]=(tally[it.name]||0)+(it.qty||1);}));
+  const byCat={};
+  Object.keys(tally).forEach(n=>{const c=CAT[n]||'Other';(byCat[c]=byCat[c]||[]).push(n);});
+  let tallyHtml='';
+  CAT_ORDER.forEach(c=>{
+    if(!byCat[c])return;
+    tallyHtml+=`<div class="tally-cat">${c}</div>`;
+    byCat[c].sort().forEach(n=>{tallyHtml+=`<div class="tally-row"><span class="tally-name">${esc(n)}</span><span class="tally-qty">×${tally[n]}</span></div>`;});
+  });
+
+  // Money totals exclude comped driver orders; kitchen tally above includes everyone.
+  const paying=ORDERS.filter(o=>!o.is_driver);
+  const drivers=ORDERS.filter(o=>o.is_driver);
+  const subtotal=paying.reduce((s,o)=>s+Number(o.subtotal),0);
+  const tax=paying.reduce((s,o)=>s+Number(o.get_tax),0);
+  const grand=paying.reduce((s,o)=>s+Number(o.total),0);
+  const compedLine=drivers.length?`<div class="grand" style="opacity:.7;"><span>Driver meal${drivers.length>1?'s':''} (comped)</span><span>${drivers.length} × FREE</span></div>`:'';
+
+  let ordersHtml='';
+  ORDERS.forEach(o=>{
+    const items=(o.items||[]).map(i=>`${esc(i.name)}${i.label?' — <strong>🏷️ '+esc(i.label)+'</strong>':(i.qty>1?' ×'+i.qty:'')}${optsHtml(i.opts)}`).join('<br>');
+    ordersHtml+=`<div class="order${o.is_driver?' driver':''}">
+      <div class="order-head"><span class="order-name">${esc(o.rider_name)}${o.is_driver?'<span class="driver-badge">🚐 Driver · Comped</span>':''}</span><span class="order-total">${o.is_driver?'FREE':fmt(o.total)}</span></div>
+      <div class="order-items">${items}</div>
+      ${o.notes?`<div class="order-notes">📝 ${esc(o.notes)}</div>`:''}
+    </div>`;
+  });
+
+  body.innerHTML=`
+    <div class="card">
+      <h2 class="section">🍽 Kitchen Tally <span class="meta" style="margin-left:auto;">${ORDERS.length} order${ORDERS.length>1?'s':''}</span></h2>
+      ${tallyHtml}
+    </div>
+    <div class="card">
+      <h2 class="section">💰 Totals</h2>
+      <div class="grand"><span>Subtotal</span><span>${fmt(subtotal)}</span></div>
+      <div class="grand"><span>GET (4.712%, est.)</span><span>${fmt(tax)}</span></div>
+      ${compedLine}
+      <div class="grand big"><span>Grand Total <span style="font-size:.7rem;font-weight:400;opacity:.6;">(to charge)</span></span><span>${fmt(grand)}</span></div>
+    </div>
+    <div class="card">
+      <h2 class="section">👥 Individual Orders</h2>
+      ${ordersHtml}
+    </div>`;
+}
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+// Build a readable detail string from a meal's chosen options.
+function optsParts(opts){
+  if(!opts||typeof opts!=='object')return [];
+  const parts=[];
+  if(opts.protein)parts.push(opts.protein);
+  if(opts.bread)parts.push(opts.bread);
+  if(opts.side)parts.push(opts.side);
+  if(opts.dressing)parts.push(opts.dressing);
+  if(opts.flavor)parts.push(opts.flavor);
+  if(Array.isArray(opts.toppings))parts.push(opts.toppings.length?opts.toppings.join(', '):'no add-ons');
+  return parts;
+}
+function optsHtml(opts){const p=optsParts(opts);return p.length?`<div class="order-opts">↳ ${esc(p.join(' · '))}</div>`:'';}
+function optsTextLine(opts){const p=optsParts(opts);return p.length?' — '+p.join(', '):'';}
+
+/* ── Email consolidated order ───────────────────────── */
+document.getElementById('emailBtn').onclick=async function(){
+  if(ORDERS.length===0){alert('No orders to email yet.');return;}
+  if(WEB3FORMS_KEY==='YOUR_WEB3FORMS_ACCESS_KEY'){alert('Email not set up yet — add your Web3Forms key in summary.html.');return;}
+  this.disabled=true;this.textContent='Sending…';
+  const tally={};
+  ORDERS.forEach(o=>(o.items||[]).forEach(it=>{tally[it.name]=(tally[it.name]||0)+(it.qty||1);}));
+  let txt=`TOUR BUS PRE-ORDER — ${selectedLabel()}\n${ORDERS.length} orders\n\n=== KITCHEN TALLY (everyone, incl. driver) ===\n`;
+  CAT_ORDER.forEach(c=>{
+    const names=Object.keys(tally).filter(n=>(CAT[n]||'Other')===c).sort();
+    if(!names.length)return;
+    txt+=`\n${c}:\n`;names.forEach(n=>txt+=`  ${tally[n]}x ${n}\n`);
+  });
+  txt+=`\n=== INDIVIDUAL ORDERS ===\n`;
+  ORDERS.forEach(o=>{
+    txt+=`\n${o.rider_name}${o.is_driver?' [DRIVER — COMPED]':''} — ${o.is_driver?'FREE':fmt(o.total)}\n`;
+    (o.items||[]).forEach(i=>{txt+=`  - ${i.name}${i.label?' ('+i.label+')':''}${optsTextLine(i.opts)}\n`;});
+    if(o.notes)txt+=`  Note: ${o.notes}\n`;
+  });
+  const paying=ORDERS.filter(o=>!o.is_driver);
+  const drivers=ORDERS.filter(o=>o.is_driver);
+  const subtotal=paying.reduce((s,o)=>s+Number(o.subtotal),0);
+  const tax=paying.reduce((s,o)=>s+Number(o.get_tax),0);
+  const grand=paying.reduce((s,o)=>s+Number(o.total),0);
+  txt+=`\n=== TOTALS (to charge) ===\nSubtotal: ${fmt(subtotal)}\nGET (est.): ${fmt(tax)}\nGRAND TOTAL: ${fmt(grand)}`;
+  if(drivers.length)txt+=`\n(${drivers.length} driver meal${drivers.length>1?'s':''} comped, not included)`;
+  txt+='\n';
+  try{
+    const res=await fetch('https://api.web3forms.com/submit',{
+      method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},
+      body:JSON.stringify({access_key:WEB3FORMS_KEY,subject:`Bus Order — ${selectedLabel()} — ${fmt(grand)}`,from_name:'Tiki Turtle Bus Orders',email:CAFE_EMAIL,message:txt})
+    });
+    const j=await res.json();
+    if(!j.success)throw new Error(j.message||'failed');
+    document.getElementById('okMsg').style.display='block';
+  }catch(e){alert('Could not send email. '+e.message);console.error(e);}
+  this.disabled=false;this.textContent='✉ Email this to cafe';
+};
+</script>
+</body>
+</html>

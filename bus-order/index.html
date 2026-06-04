@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Tour Pre-Order | Tiki Turtle Cafe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+  :root{
+    --ocean-deep:#0d5c72; --ocean-mid:#0e8ca0; --ocean-bright:#12b5c4; --ocean-light:#a8dce5;
+    --sand:#f7f3ed; --sand-warm:#fff8f0; --coral:#e85a5a; --coral-light:#ff7b7b;
+    --sunset:#f59e42; --sunset-light:#ffc178; --hibiscus:#d64d7a; --cream:#fffcf7;
+    --text-dark:#1a3a4a; --text-light:#fff;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text-dark);line-height:1.6;padding-bottom:120px;}
+  h1,h2,h3,h4{font-family:'Playfair Display',serif;}
+  .header{background:linear-gradient(135deg,var(--ocean-deep) 0%,var(--ocean-mid) 100%);color:#fff;text-align:center;padding:1.75rem 1.25rem 2rem;}
+  .header img{height:64px;width:auto;margin-bottom:.5rem;filter:drop-shadow(0 2px 8px rgba(0,0,0,.25));}
+  .header h1{font-size:1.7rem;font-weight:700;line-height:1.2;}
+  .header .date-badge{display:inline-block;margin-top:.75rem;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.35);padding:.4rem 1rem;border-radius:50px;font-size:.95rem;font-weight:600;}
+  .header p.sub{margin-top:.6rem;font-size:.95rem;opacity:.9;}
+  .wrap{max-width:620px;margin:0 auto;padding:1.25rem;}
+  .card{background:#fff;border-radius:18px;box-shadow:0 4px 20px rgba(13,92,114,.08);padding:1.25rem;margin-bottom:1.25rem;}
+  label.field-label{display:block;font-weight:600;font-size:.9rem;margin-bottom:.4rem;color:var(--ocean-deep);}
+  input[type=text],input[type=date],textarea{width:100%;border:1.5px solid #dfe7ea;border-radius:12px;padding:.8rem .9rem;font-family:inherit;font-size:1rem;color:var(--text-dark);background:var(--sand-warm);}
+  input[type=text]:focus,input[type=date]:focus,textarea:focus{outline:none;border-color:var(--ocean-bright);}
+  textarea{resize:vertical;min-height:64px;}
+  .driver-toggle{display:flex;gap:.7rem;align-items:flex-start;margin-top:1.1rem;padding:.9rem 1rem;background:var(--sand-warm);border:1.5px solid #e6decf;border-radius:12px;cursor:pointer;transition:border-color .2s ease,background .2s ease;}
+  .driver-toggle input{width:22px;height:22px;flex-shrink:0;margin-top:.15rem;accent-color:var(--ocean-bright);cursor:pointer;}
+  .driver-toggle.active{border-color:var(--ocean-bright);background:#eef9fb;}
+  .driver-sub{font-size:.82rem;opacity:.72;font-weight:400;}
+  .cat-title{font-size:1.15rem;color:var(--ocean-deep);margin:.25rem 0 .85rem;display:flex;align-items:center;gap:.5rem;}
+  .item{display:flex;align-items:center;justify-content:space-between;gap:.75rem;padding:.7rem 0;border-bottom:1px solid #f0ebe3;}
+  .item:last-child{border-bottom:none;}
+  .item-info{flex:1;min-width:0;}
+  .item-name{font-weight:600;font-size:.98rem;}
+  .item-price{font-size:.85rem;color:var(--ocean-mid);font-weight:600;}
+  .stepper{display:flex;align-items:center;gap:.5rem;flex-shrink:0;}
+  .stepper button{width:38px;height:38px;border-radius:50%;border:none;font-size:1.3rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .15s ease,background .2s ease;line-height:1;}
+  .stepper button.minus{background:var(--sand);color:var(--ocean-deep);}
+  .stepper button.plus{background:var(--ocean-bright);color:#fff;}
+  .stepper button:active{transform:scale(.9);}
+  .stepper button:disabled{opacity:.35;cursor:default;}
+  .qty{min-width:24px;text-align:center;font-weight:700;font-size:1.05rem;}
+  .qty.zero{color:#b7c2c7;}
+  .add-btn{flex-shrink:0;background:var(--ocean-bright);color:#fff;border:none;border-radius:50px;padding:.55rem 1.1rem;font-family:inherit;font-size:.95rem;font-weight:700;cursor:pointer;transition:transform .15s ease;}
+  .add-btn:active{transform:scale(.93);}
+  .meal-count{margin-left:auto;font-family:'DM Sans',sans-serif;font-size:.85rem;font-weight:600;color:var(--ocean-mid);}
+  .meal{display:flex;flex-direction:column;gap:.5rem;padding:.8rem 0;border-bottom:1px solid #f0ebe3;}
+  .meal:last-child{border-bottom:none;}
+  .meal-top{display:flex;align-items:center;gap:.6rem;}
+  .meal-name{font-weight:600;font-size:.98rem;flex:1;}
+  .meal-price{font-weight:600;color:var(--ocean-mid);font-size:.9rem;}
+  .meal-remove{background:var(--sand);color:var(--coral);border:none;border-radius:50%;width:30px;height:30px;font-size:1rem;font-weight:700;cursor:pointer;flex-shrink:0;line-height:1;}
+  .meal-label{width:100%;border:1.5px solid #dfe7ea;border-radius:10px;padding:.55rem .75rem;font-family:inherit;font-size:.92rem;background:var(--sand-warm);}
+  .meal-label:focus{outline:none;border-color:var(--ocean-bright);}
+  .opt-group{margin-top:.3rem;}
+  .opt-label{font-size:.78rem;font-weight:600;color:var(--ocean-deep);margin-bottom:.3rem;}
+  .opt-hint{font-weight:400;opacity:.55;}
+  .opt-select{width:100%;border:1.5px solid #dfe7ea;border-radius:10px;padding:.5rem .7rem;font-family:inherit;font-size:.9rem;background:var(--sand-warm);color:var(--text-dark);}
+  .opt-select:focus{outline:none;border-color:var(--ocean-bright);}
+  .chip-row{display:flex;flex-wrap:wrap;gap:.4rem;}
+  .chip{border:1.5px solid #dfe7ea;background:var(--sand-warm);color:var(--text-dark);border-radius:50px;padding:.35rem .8rem;font-family:inherit;font-size:.85rem;font-weight:500;cursor:pointer;transition:all .15s ease;opacity:.5;}
+  .chip.on{border-color:var(--ocean-bright);background:#eef9fb;color:var(--ocean-deep);font-weight:600;opacity:1;}
+  .chip.on::before{content:'✓ ';font-weight:700;}
+  .empty-meals{text-align:center;padding:1.5rem 1rem;opacity:.55;font-size:.92rem;}
+  .totalbar{position:fixed;bottom:0;left:0;right:0;background:#fff;box-shadow:0 -4px 24px rgba(13,92,114,.14);padding:.85rem 1.25rem calc(.85rem + env(safe-area-inset-bottom));z-index:20;}
+  .totalbar-inner{max-width:620px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:1rem;}
+  .totals-mini{font-size:.82rem;color:var(--text-dark);opacity:.7;line-height:1.35;}
+  .totals-mini strong{color:var(--ocean-deep);font-size:1.35rem;font-family:'Playfair Display',serif;opacity:1;display:block;}
+  .btn-submit{background:var(--coral);color:#fff;border:none;border-radius:50px;padding:.9rem 1.6rem;font-family:inherit;font-size:1.05rem;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(232,90,90,.35);transition:transform .15s ease,opacity .2s ease;white-space:nowrap;}
+  .btn-submit:active{transform:scale(.97);}
+  .btn-submit:disabled{background:#c4ccce;box-shadow:none;cursor:default;}
+  .note{font-size:.82rem;color:var(--text-dark);opacity:.6;margin-top:.4rem;}
+  .success{text-align:center;padding:3rem 1.5rem;}
+  .success .check{width:84px;height:84px;border-radius:50%;background:linear-gradient(135deg,var(--ocean-bright),var(--ocean-mid));color:#fff;display:flex;align-items:center;justify-content:center;font-size:2.6rem;margin:0 auto 1.25rem;}
+  .success h2{font-size:1.8rem;color:var(--ocean-deep);margin-bottom:.5rem;}
+  .success p{opacity:.75;margin-bottom:1.5rem;}
+  .btn-ghost{background:var(--sand);color:var(--ocean-deep);border:none;border-radius:50px;padding:.8rem 1.6rem;font-family:inherit;font-size:1rem;font-weight:600;cursor:pointer;}
+  .err{background:#fde8e8;color:#a02929;border-radius:12px;padding:.8rem 1rem;font-size:.9rem;margin-bottom:1rem;display:none;}
+  .summary-line{display:flex;justify-content:space-between;font-size:.92rem;padding:.15rem 0;}
+  .summary-line.grand{border-top:1.5px solid #ece5db;margin-top:.5rem;padding-top:.6rem;font-weight:700;font-size:1.05rem;color:var(--ocean-deep);}
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="header">
+    <img src="../tiki-logo.png" alt="Tiki Turtle Cafe">
+    <h1>Tour Group Pre-Order</h1>
+    <span class="date-badge" id="dateBadge">Loading…</span>
+    <p class="sub">Pick your meal below — we'll have it ready when the bus arrives! 🌺</p>
+  </div>
+  <div class="wrap" id="formWrap">
+    <div class="err" id="err"></div>
+    <div class="card">
+      <label class="field-label" for="riderName">Your Name *</label>
+      <input type="text" id="riderName" placeholder="e.g. Auntie Lani" autocomplete="name">
+      <label class="field-label" for="orderDate" style="margin-top:1.1rem;">Date of this order *</label>
+      <input type="date" id="orderDate">
+      <label class="driver-toggle" id="driverToggle">
+        <input type="checkbox" id="isDriver">
+        <span><strong>🚐 I'm the bus driver</strong><br><span class="driver-sub">My meal is comped (free) — still make it so the kitchen knows.</span></span>
+      </label>
+    </div>
+    <div class="card" id="menuCard"></div>
+    <div class="card">
+      <div class="cat-title">🧾 Your Meals <span class="meal-count" id="mealCount"></span></div>
+      <div id="mealsList"><div class="empty-meals">Tap "Add" on any item above to build the order.<br>Put a name on each plate so we can label it. 🏷️</div></div>
+    </div>
+    <div class="card">
+      <label class="field-label" for="notes">Special requests <span style="font-weight:400;opacity:.6;">(optional)</span></label>
+      <textarea id="notes" placeholder="Bread choice, salad dressing, no onions, allergies…"></textarea>
+      <div class="card" style="box-shadow:none;background:var(--sand-warm);margin:1rem 0 0;padding:1rem;">
+        <div class="summary-line"><span>Subtotal</span><span id="sumSubtotal">$0.00</span></div>
+        <div class="summary-line"><span>GET (4.712%, est.)</span><span id="sumTax">$0.00</span></div>
+        <div class="summary-line grand"><span>Your Total</span><span id="sumGrand">$0.00</span></div>
+      </div>
+      <p class="note">GET is a rough estimate. Final total is calculated at the cafe.</p>
+    </div>
+  </div>
+</div>
+
+<div class="totalbar" id="totalbar">
+  <div class="totalbar-inner">
+    <div class="totals-mini">Your total<strong id="barTotal">$0.00</strong></div>
+    <button class="btn-submit" id="submitBtn" disabled>Submit Order</button>
+  </div>
+</div>
+
+<script>
+/* ── Config ─────────────────────────────────────────── */
+const SUPABASE_URL='https://dstynyumakryhnxobctw.supabase.co';
+const SUPABASE_ANON_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRzdHlueXVtYWtyeWhueG9iY3R3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyODQyOTMsImV4cCI6MjA5MDg2MDI5M30.0K_GfYNjnPrwOgjIZpU8oH4dfIQv34tP5JQU6aK8K3Y';
+const GET_RATE=0.04712; // Hawaii County (Big Island) effective pass-on rate. Edit here if it changes.
+const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+
+/* ── Choices (from the cafe menu) ───────────────────── */
+const BREAD=['White','Wheat','Sweet Bread','Sourdough','Spinach Wrap'];
+const TOPPINGS=['Mayo','Swiss Cheese','Lettuce','Tomato','Red Onion','Sprouts'];
+const DRESSING=['Housemade Ranch','Italian','Onion Vinaigrette','Thousand Island','Jalapeño Cilantro'];
+const PROTEIN=['Ham','Turkey','Tuna'];
+const SIDE=['Chips','Pasta Salad','Pineapple Coleslaw'];
+const FLAVOR=['Pineapple','Vanilla','Twist'];
+
+/* ── Menu (prices include the 4% fee) ───────────────── */
+const MENU=[
+  {cat:'🌮 Tacos', items:[
+    {name:'Tacos w/ Beans & Rice', price:15.60},
+  ]},
+  {cat:'🥪 Sandwiches', items:[
+    {name:'Chicken Mac Nut Pesto', price:15.60, choose:['bread','side','toppings']},
+    {name:"Da Robert's Special", price:15.60, choose:['bread','side','toppings']},
+    {name:'Chicken Bacon Ranch', price:15.60, choose:['bread','side','toppings']},
+    {name:'Deli Sandwich', price:11.44, choose:['protein','bread','side','toppings']},
+  ]},
+  {cat:'🥗 Salads', items:[
+    {name:"Chef's Salad", price:15.60, choose:['dressing']},
+    {name:'Chicken Pesto Salad', price:15.60, choose:['dressing']},
+    {name:'Chicken Bacon Ranch Salad', price:15.60, choose:['dressing']},
+    {name:"Da Robert's Special Salad", price:15.60, choose:['dressing']},
+  ]},
+  {cat:'🥤 Soft Drinks', items:[
+    {name:'Pepsi', price:2.00},
+    {name:'Diet Pepsi', price:2.00},
+    {name:'Root Beer', price:2.00},
+    {name:'Orange Bang', price:2.00},
+    {name:'Fruit Punch', price:2.00},
+    {name:'Starry', price:2.00},
+  ]},
+  {cat:'🥭 Smoothies (16oz)', items:[
+    {name:'Mango Pineapple', price:7.54},
+    {name:'Strawberry Banana', price:7.54},
+  ]},
+  {cat:'🍦 Dole Whip', items:[
+    {name:'Dole Whip', price:5.20, choose:['flavor']},
+  ]},
+];
+
+/* ── Upcoming Tuesday ───────────────────────────────── */
+function upcomingTuesday(d=new Date()){
+  const r=new Date(d.getFullYear(),d.getMonth(),d.getDate());
+  const day=r.getDay(); // 0 Sun … 2 Tue
+  let add=(2-day+7)%7; // days until Tuesday
+  // If it's already Tuesday, keep today (orders still open for today's bus)
+  r.setDate(r.getDate()+add);
+  return r;
+}
+function toISO(d){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
+function friendly(iso){if(!iso)return 'Pick a date';const [y,m,d]=iso.split('-').map(Number);return new Date(y,m-1,d).toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});}
+const orderDateEl=document.getElementById('orderDate');
+orderDateEl.value=toISO(upcomingTuesday());
+function updateBadge(){document.getElementById('dateBadge').textContent=friendly(orderDateEl.value);}
+updateBadge();
+orderDateEl.addEventListener('change',()=>{updateBadge();validate();});
+const driverEl=document.getElementById('isDriver');
+driverEl.addEventListener('change',()=>{document.getElementById('driverToggle').classList.toggle('active',driverEl.checked);recompute();});
+
+/* ── Build menu UI ──────────────────────────────────── */
+const fmt=n=>'$'+n.toFixed(2);
+const menuCard=document.getElementById('menuCard');
+MENU.forEach((group,gi)=>{
+  const title=document.createElement('div');
+  title.className='cat-title';
+  title.textContent=group.cat;
+  if(gi>0) title.style.marginTop='1.5rem';
+  menuCard.appendChild(title);
+  group.items.forEach(it=>{
+    const row=document.createElement('div');
+    row.className='item';
+    row.innerHTML=`<div class="item-info"><div class="item-name">${it.name}</div><div class="item-price">${fmt(it.price)}</div></div>`;
+    const btn=document.createElement('button');
+    btn.className='add-btn'; btn.type='button'; btn.textContent='+ Add';
+    btn.onclick=()=>addMeal(it);
+    row.appendChild(btn);
+    menuCard.appendChild(row);
+  });
+});
+
+/* ── Meals: one line = one labeled plate ────────────── */
+const OPT_LISTS={bread:BREAD,toppings:TOPPINGS,dressing:DRESSING,protein:PROTEIN,side:SIDE,flavor:FLAVOR};
+const OPT_LABEL={bread:'Bread',toppings:'Add-ons',dressing:'Dressing',protein:'Protein',side:'Side',flavor:'Flavor'};
+let meals=[]; let mealSeq=0;
+const mealsList=document.getElementById('mealsList');
+function addMeal(it){
+  const choose=it.choose||[];
+  const opts={};
+  choose.forEach(c=>{
+    if(c==='toppings') opts.toppings=[...TOPPINGS]; // default: everything on, they remove what they don't want
+    else opts[c]=OPT_LISTS[c][0];                   // single-pick defaults to first option
+  });
+  meals.push({id:++mealSeq,name:it.name,price:it.price,choose,opts,label:''});
+  renderMeals(); recompute();
+  const last=mealsList.querySelector('.meal:last-child .meal-label');
+  if(last) last.focus();
+}
+function removeMeal(id){meals=meals.filter(m=>m.id!==id);renderMeals();recompute();}
+function renderMeals(){
+  document.getElementById('mealCount').textContent=meals.length?meals.length+(meals.length>1?' meals':' meal'):'';
+  if(!meals.length){mealsList.innerHTML='<div class="empty-meals">Tap "Add" on any item above to build the order.<br>Put a name on each plate so we can label it. 🏷️</div>';return;}
+  mealsList.innerHTML='';
+  meals.forEach(m=>{
+    const el=document.createElement('div');
+    el.className='meal';
+    el.innerHTML=`<div class="meal-top"><span class="meal-name">${m.name}</span><span class="meal-price">${fmt(m.price)}</span><button class="meal-remove" type="button" aria-label="Remove">✕</button></div>
+      <input class="meal-label" type="text" placeholder="Name on plate (optional)" value="${m.label.replace(/"/g,'&quot;')}">`;
+    // Per-meal customization controls
+    (m.choose||[]).forEach(c=>{
+      if(c==='toppings'){
+        const wrap=document.createElement('div');
+        wrap.className='opt-group';
+        wrap.innerHTML=`<div class="opt-label">${OPT_LABEL[c]} <span class="opt-hint">(tap to remove)</span></div>`;
+        const chips=document.createElement('div');
+        chips.className='chip-row';
+        TOPPINGS.forEach(t=>{
+          const chip=document.createElement('button');
+          chip.type='button';
+          chip.className='chip'+(m.opts.toppings.includes(t)?' on':'');
+          chip.textContent=t;
+          chip.onclick=()=>{
+            const i=m.opts.toppings.indexOf(t);
+            if(i>=0) m.opts.toppings.splice(i,1); else m.opts.toppings.push(t);
+            chip.classList.toggle('on');
+          };
+          chips.appendChild(chip);
+        });
+        wrap.appendChild(chips);
+        el.appendChild(wrap);
+      }else{
+        const wrap=document.createElement('div');
+        wrap.className='opt-group';
+        const sel=document.createElement('select');
+        sel.className='opt-select';
+        OPT_LISTS[c].forEach(o=>{
+          const op=document.createElement('option');
+          op.value=o; op.textContent=o; if(o===m.opts[c]) op.selected=true;
+          sel.appendChild(op);
+        });
+        sel.onchange=e=>{m.opts[c]=e.target.value;};
+        wrap.innerHTML=`<div class="opt-label">${OPT_LABEL[c]}</div>`;
+        wrap.appendChild(sel);
+        el.appendChild(wrap);
+      }
+    });
+    el.querySelector('.meal-remove').onclick=()=>removeMeal(m.id);
+    el.querySelector('.meal-label').addEventListener('input',e=>{m.label=e.target.value;});
+    mealsList.appendChild(el);
+  });
+}
+function currentItems(){return meals.map(m=>({name:m.name,price:m.price,label:m.label.trim(),opts:m.opts||{}}));}
+
+/* ── Totals ─────────────────────────────────────────── */
+function recompute(){
+  const items=currentItems();
+  const subtotal=items.reduce((s,i)=>s+i.price,0);
+  const isDriver=driverEl.checked;
+  const tax=isDriver?0:subtotal*GET_RATE;
+  const grand=isDriver?0:subtotal+tax;
+  document.getElementById('sumSubtotal').textContent=fmt(subtotal);
+  document.getElementById('sumTax').textContent=isDriver?'Comped':fmt(tax);
+  document.getElementById('sumGrand').textContent=isDriver?'FREE (Driver)':fmt(grand);
+  document.getElementById('barTotal').textContent=isDriver?'Comped':fmt(grand);
+  validate();
+  return {subtotal,tax,grand,items,isDriver};
+}
+const nameEl=document.getElementById('riderName');
+const submitBtn=document.getElementById('submitBtn');
+function validate(){
+  const ok=nameEl.value.trim().length>0 && currentItems().length>0 && !!orderDateEl.value;
+  submitBtn.disabled=!ok;
+}
+nameEl.addEventListener('input',validate);
+
+/* ── Draft autosave (so a refresh never wipes an order) ─ */
+const DRAFT_KEY='bus_order_draft_v1';
+let submitted=false, saveTimer=null;
+const notesEl=document.getElementById('notes');
+function saveDraft(){
+  if(submitted) return;
+  try{
+    localStorage.setItem(DRAFT_KEY,JSON.stringify({
+      name:nameEl.value, date:orderDateEl.value, isDriver:driverEl.checked, notes:notesEl.value,
+      meals:meals.map(m=>({name:m.name,price:m.price,choose:m.choose,opts:m.opts,label:m.label}))
+    }));
+  }catch(e){}
+}
+function scheduleSave(){clearTimeout(saveTimer);saveTimer=setTimeout(saveDraft,300);}
+function clearDraft(){submitted=true;try{localStorage.removeItem(DRAFT_KEY);}catch(e){}}
+function restoreDraft(){
+  let d=null; try{d=JSON.parse(localStorage.getItem(DRAFT_KEY)||'null');}catch(e){}
+  if(!d) return;
+  if(d.name) nameEl.value=d.name;
+  if(d.date) orderDateEl.value=d.date;
+  if(d.isDriver){driverEl.checked=true;document.getElementById('driverToggle').classList.add('active');}
+  if(d.notes) notesEl.value=d.notes;
+  if(Array.isArray(d.meals)&&d.meals.length){
+    meals=d.meals.map(m=>({id:++mealSeq,name:m.name,price:m.price,choose:m.choose||[],opts:m.opts||{},label:m.label||''}));
+    renderMeals();
+  }
+  updateBadge(); recompute();
+}
+restoreDraft();
+// Any interaction (typing, picking options, tapping chips) re-saves the draft.
+['input','change','click'].forEach(ev=>document.addEventListener(ev,scheduleSave,true));
+
+/* ── Submit ─────────────────────────────────────────── */
+function showErr(m){const e=document.getElementById('err');e.textContent=m;e.style.display='block';window.scrollTo({top:0,behavior:'smooth'});}
+submitBtn.addEventListener('click',async()=>{
+  const {subtotal,tax,grand,items,isDriver}=recompute();
+  const name=nameEl.value.trim();
+  if(!name||items.length===0||!orderDateEl.value) return;
+  submitBtn.disabled=true; submitBtn.textContent='Sending…';
+  document.getElementById('err').style.display='none';
+  try{
+    const {error}=await sb.from('tour_orders').insert({
+      service_date:orderDateEl.value,
+      rider_name:name,
+      items:items,
+      subtotal:+subtotal.toFixed(2),
+      get_tax:+tax.toFixed(2),
+      total:+grand.toFixed(2),
+      is_driver:isDriver,
+      notes:document.getElementById('notes').value.trim()
+    });
+    if(error) throw error;
+    clearDraft();
+    showSuccess(name,grand,isDriver,orderDateEl.value);
+  }catch(e){
+    submitBtn.disabled=false; submitBtn.textContent='Submit Order';
+    showErr('Sorry, that didn\'t go through. Please check your connection and try again.');
+    console.error(e);
+  }
+});
+function showSuccess(name,grand,isDriver,iso){
+  document.getElementById('totalbar').style.display='none';
+  const totalLine=isDriver?'Your meal is <strong>comped</strong> — the kitchen has it on the list. 🚐':`Estimated total <strong>${fmt(grand)}</strong>.`;
+  document.getElementById('app').innerHTML=
+    `<div class="header"><img src="../tiki-logo.png" alt="Tiki Turtle Cafe"><h1>Mahalo, ${name.replace(/[<>]/g,'')}!</h1></div>
+     <div class="wrap"><div class="success">
+       <div class="check">✓</div>
+       <h2>Order received</h2>
+       <p>Your order for <strong>${friendly(iso)}</strong> is in.<br>${totalLine}<br>See you when the bus arrives! 🐢</p>
+       <button class="btn-ghost" onclick="location.reload()">Add another order</button>
+     </div></div>`;
+}
+</script>
+</body>
+</html>
