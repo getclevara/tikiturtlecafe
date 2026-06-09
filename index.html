@@ -718,6 +718,168 @@
             .nav-logo img { height: 55px; }
         }
     </style>
+
+    <!-- Canonical -->
+    <link rel="canonical" href="https://tikiturtlehi.com/">
+
+    <!-- Ascend tracking config (build-time substitution via vercel.json) -->
+    <script src="js/analytics-config.js"></script>
+
+    <!-- Google Analytics 4 (guarded against placeholder) -->
+    <script>
+      (function () {
+        var cfg = window.ASCEND_CONFIG || {};
+        if (!cfg.ga4Id || cfg.ga4Id.indexOf('__') === 0 || cfg.ga4Id === 'PLACEHOLDER') return;
+        var s = document.createElement('script');
+        s.async = true;
+        s.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(cfg.ga4Id);
+        document.head.appendChild(s);
+        window.dataLayer = window.dataLayer || [];
+        window.gtag = function () { window.dataLayer.push(arguments); };
+        window.gtag('js', new Date());
+        window.gtag('config', cfg.ga4Id, { send_page_view: true });
+      })();
+    </script>
+
+    <!-- PostHog (reverse-proxied via /p, guarded) -->
+    <script>
+      (function () {
+        var cfg = window.ASCEND_CONFIG || {};
+        if (!cfg.posthogKey || cfg.posthogKey.indexOf('__') === 0 || cfg.posthogKey === 'PLACEHOLDER') return;
+        !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="init capture register register_once register_for_session unregister unregister_for_session getFeatureFlag getFeatureFlagPayload isFeatureEnabled reloadFeatureFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSessionId getSurveys getActiveMatchingSurveys renderSurvey canRenderSurvey identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset get_distinct_id getGroups get_session_id get_session_replay_url alias set_config startSessionRecording stopSessionRecording sessionRecordingStarted captureException loadToolbar get_property getSessionProperty createPersonProfile opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing clear_opt_in_out_capturing debug".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+        window.posthog.init(cfg.posthogKey, {
+          api_host: '/p',
+          ui_host: cfg.posthogHost || 'https://us.posthog.com',
+          person_profiles: 'identified_only',
+          capture_pageview: true,
+          capture_pageleave: true,
+        });
+      })();
+    </script>
+
+    <!-- Microsoft Clarity (guarded) -->
+    <script>
+      (function () {
+        var cfg = window.ASCEND_CONFIG || {};
+        if (!cfg.clarityId || cfg.clarityId.indexOf('__') === 0 || cfg.clarityId === 'PLACEHOLDER') return;
+        (function(c,l,a,r,i,t,y){
+          c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+          t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+          y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+        })(window, document, "clarity", "script", cfg.clarityId);
+      })();
+    </script>
+
+    <!-- Vercel Analytics + Speed Insights -->
+    <script defer src="/_vercel/insights/script.js"></script>
+    <script defer src="/_vercel/speed-insights/script.js"></script>
+
+    <!-- Ascend tracker helpers -->
+    <script src="js/track.js" defer></script>
+    <script src="js/events.js" defer></script>
+
+    <!-- JSON-LD: Organization -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Tiki Turtle Cafe",
+      "url": "https://tikiturtlehi.com",
+      "logo": "https://tikiturtlehi.com/tiki-logo.png",
+      "description": "A vocational training cafe in Hilo, Hawaii operated by The Arc of Hilo, providing paid culinary employment for adults with intellectual and developmental disabilities.",
+      "parentOrganization": {
+        "@type": "NGO",
+        "name": "The Arc of Hilo",
+        "url": "https://thearcofhilo.org"
+      },
+      "sameAs": [
+        "https://www.google.com/maps/place/The+Tiki+Turtle+Cafe"
+      ]
+    }
+    </script>
+
+    <!-- JSON-LD: Restaurant / FoodEstablishment / LocalBusiness -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": ["Restaurant", "LocalBusiness"],
+      "name": "Tiki Turtle Cafe",
+      "image": "https://tikiturtlehi.com/og-image.png",
+      "url": "https://tikiturtlehi.com",
+      "telephone": "+1-808-935-8534",
+      "email": "info@tikiturtlehi.com",
+      "priceRange": "$$",
+      "servesCuisine": ["American", "Hawaiian", "Sandwiches", "Salads", "Smoothies"],
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "1099 Waianuenue Ave",
+        "addressLocality": "Hilo",
+        "addressRegion": "HI",
+        "postalCode": "96720",
+        "addressCountry": "US"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 19.723,
+        "longitude": -155.084
+      },
+      "openingHoursSpecification": [{
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        "opens": "10:00",
+        "closes": "14:00"
+      }],
+      "hasMenu": "https://tikiturtlehi.com/#menu",
+      "acceptsReservations": false,
+      "parentOrganization": {
+        "@type": "NGO",
+        "name": "The Arc of Hilo",
+        "url": "https://thearcofhilo.org"
+      }
+    }
+    </script>
+
+    <!-- JSON-LD: FAQ -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is Tiki Turtle Cafe?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Tiki Turtle Cafe is a sit-down and takeout cafe in downtown Hilo, Hawaii, operated as a vocational training program of The Arc of Hilo. Adults with intellectual and developmental disabilities work paid, supervised shifts learning culinary and customer service skills."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Where is Tiki Turtle Cafe located?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "1099 Waianuenue Avenue, Hilo, HI 96720, in downtown Hilo on the Big Island of Hawaii."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What are Tiki Turtle Cafe hours?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Monday through Friday, 10 AM to 2 PM. Closed Saturday and Sunday."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do you offer catering?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Tiki Turtle Cafe caters events from 10 to 100+ guests. Submit a catering inquiry via the catering form on the website."
+          }
+        }
+      ]
+    }
+    </script>
 </head>
 <body>
     <nav class="navbar" id="navbar">

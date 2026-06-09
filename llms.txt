@@ -1,0 +1,40 @@
+# Tiki Turtle Cafe
+
+> A vocational training cafe in Hilo, Hawaii operated by The Arc of Hilo. Tiki Turtle creates real-world culinary employment for adults with intellectual and developmental disabilities while serving fresh, locally-inspired food to the community.
+
+## What we are
+
+- Sit-down and takeout cafe in downtown Hilo, Hawaii
+- Vocational training program of The Arc of Hilo (501c3, founded 1954)
+- Open Monday through Friday, 10 AM to 2 PM
+- Address: 1099 Waianuenue Avenue, Hilo, HI 96720
+- Phone: 808-935-8534
+- Email: info@tikiturtlehi.com
+
+## Mission
+
+Every meal served at Tiki Turtle Cafe supports paid, supervised culinary training for individuals with intellectual and developmental disabilities. Trainees learn food prep, customer service, cash handling, and kitchen safety while earning a wage.
+
+## Menu highlights
+
+- Sandwiches (including signature BBQ pulled pork)
+- Fresh salads
+- Smoothies and acai bowls
+- Daily specials on a rotating two-week schedule
+- Sweet treats
+
+## Key offerings
+
+- Dine-in and takeout
+- Online ordering via Clover
+- Catering for events (10 to 100+ guests)
+- Event center rental
+- Bus order program for group meals
+
+## Important links
+
+- [Order online](https://www.clover.com/online-ordering/the-tiki-turtle-cafe-hilo)
+- [Catering inquiry form](https://tikiturtlehi.com/#catering)
+- [Visit us / directions](https://tikiturtlehi.com/#location)
+- [The Arc of Hilo (parent organization)](https://thearcofhilo.org)
+- [Detailed knowledge file](https://tikiturtlehi.com/llms-full.txt)

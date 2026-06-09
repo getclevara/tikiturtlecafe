@@ -1,0 +1,30 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "sed -i.bak -e \"s|__GA_ID__|${NEXT_PUBLIC_GA_ID:-PLACEHOLDER}|g\" -e \"s|__POSTHOG_KEY__|${NEXT_PUBLIC_POSTHOG_KEY:-PLACEHOLDER}|g\" -e \"s|__POSTHOG_HOST__|${NEXT_PUBLIC_POSTHOG_HOST:-https://us.i.posthog.com}|g\" -e \"s|__CLARITY_ID__|${NEXT_PUBLIC_CLARITY_ID:-PLACEHOLDER}|g\" js/analytics-config.js && rm -f js/analytics-config.js.bak",
+  "rewrites": [
+    { "source": "/p/:path*", "destination": "https://us.i.posthog.com/:path*" },
+    { "source": "/g/:path*", "destination": "https://www.googletagmanager.com/:path*" }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "X-Frame-Options", "value": "DENY" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
+      ]
+    },
+    {
+      "source": "/images/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
+    },
+    {
+      "source": "/js/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=3600, must-revalidate" }
+      ]
+    }
+  ]
+}
