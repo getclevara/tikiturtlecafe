@@ -1076,13 +1076,13 @@
                             <p class="week-dates" id="week1Dates"></p>
                         </div>
                         <div class="week-days">
-                            <div class="day-item"><span class="day-name">Monday</span><span class="day-dish">Pulled Pork Sandwich w/ Fries</span><span class="day-price">$13</span></div>
-                            <div class="day-item"><span class="day-name">Tuesday</span><span class="day-dish">Tacos w/ Beans & Rice</span><span class="day-price">$14</span></div>
-                            <div class="day-item"><span class="day-name">Wednesday</span><span class="day-dish">Roast Pork</span><span class="day-price">$14</span></div>
-                            <div class="day-item"><span class="day-name">Thursday</span><span class="day-dish">Shoyu Chicken</span><span class="day-price">$13</span></div>
-                            <div class="day-item"><span class="day-name">Friday</span><span class="day-dish">Mahi Katsu</span><span class="day-price">$15</span></div>
+                            <div class="day-item"><span class="day-name">Monday</span><span class="day-dish">Garlic Butter Mahi</span><span class="day-price">$15.50</span></div>
+                            <div class="day-item"><span class="day-name">Tuesday</span><span class="day-dish">Tacos w/ Beans & Rice</span><span class="day-price">$14.50</span></div>
+                            <div class="day-item"><span class="day-name">Wednesday</span><span class="day-dish">Chili</span><span class="day-price">$12</span></div>
+                            <div class="day-item"><span class="day-name">Thursday</span><span class="day-dish">Burgers</span><span class="day-price">$14.50</span></div>
+                            <div class="day-item"><span class="day-name">Friday</span><span class="day-dish">Baked Chicken w/ Gravy</span><span class="day-price">$13.50</span></div>
                         </div>
-                        <div class="dole-flavors">🍦 <strong>Dole Flavors:</strong> Strawberry | Pineapple</div>
+                        <div class="dole-flavors">🍦 <strong>Dole Flavors:</strong> Watermelon | Pineapple | Vanilla</div>
                     </div>
                     <div class="week-card" id="week2Card">
                         <div class="this-week-badge" id="week2Badge" style="display:none;">👉 This Week!</div>
@@ -1091,16 +1091,16 @@
                             <p class="week-dates" id="week2Dates"></p>
                         </div>
                         <div class="week-days">
-                            <div class="day-item"><span class="day-name">Monday</span><span class="day-dish">Hurricane Chicken</span><span class="day-price">$14</span></div>
-                            <div class="day-item"><span class="day-name">Tuesday</span><span class="day-dish">Tacos w/ Beans & Rice</span><span class="day-price">$14</span></div>
-                            <div class="day-item"><span class="day-name">Wednesday</span><span class="day-dish">Sweet & Sour Pork</span><span class="day-price">$14</span></div>
-                            <div class="day-item"><span class="day-name">Thursday</span><span class="day-dish">Burgers w/ Fries</span><span class="day-price">$14</span></div>
+                            <div class="day-item"><span class="day-name">Monday</span><span class="day-dish">Loco Moco</span><span class="day-price">$12</span></div>
+                            <div class="day-item"><span class="day-name">Tuesday</span><span class="day-dish">Tacos w/ Beans & Rice</span><span class="day-price">$14.50</span></div>
+                            <div class="day-item"><span class="day-name">Wednesday</span><span class="day-dish">Chicken Katsu Curry</span><span class="day-price">$14.50</span></div>
+                            <div class="day-item"><span class="day-name">Thursday</span><span class="day-dish">Pepper Pork</span><span class="day-price">$14.50</span></div>
                             <div class="day-item"><span class="day-name">Friday</span><span class="day-dish">Pastele Stew</span><span class="day-price">$14</span></div>
                         </div>
-                        <div class="dole-flavors">🍦 <strong>Dole Flavors:</strong> Cherry | Pineapple</div>
+                        <div class="dole-flavors">🍦 <strong>Dole Flavors:</strong> Melona | Pineapple | Vanilla</div>
                     </div>
                 </div>
-                <div class="specials-note">Our daily plate specials rotate weekly through June. Plates $13-$15. Served 10 AM - 2 PM, Mon-Fri.</div>
+                <div class="specials-note">Our daily plate specials rotate weekly. Plates $12-$15.50. Served 10 AM - 2 PM, Mon-Fri.</div>
             </div>
             <div class="menu-category" id="sandwiches">
                 <div class="menu-grid">
@@ -1324,13 +1324,13 @@
         (function() {
             // Configuration: First day of Week 1 (Monday Apr 6, 2026)
             const scheduleStart = new Date('2026-04-06');
-            const scheduleEnd = new Date('2026-06-30');
+            const scheduleEnd = new Date('2026-09-30');
             const today = new Date();
-            
-            // Week 1 dates (Mondays): Apr 6, Apr 20, May 4, May 18, Jun 1, Jun 15, Jun 29
-            const week1Dates = ['4/6', '4/20', '5/4', '5/18', '6/1', '6/15', '6/29'];
-            // Week 2 dates (Mondays): Apr 13, Apr 27, May 11, May 25, Jun 8, Jun 22
-            const week2Dates = ['4/13', '4/27', '5/11', '5/25', '6/8', '6/22'];
+
+            // Week 1 dates (Mondays, every other week from Apr 6)
+            const week1Dates = ['6/29', '7/13', '7/27', '8/10', '8/24', '9/7', '9/21'];
+            // Week 2 dates (Mondays, every other week from Apr 13)
+            const week2Dates = ['6/22', '7/6', '7/20', '8/3', '8/17', '8/31', '9/14', '9/28'];
             
             // Display date lists
             document.getElementById('week1Dates').textContent = week1Dates.join(', ');
