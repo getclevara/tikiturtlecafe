@@ -1100,7 +1100,7 @@
                         <div class="dole-flavors">🍦 <strong>Dole Flavors:</strong> Melona | Pineapple | Vanilla</div>
                     </div>
                 </div>
-                <div class="specials-note">Our daily plate specials rotate weekly. Plates $12-$15.50. Served 10 AM - 2 PM, Mon-Fri.</div>
+                <div class="specials-note">Our daily plate specials rotate weekly. Plates $12-$15.50. Served 10 AM - 2 PM, Mon-Fri.<br><strong>* Bowls available for some meals — just ask!</strong></div>
             </div>
             <div class="menu-category" id="sandwiches">
                 <div class="menu-grid">
@@ -1324,13 +1324,13 @@
         (function() {
             // Configuration: First day of Week 1 (Monday Apr 6, 2026)
             const scheduleStart = new Date('2026-04-06');
-            const scheduleEnd = new Date('2026-09-30');
+            const scheduleEnd = new Date('2026-08-31');
             const today = new Date();
 
-            // Week 1 dates (Mondays, every other week from Apr 6)
-            const week1Dates = ['6/29', '7/13', '7/27', '8/10', '8/24', '9/7', '9/21'];
-            // Week 2 dates (Mondays, every other week from Apr 13)
-            const week2Dates = ['6/22', '7/6', '7/20', '8/3', '8/17', '8/31', '9/14', '9/28'];
+            // Week 1 dates (Mondays, every other week from Apr 6) — runs through end of August
+            const week1Dates = ['6/29', '7/13', '7/27', '8/10', '8/24'];
+            // Week 2 dates (Mondays, every other week from Apr 13) — runs through end of August
+            const week2Dates = ['6/22', '7/6', '7/20', '8/3', '8/17', '8/31'];
             
             // Display date lists
             document.getElementById('week1Dates').textContent = week1Dates.join(', ');
