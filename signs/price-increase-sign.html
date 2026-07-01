@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Why Our Prices Changed | Tiki Turtle Cafe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ocean-deep:#0d5c72; --ocean-mid:#0e8ca0; --ocean-bright:#12b5c4;
+    --sand:#f7f3ed; --sand-warm:#fff8f0; --coral:#e85a5a; --coral-light:#ff7b7b;
+    --sunset:#f59e42; --hibiscus:#d64d7a; --cream:#fffcf7; --text-dark:#1a3a4a;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'DM Sans',sans-serif;background:#3a3a3a;color:var(--text-dark);display:flex;flex-direction:column;align-items:center;padding:24px;}
+  h1,h2,h3,.serif{font-family:'Playfair Display',serif;}
+
+  /* Non-printing helper bar */
+  .bar{width:8.5in;max-width:100%;background:linear-gradient(135deg,var(--ocean-deep),var(--ocean-mid));color:#fff;border-radius:14px;padding:16px 22px;margin-bottom:20px;display:flex;justify-content:space-between;align-items:center;gap:16px;box-shadow:0 8px 30px rgba(0,0,0,.3);}
+  .bar p{font-size:.9rem;line-height:1.4;opacity:.95;}
+  .bar strong{font-weight:700;}
+  .print-btn{background:var(--coral);color:#fff;border:none;border-radius:50px;padding:12px 22px;font-family:inherit;font-size:1rem;font-weight:700;cursor:pointer;white-space:nowrap;box-shadow:0 4px 14px rgba(232,90,90,.4);}
+  .print-btn:hover{background:var(--coral-light);}
+
+  /* The 8.5x11 page */
+  .page{
+    width:8.5in;height:11in;background:var(--cream);position:relative;overflow:hidden;
+    box-shadow:0 12px 50px rgba(0,0,0,.4);
+    display:flex;flex-direction:column;
+    padding:0.9in 0.85in 0.7in;
+  }
+  /* top ribbon */
+  .page::before{content:"";position:absolute;top:0;left:0;right:0;height:16px;background:linear-gradient(90deg,var(--ocean-deep),var(--ocean-bright) 45%,var(--sunset) 75%,var(--coral));}
+  /* faint background flourish */
+  .watermark{position:absolute;right:-70px;bottom:-60px;font-size:340px;line-height:1;opacity:.05;transform:rotate(-12deg);pointer-events:none;}
+
+  .kicker{text-align:center;font-size:.82rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--ocean-mid);margin-bottom:10px;}
+  .flower{text-align:center;font-size:2.5rem;margin-bottom:4px;}
+  h1{text-align:center;font-size:2.9rem;font-weight:700;line-height:1.08;color:var(--ocean-deep);margin-bottom:6px;}
+  h1 em{font-style:italic;color:var(--coral);}
+  .rule{width:70px;height:4px;border-radius:4px;background:var(--sunset);margin:18px auto 24px;}
+
+  .lead{font-size:1.18rem;line-height:1.6;color:var(--text-dark);text-align:center;font-weight:500;margin-bottom:20px;}
+  .body{font-size:1.05rem;line-height:1.68;color:#33474f;}
+  .body p{margin-bottom:15px;}
+
+  .highlight{background:var(--sand-warm);border:1.5px solid #ecd9c9;border-left:5px solid var(--coral);border-radius:12px;padding:18px 22px;margin:22px 0;text-align:center;}
+  .highlight .serif{font-size:1.3rem;font-weight:600;color:var(--ocean-deep);line-height:1.4;}
+  .highlight small{display:block;margin-top:8px;font-size:.95rem;color:var(--ocean-mid);font-weight:600;}
+
+  .signoff{margin-top:auto;text-align:center;}
+  .signoff .thanks{font-family:'Playfair Display',serif;font-style:italic;font-size:1.55rem;color:var(--ocean-deep);margin-bottom:4px;}
+  .signoff .team{font-size:1rem;font-weight:600;color:var(--text-dark);}
+  .signoff .turtle{font-size:1.6rem;margin-top:4px;}
+
+  .footer{margin-top:18px;padding-top:14px;border-top:1.5px dashed #d9cbb8;display:flex;justify-content:space-between;align-items:center;gap:14px;font-size:.82rem;color:#7a8a90;}
+  .footer .cash-tip{color:var(--ocean-deep);font-weight:600;}
+
+  @media print{
+    @page{size:8.5in 11in;margin:0;}
+    body{background:#fff;padding:0;}
+    .bar{display:none;}
+    .page{box-shadow:none;width:8.5in;height:11in;}
+    *{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  }
+</style>
+</head>
+<body>
+  <div class="bar">
+    <p><strong>Print this sign.</strong> One page, 8.5&times;11. Hit Print &rarr; choose <strong>Letter</strong>, margins <strong>None</strong>, and turn on <strong>Background graphics</strong>. Cardstock or a frame looks great by the register.</p>
+    <button class="print-btn" onclick="window.print()">🖨 Print Sign</button>
+  </div>
+
+  <div class="page">
+    <div class="watermark">🐢</div>
+
+    <div class="kicker">A Program of The Arc of Hilo</div>
+    <div class="flower">🌺</div>
+    <h1>A Heartfelt Note <br>About Our <em>Prices</em></h1>
+    <div class="rule"></div>
+
+    <p class="lead">Aloha, friends — you may notice our prices have gone up a little. We want to be honest with you about why.</p>
+
+    <div class="body">
+      <p>Like so many families and small kitchens across our island, we've felt the steady rise in the cost of food, fresh ingredients, and supplies. To keep serving you the quality, made-with-aloha meals you love — without cutting corners — we've had to gently adjust our prices.</p>
+      <p>But Tiki Turtle is more than a cafe. We're a nonprofit vocational training program, and every plate you order helps individuals with disabilities build real job skills, confidence, and independence.</p>
+    </div>
+
+    <div class="highlight">
+      <span class="serif">Your meal doesn't just feed you — <br>it helps change a life.</span>
+      <small>Every dollar stays in our mission, right here in Hilo.</small>
+    </div>
+
+    <div class="body">
+      <p>Thank you for understanding, for your patience, and for choosing to spend your lunch with us. It truly means the world to our team.</p>
+    </div>
+
+    <div class="signoff">
+      <div class="thanks">Mahalo nui loa</div>
+      <div class="team">— With aloha, your Tiki Turtle 'Ohana</div>
+      <div class="turtle">🐢🌴</div>
+    </div>
+
+    <div class="footer">
+      <span>Tiki Turtle Cafe &middot; The Arc of Hilo</span>
+      <span class="cash-tip">💵 Paying cash? You'll skip the 4% card fee.</span>
+    </div>
+  </div>
+</body>
+</html>
