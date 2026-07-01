@@ -93,7 +93,7 @@
     <img src="../tiki-logo.png" alt="Tiki Turtle Cafe">
     <h1>Tour Group Pre-Order</h1>
     <span class="date-badge" id="dateBadge">Loading…</span>
-    <p class="sub">Pick your meal below — we'll have it ready when the bus arrives! 🌺</p>
+    <p class="sub">Pick your meal below and we'll have it ready when the bus arrives! 🌺</p>
   </div>
   <div class="wrap" id="formWrap">
     <div class="err" id="err"></div>
@@ -104,7 +104,7 @@
       <input type="date" id="orderDate">
       <label class="driver-toggle" id="driverToggle">
         <input type="checkbox" id="isDriver">
-        <span><strong>🚐 I'm the bus driver</strong><br><span class="driver-sub">My meal is comped (free) — still make it so the kitchen knows.</span></span>
+        <span><strong>🚐 I'm the bus driver</strong><br><span class="driver-sub">My meal is comped (free). Still make it so the kitchen knows.</span></span>
       </label>
     </div>
     <div class="card" id="menuCard"></div>
@@ -377,7 +377,7 @@ submitBtn.addEventListener('click',async()=>{
 });
 function showSuccess(name,grand,isDriver,iso){
   document.getElementById('totalbar').style.display='none';
-  const totalLine=isDriver?'Your meal is <strong>comped</strong> — the kitchen has it on the list. 🚐':`Estimated total <strong>${fmt(grand)}</strong>.`;
+  const totalLine=isDriver?'Your meal is <strong>comped</strong>. The kitchen has it on the list. 🚐':`Estimated total <strong>${fmt(grand)}</strong>.`;
   document.getElementById('app').innerHTML=
     `<div class="header"><img src="../tiki-logo.png" alt="Tiki Turtle Cafe"><h1>Mahalo, ${name.replace(/[<>]/g,'')}!</h1></div>
      <div class="wrap"><div class="success">
