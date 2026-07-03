@@ -193,23 +193,6 @@
             font-size: clamp(1.5rem, 3.2vw, 2.2rem); text-align: center; max-width: 34ch; margin: 0 auto; line-height: 1.45;
         }
 
-        /* Voices (video placeholder) */
-        .voices { background: var(--sand-warm); }
-        .voices-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3.5rem; align-items: center; }
-        .voices-frame {
-            aspect-ratio: 16 / 10; border-radius: 20px;
-            background: linear-gradient(135deg, var(--ocean-deep), var(--hibiscus-deep));
-            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.1rem;
-            box-shadow: 0 20px 50px rgba(13,60,80,0.18);
-        }
-        .voices-frame-play {
-            width: 68px; height: 68px; border-radius: 50%; background: rgba(255,255,255,0.16);
-            border: 1.5px solid rgba(255,255,255,0.5);
-            display: flex; align-items: center; justify-content: center; color: white;
-        }
-        .voices-frame-label { color: rgba(255,255,255,0.92); font-weight: 700; font-size: 0.85rem; letter-spacing: 0.06em; text-transform: uppercase; }
-        .voices-text p { font-size: 1.08rem; color: var(--text-dark); }
-
         /* photo strip */
         .photo-strip { background: var(--cream); }
         .photo-strip-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 1.5rem; align-items: center; }
@@ -277,7 +260,7 @@
         .reveal.is-visible { opacity: 1; transform: none; }
 
         @media (max-width: 900px) {
-            .hero-grid, .featured-grid, .belief-grid, .photo-strip-grid, .ask-grid, .why-grid, .voices-grid { grid-template-columns: 1fr; }
+            .hero-grid, .featured-grid, .belief-grid, .photo-strip-grid, .ask-grid, .why-grid { grid-template-columns: 1fr; }
             .hero-photo { order: -1; transform: none; }
             .stat-grid { grid-template-columns: repeat(2, 1fr); gap: 2.2rem; }
             .story, .story:nth-child(even) { grid-template-columns: 1fr; text-align: left; }
@@ -319,8 +302,8 @@
                 </div>
             </div>
             <div class="hero-photo">
-                <img src="../IMG_9633.jpg" alt="Pulled pork nachos held up in front of the Tiki Turtle mural in Hilo, Hawaiʻi" width="1200" height="1600">
-                <div class="hero-photo-cap">Real food. Real jobs. Hilo, Hawaiʻi.</div>
+                <img src="../IMG_0471.jpg" alt="Two Tiki Turtle Cafe team members preparing musubi together in the kitchen" width="1288" height="952">
+                <div class="hero-photo-cap">Our team, at work. Hilo, Hawaiʻi.</div>
             </div>
         </div>
     </header>
@@ -473,25 +456,9 @@
         </div>
     </section>
 
-    <section class="voices" id="voices">
-        <div class="wrap voices-grid">
-            <div class="voices-frame reveal">
-                <div class="voices-frame-play">
-                    <svg width="26" height="26" fill="none" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M8 5v14l11-7z"/></svg>
-                </div>
-                <span class="voices-frame-label">Video Stories Coming Soon</span>
-            </div>
-            <div class="voices-text reveal">
-                <span class="section-label">In Their Own Words</span>
-                <h2>Soon, you'll hear this straight from them.</h2>
-                <p>We're recording our team sharing their own stories, in their own voices. When they're ready, this is where you'll find them.</p>
-            </div>
-        </div>
-    </section>
-
     <section class="photo-strip" id="built">
         <div class="wrap photo-strip-grid">
-            <img src="../IMG_0471.jpg" alt="Two Tiki Turtle Cafe team members preparing musubi together in the kitchen" width="1200" height="900" loading="lazy">
+            <img src="../IMG_7831_2.jpg" alt="A Tiki Turtle Cafe team member prepping fresh vegetables in the kitchen" width="952" height="1288" loading="lazy">
             <div class="photo-strip-text reveal">
                 <span class="section-label">Where We've Been</span>
                 <h2>We already proved we could do this.</h2>
@@ -572,7 +539,7 @@
 
     <section class="why" id="why">
         <div class="wrap why-grid">
-            <img src="../IMG_7831_2.jpg" alt="A Tiki Turtle Cafe team member prepping fresh tomatoes for the day's menu" width="900" height="1200" loading="lazy">
+            <img src="../IMG_7841_3.jpg" alt="A Tiki Turtle Cafe team member smiling behind the counter" width="1036" height="1176" loading="lazy">
             <div class="why-text reveal">
                 <span class="section-label">Why This Matters To People Who Care About Food</span>
                 <h2>The chefs who inspire us taught more than recipes.</h2>
