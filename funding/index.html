@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Next Course: A Capital Campaign for Tiki Turtle Cafe</title>
+    <meta name="description" content="Tiki Turtle Cafe, a vocational training cafe by The Arc of Hilo, is raising $200,000 to become Hawai'i Island's first certified teaching kitchen for adults with disabilities.">
+    <meta name="robots" content="noindex, nofollow">
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="The Next Course: A Capital Campaign for Tiki Turtle Cafe">
+    <meta property="og:description" content="Help us turn our prep kitchen into Hawai'i Island's first certified teaching kitchen. Meet the team it's for.">
+    <meta property="og:image" content="../og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="Tiki Turtle Cafe">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="The Next Course: A Capital Campaign for Tiki Turtle Cafe">
+    <meta name="twitter:description" content="Help us turn our prep kitchen into Hawai'i Island's first certified teaching kitchen.">
+    <meta name="twitter:image" content="../og-image.png">
+
+    <link rel="icon" href="../tiki-logo.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --ocean-deep: #0d5c72;
+            --ocean-mid: #0e8ca0;
+            --ocean-bright: #12b5c4;
+            --ocean-light: #a8dce5;
+            --sand: #f7f3ed;
+            --sand-warm: #fff8f0;
+            --coral: #e85a5a;
+            --coral-light: #ff7b7b;
+            --sunset: #f59e42;
+            --sunset-light: #ffc178;
+            --hibiscus: #d64d7a;
+            --hibiscus-deep: #b13860;
+            --hibiscus-deepest: #93294c;
+            --cream: #fffcf7;
+            --ink: #16303a;
+            --text-dark: #1a3a4a;
+            --text-light: #ffffff;
+            --line: rgba(22,48,58,0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--ink); overflow-x: hidden; line-height: 1.65; }
+        h1, h2, h3, h4 { font-family: 'Playfair Display', serif; font-weight: 700; color: var(--ocean-deep); line-height: 1.15; }
+        img { max-width: 100%; display: block; }
+        a { color: inherit; }
+        .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+        @media (prefers-reduced-motion: reduce) {
+            * { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
+        }
+
+        a:focus-visible, button:focus-visible, input:focus-visible {
+            outline: 3px solid var(--sunset); outline-offset: 3px; border-radius: 4px;
+        }
+
+        .wrap { max-width: 1120px; margin: 0 auto; padding: 0 1.75rem; }
+
+        /* Top bar */
+        .topbar {
+            position: sticky; top: 0; z-index: 100;
+            background: rgba(255,252,247,0.94); backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--line);
+        }
+        .topbar-inner { max-width: 1120px; margin: 0 auto; padding: 0.9rem 1.75rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+        .topbar-brand { display: flex; align-items: center; gap: 0.7rem; text-decoration: none; }
+        .topbar-brand img { height: 42px; width: auto; }
+        .topbar-brand span { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1.05rem; color: var(--ocean-deep); }
+        .topbar-cta {
+            background: var(--hibiscus-deep); color: white; text-decoration: none;
+            font-weight: 700; font-size: 0.92rem; padding: 0.65rem 1.4rem; border-radius: 50px;
+            transition: all 0.2s ease; box-shadow: 0 4px 14px rgba(177,56,96,0.35);
+            white-space: nowrap;
+        }
+        .topbar-cta:hover { background: var(--hibiscus-deepest); transform: translateY(-1px); }
+
+        /* Hero */
+        .hero {
+            position: relative; overflow: hidden;
+            background: linear-gradient(165deg, var(--ocean-deep) 0%, var(--ocean-mid) 55%, var(--ocean-bright) 100%);
+            padding: 5.5rem 0 4.5rem;
+        }
+        .hero::after {
+            content: ""; position: absolute; inset: 0;
+            background: radial-gradient(ellipse 60% 50% at 80% 10%, rgba(255,255,255,0.12) 0%, transparent 60%);
+            pointer-events: none;
+        }
+        .hero-grid { position: relative; display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 3rem; align-items: center; }
+        .eyebrow {
+            display: inline-block; font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 0.78rem;
+            letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.94);
+            background: rgba(255,255,255,0.1); padding: 0.5rem 1rem; border-radius: 50px; margin-bottom: 1.5rem;
+        }
+        .hero h1 { color: white; font-size: clamp(2.1rem, 4vw, 3.6rem); max-width: 22ch; margin-bottom: 1.4rem; }
+        .hero p.lede { color: rgba(255,255,255,0.92); font-size: 1.15rem; max-width: 46ch; margin-bottom: 2.1rem; }
+        .hero-ctas { display: flex; flex-wrap: wrap; gap: 0.9rem; }
+        .btn-primary {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            background: var(--hibiscus-deep); color: white; text-decoration: none;
+            font-weight: 700; font-size: 0.98rem; padding: 0.95rem 1.9rem; border-radius: 50px;
+            transition: all 0.2s ease; box-shadow: 0 6px 20px rgba(177,56,96,0.4); border: none; cursor: pointer;
+        }
+        .btn-primary:hover { background: var(--hibiscus-deepest); transform: translateY(-2px); }
+        .btn-ghost {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            background: rgba(255,255,255,0.12); color: white; text-decoration: none;
+            font-weight: 600; font-size: 0.98rem; padding: 0.95rem 1.9rem; border-radius: 50px;
+            border: 1.5px solid rgba(255,255,255,0.4); transition: all 0.2s ease;
+        }
+        .btn-ghost:hover { background: rgba(255,255,255,0.22); }
+        .hero-photo { position: relative; border-radius: 22px; overflow: hidden; box-shadow: 0 30px 60px rgba(0,0,0,0.35); transform: rotate(1.5deg); }
+        .hero-photo img { width: 100%; height: 420px; object-fit: cover; }
+        .hero-photo-cap {
+            position: absolute; left: 0; right: 0; bottom: 0; padding: 1.1rem 1.3rem 1rem;
+            background: linear-gradient(0deg, rgba(13,20,25,0.75) 0%, transparent 100%);
+            color: white; font-size: 0.85rem; font-weight: 500;
+        }
+
+        section { padding: 5rem 0; }
+        .section-label { font-weight: 700; font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--hibiscus-deep); margin-bottom: 0.9rem; }
+        .section-head { max-width: 62ch; margin-bottom: 3rem; }
+        .section-head h2 { font-size: clamp(1.7rem, 3vw, 2.5rem); max-width: 20ch; margin-bottom: 1rem; }
+        .section-head p { font-size: 1.08rem; color: var(--text-dark); }
+
+        /* wave divider */
+        .wave { display: block; width: 100%; height: 60px; }
+        .wave-cream-to-ocean { fill: var(--cream); }
+        .wave-ocean-to-sand { fill: var(--sand); }
+
+        /* Featured video */
+        .featured { background: var(--sand); }
+        .featured-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 3rem; align-items: center; }
+        .featured video { width: 100%; border-radius: 18px; box-shadow: 0 20px 50px rgba(13,60,80,0.18); background: #000; }
+        .featured-link {
+            display: inline-flex; align-items: center; gap: 0.5rem; margin-top: 1.3rem;
+            color: var(--ocean-deep); font-weight: 700; text-decoration: none; border-bottom: 2px solid var(--sunset); padding-bottom: 2px;
+        }
+
+        /* Impact stat band */
+        .stat-band { background: linear-gradient(135deg, var(--ocean-deep), #0a4a5c); color: white; padding: 4.5rem 0; }
+        .stat-band-head { text-align: center; margin-bottom: 3rem; }
+        .stat-band-head h2 { color: white; }
+        .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; text-align: center; }
+        .stat-num { font-family: 'Playfair Display', serif; font-weight: 800; font-size: clamp(2.4rem, 4.5vw, 3.6rem); color: var(--sunset-light); line-height: 1; }
+        .stat-label { margin-top: 0.6rem; font-size: 0.95rem; color: rgba(255,255,255,0.85); font-weight: 500; }
+        .stat-band-note { text-align: center; margin-top: 3rem; font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.2rem; color: white; opacity: 0.92; max-width: 46ch; margin-left: auto; margin-right: auto; }
+
+        /* Belief */
+        .belief { background: var(--cream); }
+        .belief-grid { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 3.5rem; align-items: start; }
+        .belief-grid p { font-size: 1.1rem; margin-bottom: 1.2rem; color: var(--text-dark); }
+        .belief-grid p:last-child { margin-bottom: 0; }
+
+        /* Stories */
+        .stories { background: var(--sand-warm); }
+        .story {
+            display: grid; grid-template-columns: 200px 1fr; gap: 2.2rem; align-items: start;
+            padding: 2.2rem 0; border-bottom: 1px solid var(--line);
+        }
+        .story:last-child { border-bottom: none; }
+        .story:nth-child(even) { grid-template-columns: 1fr 200px; }
+        .story:nth-child(even) .story-medallion { order: 2; }
+        .medallion {
+            width: 160px; height: 160px; border-radius: 50%;
+            background: linear-gradient(135deg, var(--ocean-deep), var(--hibiscus-deep));
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Playfair Display', serif; font-weight: 700; font-size: 2.6rem; color: white;
+            box-shadow: 0 12px 28px rgba(13,92,114,0.22); flex-shrink: 0;
+        }
+        .story-body h3 { font-size: 1.5rem; margin-bottom: 0.2rem; }
+        .story-body p { color: var(--text-dark); font-size: 1.03rem; }
+        .story-body p.story-role { color: var(--hibiscus-deep); font-weight: 700; font-size: 0.85rem; letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 0.8rem; }
+        .story-body blockquote {
+            font-family: 'Playfair Display', serif; font-style: italic; color: var(--ocean-deep);
+            font-size: 1.15rem; margin-top: 0.9rem; padding-left: 1rem; border-left: 3px solid var(--sunset);
+        }
+        .stories-close { text-align: center; margin-top: 2.5rem; }
+        .stories-close p { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.25rem; color: var(--ocean-deep); max-width: 44ch; margin: 0 auto; }
+
+        /* Statement band */
+        .statement { background: linear-gradient(160deg, var(--ocean-deep), #0a4a5c); padding: 5.5rem 0; }
+        .statement-text {
+            font-family: 'Playfair Display', serif; font-style: italic; font-weight: 600; color: white;
+            font-size: clamp(1.5rem, 3.2vw, 2.2rem); text-align: center; max-width: 34ch; margin: 0 auto; line-height: 1.45;
+        }
+
+        /* Voices (video placeholder) */
+        .voices { background: var(--sand-warm); }
+        .voices-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3.5rem; align-items: center; }
+        .voices-frame {
+            aspect-ratio: 16 / 10; border-radius: 20px;
+            background: linear-gradient(135deg, var(--ocean-deep), var(--hibiscus-deep));
+            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.1rem;
+            box-shadow: 0 20px 50px rgba(13,60,80,0.18);
+        }
+        .voices-frame-play {
+            width: 68px; height: 68px; border-radius: 50%; background: rgba(255,255,255,0.16);
+            border: 1.5px solid rgba(255,255,255,0.5);
+            display: flex; align-items: center; justify-content: center; color: white;
+        }
+        .voices-frame-label { color: rgba(255,255,255,0.92); font-weight: 700; font-size: 0.85rem; letter-spacing: 0.06em; text-transform: uppercase; }
+        .voices-text p { font-size: 1.08rem; color: var(--text-dark); }
+
+        /* photo strip */
+        .photo-strip { background: var(--cream); }
+        .photo-strip-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 1.5rem; align-items: center; }
+        .photo-strip-grid img { border-radius: 18px; box-shadow: 0 16px 40px rgba(13,60,80,0.16); width: 100%; height: 100%; object-fit: cover; }
+        .photo-strip-text h2 { margin-bottom: 1rem; }
+        .photo-strip-text p { font-size: 1.08rem; color: var(--text-dark); margin-bottom: 1rem; }
+
+        /* Vision */
+        .vision { background: var(--sand); }
+        .vision-list { display: flex; flex-direction: column; gap: 1.5rem; margin-top: 1rem; }
+        .vision-item {
+            display: grid; grid-template-columns: 90px 1fr; gap: 1.6rem; align-items: flex-start;
+            background: var(--cream); border-radius: 20px; padding: 2rem 2.2rem;
+            box-shadow: 0 10px 30px rgba(13,60,80,0.08);
+        }
+        .vision-item:nth-child(2) { margin-left: 2.5rem; }
+        .vision-item:nth-child(3) { margin-left: 5rem; }
+        .vision-num { font-family: 'Playfair Display', serif; font-weight: 800; font-size: 2.4rem; color: var(--ocean-mid); line-height: 1; }
+        .vision-item h3 { font-size: 1.3rem; margin-bottom: 0.5rem; }
+        .vision-item p { color: var(--text-dark); font-size: 1.02rem; }
+
+        /* Ask */
+        .ask { background: linear-gradient(160deg, var(--ocean-deep), var(--hibiscus-deep)); color: white; }
+        .ask .section-label { color: rgba(255,255,255,0.94); }
+        .ask h2 { color: white; }
+        .ask-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; }
+        .ask-figure { text-align: left; }
+        .ask-figure .amount { font-family: 'Playfair Display', serif; font-weight: 800; font-size: clamp(3rem, 6vw, 4.6rem); line-height: 1; }
+        .ask-figure .amount-label { font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; font-size: 0.9rem; color: rgba(255,255,255,0.94); margin-top: 0.6rem; }
+        .ask-figure .amount-sub { margin-top: 1.3rem; font-size: 1.05rem; color: rgba(255,255,255,0.88); max-width: 40ch; }
+        .ask-list { list-style: none; }
+        .ask-list li { display: flex; gap: 0.8rem; padding: 0.9rem 0; border-top: 1px solid rgba(255,255,255,0.18); font-size: 1.03rem; }
+        .ask-list li:first-child { border-top: none; }
+        .ask-list li svg { flex-shrink: 0; margin-top: 0.2rem; color: var(--sunset-light); }
+        .ask-note { margin-top: 1.6rem; font-size: 0.95rem; color: rgba(255,255,255,0.8); }
+        .ask-cta-row { margin-top: 2.2rem; }
+
+        /* Why us */
+        .why { background: var(--cream); }
+        .why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3.5rem; align-items: center; }
+        .why-grid img { border-radius: 20px; box-shadow: 0 20px 50px rgba(13,60,80,0.18); width: 100%; height: 380px; object-fit: cover; }
+        .why-text p { font-size: 1.1rem; color: var(--text-dark); margin-bottom: 1.1rem; }
+
+        /* Contact */
+        .contact { background: linear-gradient(180deg, var(--sand) 0%, var(--sand-warm) 100%); text-align: center; }
+        .contact .wrap { max-width: 700px; }
+        .contact h2 { margin-bottom: 1rem; }
+        .contact p.lede { font-size: 1.1rem; color: var(--text-dark); margin-bottom: 2.2rem; }
+        .contact-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; margin-top: 2.5rem; text-align: left; }
+        .contact-card { background: var(--cream); border-radius: 16px; padding: 1.4rem 1.5rem; box-shadow: 0 8px 24px rgba(13,60,80,0.08); }
+        .contact-card h4 { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--hibiscus-deep); margin-bottom: 0.5rem; }
+        .contact-card a { text-decoration: none; font-weight: 600; color: var(--ocean-deep); }
+        .contact-card a:hover { text-decoration: underline; }
+
+        footer { background: var(--ocean-deep); color: rgba(255,255,255,0.85); padding: 3rem 0 2rem; }
+        .footer-grid { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2rem; align-items: center; }
+        .footer-brand { display: flex; align-items: center; gap: 1.2rem; }
+        .footer-brand img { height: 46px; }
+        .footer-brand p { font-size: 0.9rem; max-width: 34ch; opacity: 0.85; }
+        .footer-links a { color: white; text-decoration: none; font-size: 0.9rem; opacity: 0.85; }
+        .footer-links a:hover { opacity: 1; text-decoration: underline; }
+        .footer-bottom { text-align: center; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.15); font-size: 0.85rem; opacity: 0.7; }
+
+        .reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.6s ease, transform 0.6s ease; }
+        .reveal.is-visible { opacity: 1; transform: none; }
+
+        @media (max-width: 900px) {
+            .hero-grid, .featured-grid, .belief-grid, .photo-strip-grid, .ask-grid, .why-grid, .voices-grid { grid-template-columns: 1fr; }
+            .hero-photo { order: -1; transform: none; }
+            .stat-grid { grid-template-columns: repeat(2, 1fr); gap: 2.2rem; }
+            .story, .story:nth-child(even) { grid-template-columns: 1fr; text-align: left; }
+            .story:nth-child(even) .story-medallion { order: 0; }
+            .medallion { width: 100px; height: 100px; font-size: 1.8rem; }
+            .vision-item:nth-child(2), .vision-item:nth-child(3) { margin-left: 0; }
+            .vision-item { grid-template-columns: 60px 1fr; padding: 1.6rem; }
+            .contact-cards { grid-template-columns: 1fr; }
+            .topbar-brand span { display: none; }
+        }
+        @media (max-width: 560px) {
+            .hero { padding: 3.5rem 0 3rem; }
+            section { padding: 3.5rem 0; }
+            .hero-photo img { height: 260px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="topbar">
+        <div class="topbar-inner">
+            <a class="topbar-brand" href="#top">
+                <img src="../tiki-logo.png" alt="Tiki Turtle Cafe">
+                <span>The Next Course</span>
+            </a>
+            <a class="topbar-cta" href="#contact">Partner With Us</a>
+        </div>
+    </div>
+
+    <header class="hero" id="top">
+        <div class="wrap hero-grid">
+            <div>
+                <span class="eyebrow">A Capital Campaign · Tiki Turtle Cafe · The Arc of Hilo</span>
+                <h1>We built a kitchen that changes lives. Help us build the next one.</h1>
+                <p class="lede">Tiki Turtle Cafe trains adults with disabilities for real culinary jobs, in a real working kitchen, in Hilo, Hawaiʻi. We're raising $200,000 to turn our prep kitchen into Hawaiʻi Island's first certified teaching kitchen, the first step toward a full $500,000&ndash;$750,000 vision.</p>
+                <div class="hero-ctas">
+                    <a class="btn-primary" href="#ask">See the Ask</a>
+                    <a class="btn-ghost" href="#stories">Meet Our Team</a>
+                </div>
+            </div>
+            <div class="hero-photo">
+                <img src="../IMG_9633.jpg" alt="Pulled pork nachos held up in front of the Tiki Turtle mural in Hilo, Hawaiʻi" width="1200" height="1600">
+                <div class="hero-photo-cap">Real food. Real jobs. Hilo, Hawaiʻi.</div>
+            </div>
+        </div>
+    </header>
+
+    <section class="featured" id="featured">
+        <div class="wrap featured-grid">
+            <div>
+                <span class="section-label">As Seen On Hi Now</span>
+                <h2>Local news came to see what we're building.</h2>
+                <p>Hi Now visited Tiki Turtle Cafe to see how The Arc of Hilo runs a working cafe and event space that trains adults with disabilities for real jobs. Here's what they found.</p>
+                <a class="featured-link" href="https://www.hinowdaily.com/2026/03/25/arc-hilo-operates-cafe-event-center-train-workers-with-disabilities/" target="_blank" rel="noopener">
+                    Read the Hi Now story
+                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                </a>
+            </div>
+            <div>
+                <video controls preload="metadata" aria-label="Hi Now feature on Tiki Turtle Cafe and The Arc of Hilo">
+                    <source src="../hinow-feature.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+        </div>
+    </section>
+
+    <svg class="wave" viewBox="0 0 1200 60" preserveAspectRatio="none" aria-hidden="true"><path class="wave-ocean-to-sand" d="M0,30 C300,80 900,-20 1200,30 L1200,60 L0,60 Z"></path></svg>
+
+    <section class="stat-band" id="impact">
+        <div class="wrap">
+            <div class="stat-band-head reveal">
+                <span class="section-label" style="color: var(--sunset-light);">Three Years Of Proof</span>
+                <h2>We didn't wait for a grant to prove this works.</h2>
+            </div>
+            <div class="stat-grid">
+                <div class="reveal"><div class="stat-num">3</div><div class="stat-label">Years Open</div></div>
+                <div class="reveal"><div class="stat-num">23,500+</div><div class="stat-label">Meals Made By Our Team</div></div>
+                <div class="reveal"><div class="stat-num">19,800+</div><div class="stat-label">Dole Whips Served</div></div>
+                <div class="reveal"><div class="stat-num">$425K+</div><div class="stat-label">Earned Through Real Work</div></div>
+            </div>
+            <p class="stat-band-note reveal">Every one of these numbers was earned by someone who was told a kitchen job wasn't for them.</p>
+        </div>
+    </section>
+
+    <section class="belief" id="belief">
+        <div class="wrap belief-grid">
+            <div class="reveal">
+                <span class="section-label">What We Believe</span>
+                <h2>Work is dignity. A kitchen can be a classroom.</h2>
+            </div>
+            <div class="reveal">
+                <p>We believe people with disabilities don't need to be protected from real jobs. They need real jobs built for them. Tiki Turtle Cafe is a program of The Arc of Hilo, and for three years it's been proof that this works.</p>
+                <p>Now we want to build something bigger: an ecosystem where training leads to certification, certification leads to a career, and our kitchen becomes a resource the whole food community in Hilo can use.</p>
+                <p>That starts with the people already cooking in our kitchen today.</p>
+            </div>
+        </div>
+    </section>
+
+    <svg class="wave" viewBox="0 0 1200 60" preserveAspectRatio="none" aria-hidden="true" style="transform: scaleY(-1);"><path class="wave-ocean-to-sand" style="fill: var(--sand-warm);" d="M0,30 C300,-20 900,80 1200,30 L1200,60 L0,60 Z"></path></svg>
+
+    <section class="stories" id="stories">
+        <div class="wrap">
+            <div class="section-head reveal">
+                <span class="section-label">Meet The People This Kitchen Is For</span>
+                <h2>A bigger kitchen isn't the goal. It's for people like these.</h2>
+                <p>A certified teaching kitchen isn't an upgrade for its own sake. Here's who it's actually for, in their own program, cooking real food, every day.</p>
+            </div>
+
+            <div class="story reveal">
+                <div class="story-medallion"><div class="medallion">J</div></div>
+                <div class="story-body">
+                    <h3>Jace</h3>
+                    <p class="story-role">Team Lead, Front of House</p>
+                    <p>Jace started in Hawaiʻi Community College's culinary program. The pace, and what the program expected of him, didn't match how he learns best. So he came home to Tiki Turtle Cafe. He started in the back of the house, learning the line one order at a time. Today he runs the front of house, and people stop by just to talk with him.</p>
+                    <blockquote>He didn't need a different kind of talent. He needed a kitchen built around how he learns.</blockquote>
+                </div>
+            </div>
+
+            <div class="story reveal">
+                <div class="story-medallion"><div class="medallion">E</div></div>
+                <div class="story-body">
+                    <h3>Ethan</h3>
+                    <p class="story-role">Team Member</p>
+                    <p>Ethan graduated high school with a hunger for more. He didn't want to fall into a system with no next step. He wanted to learn. He joined Tiki Turtle Cafe and found his spark: cooking. Ethan lives with seizures, and he doesn't let them set his limits. He shows up, he cooks, and he thrives.</p>
+                </div>
+            </div>
+
+            <div class="story reveal">
+                <div class="story-medallion"><div class="medallion">L</div></div>
+                <div class="story-body">
+                    <h3>Lisa</h3>
+                    <p class="story-role">Team Member</p>
+                    <p>Lisa has enough joy for a hundred people. She tried a few other jobs before Tiki Turtle Cafe, and none of them fit. Here, she found her rhythm, especially this past year. She's stepped up to prep, to cook, to build a real sandwich from scratch.</p>
+                    <blockquote>Her autism isn't something she overcomes. It's part of how she thrives.</blockquote>
+                </div>
+            </div>
+
+            <div class="story reveal">
+                <div class="story-medallion"><div class="medallion">G</div></div>
+                <div class="story-body">
+                    <h3>Genesis</h3>
+                    <p class="story-role">Team Member</p>
+                    <p>Genesis was born with a cleft palate and autism. People sometimes read her as shy. What they miss is that she's a fast learner and an even faster problem solver. Whatever we ask of her, she tries. She's learned to make hot dogs, baked goods, musubi, and she goes home and cooks full meals for her family. She's already talking about starting her own food business.</p>
+                </div>
+            </div>
+
+            <div class="story reveal">
+                <div class="story-medallion"><div class="medallion">D</div></div>
+                <div class="story-body">
+                    <h3>Dayton</h3>
+                    <p class="story-role">Team Member</p>
+                    <p>Dayton moved out on his own and went looking for a job that would let him build real independence. He found it in our kitchen. Ask anyone on our team: his attention to detail, and the quality he puts into every plate, stand out.</p>
+                </div>
+            </div>
+
+            <div class="story reveal">
+                <div class="story-medallion"><div class="medallion">Z</div></div>
+                <div class="story-body">
+                    <h3>Zevin</h3>
+                    <p class="story-role">Team Member</p>
+                    <p>Zevin is quiet. He's not always verbal, and it's easy to overlook him if you don't know to look. Put him in his element, somewhere he feels safe, and you watch him excel. He came to us through a school work program, one of several places that had already written him off. Our chef and our leadership watched him come alive in the kitchen and knew: we need him on our team.</p>
+                </div>
+            </div>
+
+            <div class="story reveal">
+                <div class="story-medallion"><div class="medallion">A</div></div>
+                <div class="story-body">
+                    <h3>Chef Angelina</h3>
+                    <p class="story-role">Head Chef & Mentor</p>
+                    <p>Chef Angelina has come through her own share of hardship. Cooking became her way through it, and now it's her way of serving others. She leads our kitchen with the patience of someone who knows exactly what it's like to need it.</p>
+                </div>
+            </div>
+
+            <div class="story reveal">
+                <div class="story-medallion"><div class="medallion">A</div></div>
+                <div class="story-body">
+                    <h3>Allyssa</h3>
+                    <p class="story-role">Team Lead & Mentor</p>
+                    <p>Allyssa trains our front of house team and is the steady hand many of our participants lean on. She's the one who makes sure every new team member has someone in their corner.</p>
+                </div>
+            </div>
+
+            <div class="stories-close reveal">
+                <p>These are eight of the reasons we're building a bigger kitchen. There will be more names next year, if we can build the room for them.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="statement" id="statement">
+        <div class="wrap">
+            <p class="statement-text reveal">A paycheck was never the point. It's a mom watching her son run a kitchen. A family getting their person back, thriving. Lives changed. Families changed. For good.</p>
+        </div>
+    </section>
+
+    <section class="voices" id="voices">
+        <div class="wrap voices-grid">
+            <div class="voices-frame reveal">
+                <div class="voices-frame-play">
+                    <svg width="26" height="26" fill="none" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M8 5v14l11-7z"/></svg>
+                </div>
+                <span class="voices-frame-label">Video Stories Coming Soon</span>
+            </div>
+            <div class="voices-text reveal">
+                <span class="section-label">In Their Own Words</span>
+                <h2>Soon, you'll hear this straight from them.</h2>
+                <p>We're recording our team sharing their own stories, in their own voices. When they're ready, this is where you'll find them.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="photo-strip" id="built">
+        <div class="wrap photo-strip-grid">
+            <img src="../IMG_0471.jpg" alt="Two Tiki Turtle Cafe team members preparing musubi together in the kitchen" width="1200" height="900" loading="lazy">
+            <div class="photo-strip-text reveal">
+                <span class="section-label">Where We've Been</span>
+                <h2>We already proved we could do this.</h2>
+                <p>Three years ago, Tiki Turtle Cafe opened as a small food stand. Since then we've built our way to a working prep kitchen, made more than 23,500 meals, and earned over $425,000 doing it, all while training a team most employers had overlooked.</p>
+                <p>We built this ourselves, one shift at a time. Now we're ready for the next course.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="vision" id="vision">
+        <div class="wrap">
+            <div class="section-head reveal">
+                <span class="section-label">The Next Course</span>
+                <h2>From prep kitchen to teaching kitchen.</h2>
+                <p>A prep kitchen can feed people. A certified kitchen can teach people, and it can serve our whole community. Here's what we're building next.</p>
+            </div>
+            <div class="vision-list">
+                <div class="vision-item reveal">
+                    <div class="vision-num">01</div>
+                    <div>
+                        <h3>A certified teaching kitchen</h3>
+                        <p>We'll bring our current prep kitchen up to full commercial certification, with three dedicated teaching stations so our team can train side by side instead of one at a time.</p>
+                    </div>
+                </div>
+                <div class="vision-item reveal">
+                    <div class="vision-num">02</div>
+                    <div>
+                        <h3>A real path to certification</h3>
+                        <p>We're building a partnership with Hawaiʻi Community College's culinary program, so our participants can earn credentials that count, not just experience that stays inside our walls.</p>
+                    </div>
+                </div>
+                <div class="vision-item reveal">
+                    <div class="vision-num">03</div>
+                    <div>
+                        <h3>A kitchen for the community</h3>
+                        <p>Local chefs and food vendors in Hilo need certified kitchen space and can't always find it. Once we're certified, we can open our kitchen to them too, and turn Tiki Turtle into a resource the whole food community shares.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="ask" id="ask">
+        <div class="wrap">
+            <div class="section-head reveal">
+                <span class="section-label">What We're Asking</span>
+                <h2>Phase One brings the ecosystem to life.</h2>
+            </div>
+            <div class="ask-grid">
+                <div class="ask-figure reveal">
+                    <div class="amount">$200,000</div>
+                    <div class="amount-label">Phase One Goal</div>
+                    <p class="amount-sub">Phase One is the first step toward a full $500,000&ndash;$750,000 vision for a fully built-out teaching and community kitchen.</p>
+                </div>
+                <div class="reveal">
+                    <ul class="ask-list">
+                        <li>
+                            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            <span>Full commercial kitchen certification</span>
+                        </li>
+                        <li>
+                            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            <span>Three dedicated teaching cooking stations</span>
+                        </li>
+                        <li>
+                            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            <span>The infrastructure to formalize our Hawaiʻi Community College culinary partnership</span>
+                        </li>
+                    </ul>
+                    <p class="ask-note">Station-sponsorship and naming opportunities are available for founding partners. Let's talk about what fits your foundation's priorities.</p>
+                    <div class="ask-cta-row">
+                        <a class="btn-primary" href="#contact">Become a Founding Partner</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="why" id="why">
+        <div class="wrap why-grid">
+            <img src="../IMG_7831_2.jpg" alt="A Tiki Turtle Cafe team member prepping fresh tomatoes for the day's menu" width="900" height="1200" loading="lazy">
+            <div class="why-text reveal">
+                <span class="section-label">Why This Matters To People Who Care About Food</span>
+                <h2>The chefs who inspire us taught more than recipes.</h2>
+                <p>They taught confidence, discipline, and craft, and they believed those things could change a life. That's exactly what happens at Tiki Turtle Cafe every day.</p>
+                <p>We're not asking you to fund a program. We're asking you to help us build the room where the next Jace, the next Ethan, the next Genesis gets to stand at a real station, learn a real skill, and prove what they can do.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact" id="contact">
+        <div class="wrap">
+            <span class="section-label">Let's Build This Together</span>
+            <h2>Tell us where your foundation's priorities fit.</h2>
+            <p class="lede">From a single teaching station to the full vision, we'll show you exactly where your support lands. Reach out and let's talk.</p>
+            <a class="btn-primary" href="mailto:info@tikiturtlehi.com?subject=The%20Next%20Course%3A%20Partnership%20Inquiry">Email Us About Partnership</a>
+            <div class="contact-cards">
+                <div class="contact-card">
+                    <h4>General</h4>
+                    <a href="mailto:info@tikiturtlehi.com">info@tikiturtlehi.com</a>
+                </div>
+                <div class="contact-card">
+                    <h4>Grant Partnerships</h4>
+                    <a href="mailto:bchacko@hiloarc.org">bchacko@hiloarc.org</a>
+                </div>
+                <div class="contact-card">
+                    <h4>Phone</h4>
+                    <a href="tel:808-935-8534">808-935-8534</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="wrap footer-grid">
+            <div class="footer-brand">
+                <img src="../arc-logo.png" alt="The Arc of Hilo">
+                <p>Tiki Turtle Cafe is a vocational training program of The Arc of Hilo, Hawaiʻi.</p>
+            </div>
+            <div class="footer-links">
+                <a href="https://thearcofhilo.org" target="_blank" rel="noopener">thearcofhilo.org</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Tiki Turtle Cafe &middot; A Program of The Arc of Hilo &middot; This page is shared privately and is not indexed for search.</p>
+        </div>
+    </footer>
+
+    <script>
+        const revealEls = document.querySelectorAll('.reveal');
+        if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {
+            const io = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        io.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.01, rootMargin: '0px 0px -5% 0px' });
+            revealEls.forEach(el => io.observe(el));
+            // Safety net: a fast scroll (Page Down, End key, anchor jump) can outrun the
+            // observer's callback timing. Nothing should stay invisible for long.
+            setTimeout(() => revealEls.forEach(el => el.classList.add('is-visible')), 1200);
+        } else {
+            revealEls.forEach(el => el.classList.add('is-visible'));
+        }
+    </script>
+</body>
+</html>
