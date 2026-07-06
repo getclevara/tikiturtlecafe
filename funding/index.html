@@ -230,6 +230,26 @@
         .ask-note { margin-top: 1.6rem; font-size: 0.95rem; color: rgba(255,255,255,0.8); }
         .ask-cta-row { margin-top: 2.2rem; }
 
+        /* Partnership tiers */
+        .tiers { margin-top: 3.5rem; }
+        .tiers-title { color: white; font-size: 1.45rem; margin-bottom: 1.5rem; }
+        .tiers-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+        .tier-card {
+            display: flex; flex-direction: column; align-items: flex-start; gap: 0.45rem; text-align: left;
+            background: rgba(255,255,255,0.08); border: 1.5px solid rgba(255,255,255,0.25);
+            border-radius: 18px; padding: 1.4rem 1.3rem; cursor: pointer;
+            font-family: inherit; color: white; transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+        }
+        .tier-card:hover { background: rgba(255,255,255,0.14); transform: translateY(-2px); }
+        .tier-card.selected { background: rgba(255,255,255,0.96); border-color: var(--sunset); color: var(--ink); }
+        .tier-card.selected .tier-name { color: var(--hibiscus-deep); }
+        .tier-card.selected .tier-amount { color: var(--ocean-deep); }
+        .tier-card.selected .tier-avail { background: var(--sunset); color: var(--ink); }
+        .tier-name { font-weight: 700; font-size: 0.82rem; letter-spacing: 0.08em; text-transform: uppercase; }
+        .tier-amount { font-family: 'Playfair Display', serif; font-weight: 800; font-size: 1.9rem; line-height: 1; }
+        .tier-desc { font-size: 0.9rem; line-height: 1.5; opacity: 0.92; }
+        .tier-avail { margin-top: auto; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; background: rgba(255,255,255,0.15); padding: 0.25rem 0.7rem; border-radius: 50px; }
+
         /* Why us */
         .why { background: var(--cream); }
         .why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3.5rem; align-items: center; }
@@ -261,6 +281,7 @@
 
         @media (max-width: 900px) {
             .hero-grid, .featured-grid, .belief-grid, .photo-strip-grid, .ask-grid, .why-grid { grid-template-columns: 1fr; }
+            .tiers-row { grid-template-columns: 1fr 1fr; }
             .hero-photo { order: -1; transform: none; }
             .stat-grid { grid-template-columns: repeat(2, 1fr); gap: 2.2rem; }
             .story, .story:nth-child(even) { grid-template-columns: 1fr; text-align: left; }
@@ -275,6 +296,7 @@
             .hero { padding: 3.5rem 0 3rem; }
             section { padding: 3.5rem 0; }
             .hero-photo img { height: 260px; }
+            .tiers-row { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -295,7 +317,7 @@
             <div>
                 <span class="eyebrow">A Capital Campaign · Tiki Turtle Cafe · The Arc of Hilo</span>
                 <h1>We built a kitchen that changes lives. Help us build the next one.</h1>
-                <p class="lede">Tiki Turtle Cafe trains adults with disabilities for real culinary jobs, in a real working kitchen, in Hilo, Hawaiʻi. We're raising $200,000 to make our kitchen fully certified, the first phase of a $500,000&ndash;$750,000 vision to build Hawaiʻi Island's first teaching kitchen for adults with disabilities.</p>
+                <p class="lede">Tiki Turtle Cafe trains adults with disabilities for real culinary jobs, in a real working kitchen, in Hilo, Hawaiʻi. We're raising $200,000 to make our kitchen fully certified, the first phase of a $750,000 vision to build Hawaiʻi Island's first teaching kitchen for adults with disabilities.</p>
                 <div class="hero-ctas">
                     <a class="btn-primary" href="#ask">See the Ask</a>
                     <a class="btn-ghost" href="#stories">Meet Our Team</a>
@@ -511,7 +533,7 @@
                 <div class="ask-figure reveal">
                     <div class="amount">$200,000</div>
                     <div class="amount-label">Phase One Goal</div>
-                    <p class="amount-sub">Phase One is the first step toward a full $500,000&ndash;$750,000 vision for a fully built-out teaching and community kitchen.</p>
+                    <p class="amount-sub">Phase One is the first step toward a full $750,000 vision for a fully built-out teaching and community kitchen.</p>
                 </div>
                 <div class="reveal">
                     <ul class="ask-list">
@@ -528,10 +550,40 @@
                             <span>The first requirement for opening our kitchen to Hilo's chefs and food vendors</span>
                         </li>
                     </ul>
-                    <p class="ask-note">Naming opportunities are available for founding partners, including the Phase Two teaching stations. Let's talk about what fits your foundation's priorities. Tiki Turtle Cafe is a program of The Arc of Hilo, a 501(c)(3) nonprofit, and gifts are tax-deductible.</p>
-                    <div class="ask-cta-row">
-                        <a class="btn-primary" href="#contact">Become a Founding Partner</a>
-                    </div>
+                </div>
+            </div>
+
+            <div class="tiers reveal">
+                <h3 class="tiers-title">Where does your name belong?</h3>
+                <div class="tiers-row" role="group" aria-label="Partnership levels">
+                    <button type="button" class="tier-card" aria-pressed="false" data-subject="Founding Partner ($200,000)">
+                        <span class="tier-name">Founding Partner</span>
+                        <span class="tier-amount">$200,000</span>
+                        <span class="tier-desc">Complete Phase One in a single gift. The certified kitchen opens with your name on it.</span>
+                        <span class="tier-avail">1 available</span>
+                    </button>
+                    <button type="button" class="tier-card selected" aria-pressed="true" data-subject="Name a Teaching Station ($80,000)">
+                        <span class="tier-name">Name a Teaching Station</span>
+                        <span class="tier-amount">$80,000</span>
+                        <span class="tier-desc">Fund the certification now. When Phase Two builds our three teaching stations, one carries your name, and it's where the next Jace, Ethan, or Genesis learns their craft.</span>
+                        <span class="tier-avail">3 available</span>
+                    </button>
+                    <button type="button" class="tier-card" aria-pressed="false" data-subject="Certification Sponsor ($25,000)">
+                        <span class="tier-name">Certification Sponsor</span>
+                        <span class="tier-amount">$25,000</span>
+                        <span class="tier-desc">Join the circle of partners who got this kitchen certified, named on the founders' wall.</span>
+                        <span class="tier-avail">Open</span>
+                    </button>
+                    <button type="button" class="tier-card" aria-pressed="false" data-subject="Kitchen Builder ($5,000+)">
+                        <span class="tier-name">Kitchen Builder</span>
+                        <span class="tier-amount">$5,000+</span>
+                        <span class="tier-desc">Every builder's name goes on the founders' wall, in the kitchen they helped create.</span>
+                        <span class="tier-avail">Open</span>
+                    </button>
+                </div>
+                <p class="ask-note">Every gift funds Phase One first; naming follows the build. Tiki Turtle Cafe is a program of The Arc of Hilo, a 501(c)(3) nonprofit, and gifts are tax-deductible. Let's talk about what fits your foundation's priorities.</p>
+                <div class="ask-cta-row">
+                    <a class="btn-primary" id="tierCta" href="mailto:info@tikiturtlehi.com?subject=The%20Next%20Course%3A%20Name%20a%20Teaching%20Station%20(%2480%2C000)">Start the Conversation</a>
                 </div>
             </div>
         </div>
@@ -605,6 +657,19 @@
         } else {
             revealEls.forEach(el => el.classList.add('is-visible'));
         }
+
+        // Partnership tier selector: highlight the chosen level and carry it
+        // into the email subject so inquiries arrive pre-qualified.
+        const tierCards = document.querySelectorAll('.tier-card');
+        const tierCta = document.getElementById('tierCta');
+        tierCards.forEach(card => {
+            card.addEventListener('click', () => {
+                tierCards.forEach(c => { c.classList.remove('selected'); c.setAttribute('aria-pressed', 'false'); });
+                card.classList.add('selected');
+                card.setAttribute('aria-pressed', 'true');
+                tierCta.href = 'mailto:info@tikiturtlehi.com?subject=' + encodeURIComponent('The Next Course: ' + card.dataset.subject);
+            });
+        });
     </script>
 </body>
 </html>
