@@ -250,6 +250,18 @@
         .tier-desc { font-size: 0.9rem; line-height: 1.5; opacity: 0.92; }
         .tier-avail { margin-top: auto; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; background: rgba(255,255,255,0.15); padding: 0.25rem 0.7rem; border-radius: 50px; }
 
+        /* Build list */
+        .build { margin-top: 3.5rem; }
+        .build-title { color: white; font-size: 1.45rem; margin-bottom: 1.2rem; }
+        .build-list { list-style: none; max-width: 720px; }
+        .build-list li {
+            display: flex; justify-content: space-between; align-items: baseline; gap: 1.5rem;
+            padding: 0.75rem 0; border-bottom: 1px solid rgba(255,255,255,0.18); font-size: 1rem;
+        }
+        .build-list li:first-child { border-top: 1px solid rgba(255,255,255,0.18); }
+        .build-cost { font-weight: 700; white-space: nowrap; color: var(--sunset-light); }
+        .build-note { margin-top: 1.2rem; font-size: 0.9rem; color: rgba(255,255,255,0.75); max-width: 66ch; }
+
         /* Why us */
         .why { background: var(--cream); }
         .why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3.5rem; align-items: center; }
@@ -551,6 +563,19 @@
                         </li>
                     </ul>
                 </div>
+            </div>
+
+            <div class="build reveal">
+                <h3 class="build-title">The build list</h3>
+                <ul class="build-list">
+                    <li><span>Type 1 exhaust hood with fire suppression, ductwork, and makeup air</span><span class="build-cost">$35,000&ndash;$75,000</span></li>
+                    <li><span>Grease interceptor, sized for a teaching kitchen</span><span class="build-cost">$10,000&ndash;$25,000</span></li>
+                    <li><span>Certified commercial baking oven</span><span class="build-cost">$12,000&ndash;$25,000</span></li>
+                    <li><span>Fryer station under the hood</span><span class="build-cost">$5,000&ndash;$12,000</span></li>
+                    <li><span>Electrical, plumbing, and finish upgrades to commercial code</span><span class="build-cost">$45,000&ndash;$80,000</span></li>
+                    <li><span>Plan review, permits, engineering, and contingency</span><span class="build-cost">$25,000&ndash;$45,000</span></li>
+                </ul>
+                <p class="build-note">Planning ranges reflect Hawaiʻi construction costs, which run well above mainland averages once ocean freight and island labor are counted. Final figures come from contractor bids, and we'll share them openly with our partners.</p>
             </div>
 
             <div class="tiers reveal">
