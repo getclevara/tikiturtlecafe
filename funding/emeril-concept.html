@@ -22,8 +22,8 @@
             font-family: 'DM Sans', sans-serif;
             color: var(--ink);
             background: #eceae4;
-            line-height: 1.55;
-            font-size: 11pt;
+            line-height: 1.45;
+            font-size: 10.5pt;
             -webkit-font-smoothing: antialiased;
         }
         .page {
@@ -44,9 +44,9 @@
         .contact div { padding: 0.12rem 0; }
         .contact .k { color: var(--muted); font-weight: 600; }
 
-        h2 { font-size: 1.12rem; margin: 1.35rem 0 0.5rem; padding-bottom: 0.2rem; border-bottom: 1px solid var(--rule); }
+        h2 { font-size: 1.1rem; margin: 1rem 0 0.4rem; padding-bottom: 0.18rem; border-bottom: 1px solid var(--rule); }
         h2:first-of-type { margin-top: 0; }
-        p { margin-bottom: 0.7rem; }
+        p { margin-bottom: 0.55rem; }
         p.tight { margin-bottom: 0.35rem; }
         .lead { font-size: 1.02rem; }
         strong { color: var(--ink); }
@@ -61,12 +61,30 @@
 
         .signoff { margin-top: 1.6rem; padding-top: 0.9rem; border-top: 1px solid var(--rule); font-size: 0.85rem; color: var(--muted); }
 
+        .masthead-row { display: flex; align-items: center; gap: 0.9rem; }
+        .masthead-row img { height: 52px; width: auto; }
+
+        figure { margin: 0; }
+        .herofig { margin: 0 0 1.1rem; }
+        .herofig img { width: 100%; height: 1.35in; object-fit: cover; object-position: center 42%; border-radius: 6px; display: block; }
+        figcaption { font-size: 0.78rem; color: var(--muted); margin-top: 0.35rem; font-style: italic; }
+
+        .metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.55rem; margin: 0.5rem 0 0.3rem; }
+        .metric { border: 1px solid var(--rule); border-radius: 6px; padding: 0.7rem 0.4rem; text-align: center; }
+        .metric .n { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1.45rem; color: var(--hibiscus-deep); line-height: 1; }
+        .metric .l { font-size: 0.7rem; color: var(--muted); margin-top: 0.32rem; line-height: 1.25; }
+
+        .hccgrid { display: grid; grid-template-columns: 1.7fr 1fr; gap: 1.1rem; align-items: start; }
+        .hccgrid p:last-child { margin-bottom: 0; }
+        .hccfig img { width: 100%; height: 2in; object-fit: cover; object-position: center 30%; border-radius: 6px; display: block; }
+
         @media print {
             body { background: #fff; font-size: 10.5pt; }
             .page { box-shadow: none; margin: 0; max-width: none; padding: 0; }
             @page { margin: 0.7in; }
             h2 { page-break-after: avoid; }
             p, li { page-break-inside: avoid; }
+            figure, .metrics, .metric, .hccgrid { page-break-inside: avoid; }
             .no-print { display: none; }
         }
         .no-print {
@@ -78,10 +96,20 @@
 <body>
     <div class="page">
         <div class="masthead">
-            <div class="doc-label">Concept Paper &middot; Prepared for the Emeril Lagasse Foundation</div>
-            <div class="org">The Arc of Hilo &middot; Tiki Turtle Cafe</div>
-            <div class="sub">A vocational culinary training program for adults with disabilities in Hilo, Hawaiʻi</div>
+            <div class="masthead-row">
+                <img src="../arc-logo.png" alt="The Arc of Hilo">
+                <div>
+                    <div class="doc-label">Concept Paper &middot; Prepared for the Emeril Lagasse Foundation</div>
+                    <div class="org">The Arc of Hilo &middot; Tiki Turtle Cafe</div>
+                    <div class="sub">A vocational culinary training program for adults with disabilities in Hilo, Hawaiʻi</div>
+                </div>
+            </div>
         </div>
+
+        <figure class="herofig">
+            <img src="../IMG_0471.jpg" alt="Two Tiki Turtle Cafe team members preparing musubi together in the kitchen" width="1288" height="952">
+            <figcaption>Our team at work in the Tiki Turtle Cafe kitchen, Hilo, Hawaiʻi.</figcaption>
+        </figure>
 
         <div class="contact">
             <div><span class="k">Contact:</span> Binil Chacko</div>
@@ -93,8 +121,14 @@
         </div>
 
         <h2>Organization background</h2>
-        <p>For more than 70 years, The Arc of Hilo has protected the rights and advanced the potential of people with intellectual and developmental disabilities on Hawaiʻi Island. In 2023 we opened Tiki Turtle Cafe, a working cafe and vocational training kitchen where adults with disabilities learn real culinary skills, in a real kitchen, alongside a professional chef.</p>
-        <p>Three years in, our team has prepared more than 23,500 meals, served nearly 20,000 Dole Whips, and earned over $425,000 in real revenue. We did not wait for a grant to prove this model works. We built it one shift at a time, and every dollar was earned by someone who had been told a kitchen job was not for them.</p>
+        <p>For more than 70 years, The Arc of Hilo has protected the rights and advanced the potential of people with intellectual and developmental disabilities on Hawaiʻi Island. In 2023 we opened Tiki Turtle Cafe, a working cafe and training kitchen where adults with disabilities learn real culinary skills alongside a professional chef. We did not wait for a grant to prove the model works. We built it one shift at a time, and every result below was earned by someone who had been told a kitchen job was not for them.</p>
+
+        <div class="metrics">
+            <div class="metric"><div class="n">3</div><div class="l">Years serving Hawaiʻi Island</div></div>
+            <div class="metric"><div class="n">23,500+</div><div class="l">Meals prepared by our team</div></div>
+            <div class="metric"><div class="n">19,800+</div><div class="l">Dole Whips served</div></div>
+            <div class="metric"><div class="n">$425K+</div><div class="l">Earned through real work</div></div>
+        </div>
 
         <h2>Project summary</h2>
         <div class="summary">
@@ -104,15 +138,16 @@
         <div class="wordcount">Project summary: 196 words.</div>
 
         <h2>Statement of need</h2>
-        <p>Adults with disabilities face an unemployment rate above 70 percent. On a rural island, the options are thinner still, and too many capable young adults leave the school system with skill and drive and nowhere to put them. Tiki Turtle Cafe exists to change that, and the results are real: participants who arrived unsure of themselves now run our front of house, build sandwiches from scratch, and cook for their own families at home.</p>
-        <p>But our kitchen is not yet certified, and certification is the wall between where we are and everything we intend to build: accredited training, college credentials, and a teaching kitchen that serves the whole community. Hawaiʻiʻs construction costs run roughly 50 percent above mainland averages once ocean freight and island labor are counted, which makes that wall higher for us than for almost anyone. A grant toward certification removes the single barrier standing between our team and credentials that will follow them into any kitchen in the country.</p>
+        <p>Adults with disabilities face an unemployment rate above 70 percent, and on a rural island the options are thinner still. Tiki Turtle Cafe changes that, and the results are real: participants who arrived unsure of themselves now run our front of house and cook for their own families at home. But our kitchen is not yet certified, and certification is the wall between where we are and everything we intend to build. Hawaiʻiʻs construction costs run roughly 50 percent above mainland averages once ocean freight is counted, which makes that wall higher for us than for almost anyone. A grant toward certification removes the single barrier between our team and credentials that follow them into any kitchen in the country.</p>
+
+        <h2>The bridge to a real credential</h2>
+        <p>Experience is valuable, but a credential travels. We are building a partnership with the culinary program at Hawaiʻi Community College so the skills our participants earn lead to certifications any employer recognizes. We know why this bridge matters: Jace began in the college's culinary program, but its pace did not fit the way he learns. He came home to Tiki Turtle, started in the back of the house, and today runs our front of house. Together, our kitchen and the college can do what neither does alone, pairing real instruction with the pace and support our team needs to reach the credential. A certified kitchen is the prerequisite that makes that instruction possible in our space.</p>
 
         <h2>Financial ask</h2>
         <p>We respectfully invite the Emeril Lagasse Foundation to fund the <strong>certified baking station at <span class="ask-figure">$25,000</span></strong>: a commercial baking oven and the certification of the station built around it. This is one nameable, completable piece of a $200,000 Phase One certification effort, itself the first step in a $750,000 vision for a full teaching and community kitchen.</p>
         <p>We would be honored to name the station in recognition of the Foundation, and to welcome you to see it in use. A grant at whatever level fits your program would help certify the first station where our team earns real credentials. The Arc of Hilo is a 501(c)(3) nonprofit; gifts are tax-deductible.</p>
 
         <h2>Alignment with the Foundation</h2>
-        <p class="tight">This project lives inside the pillars the Foundation was built on:</p>
         <ul class="pillars">
             <li><strong>Development of life skills through food.</strong> Our team learns independence, confidence, and craft in a working kitchen, and carries it home.</li>
             <li><strong>Development of culinary skills.</strong> Real training, on real equipment, toward credentials that count.</li>
