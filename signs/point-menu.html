@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Point-to Menu | Tiki Turtle Cafe</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=DM+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+    :root{
+        --ocean:#0d5c72; --ocean-bright:#12b5c4; --hibiscus:#b13860;
+        --sunset:#e07b1a; --ink:#16303a; --rule:#d7d0c4; --cream:#fffdf8;
+    }
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{font-family:'DM Sans',sans-serif;color:var(--ink);background:#e6e3dc;-webkit-font-smoothing:antialiased;}
+    .sheet{
+        width:8.5in;min-height:11in;margin:0.35in auto;background:var(--cream);
+        padding:0.55in 0.6in 0.5in;box-shadow:0 8px 30px rgba(0,0,0,.16);
+        display:flex;flex-direction:column;
+    }
+    .head{text-align:center;border-bottom:4px solid var(--ocean);padding-bottom:.35rem;margin-bottom:.5rem;}
+    .head h1{font-family:'Playfair Display',serif;font-weight:800;font-size:2rem;color:var(--ocean);line-height:1;}
+    .head .point{margin-top:.35rem;font-size:1.25rem;font-weight:800;color:var(--hibiscus);}
+    .head .point .hand{font-size:1.5rem;}
+
+    .cols{display:grid;grid-template-columns:1fr 1fr;gap:.35rem 1.4rem;flex:1;}
+    .cat{margin-bottom:.55rem;}
+    .cat h2{
+        font-family:'DM Sans',sans-serif;font-weight:800;font-size:1.02rem;letter-spacing:.02em;
+        text-transform:uppercase;color:#fff;background:var(--ocean);border-radius:8px;
+        padding:.28rem .6rem;display:flex;align-items:center;gap:.5rem;margin-bottom:.25rem;
+    }
+    .cat h2 .ico{font-size:1.25rem;}
+    .row{display:flex;justify-content:space-between;align-items:baseline;gap:.6rem;
+        padding:.32rem .2rem;border-bottom:1px solid var(--rule);}
+    .row:last-child{border-bottom:none;}
+    .row .name{font-weight:700;font-size:1.12rem;line-height:1.15;}
+    .row .sub{display:block;font-weight:500;font-size:.82rem;color:#5a6a70;margin-top:.05rem;}
+    .row .price{font-family:'Playfair Display',serif;font-weight:800;font-size:1.3rem;color:var(--hibiscus);white-space:nowrap;}
+
+    .helpers{border-top:3px solid var(--ocean);margin-top:.3rem;padding-top:.5rem;}
+    .helper-row{display:grid;grid-template-columns:auto 1fr;align-items:center;gap:.8rem;margin-bottom:.5rem;}
+    .helper-q{font-weight:800;font-size:1.05rem;color:var(--ocean);white-space:nowrap;}
+    .chips{display:flex;gap:.5rem;flex-wrap:wrap;}
+    .chip{border:2.5px solid var(--ocean);border-radius:50px;padding:.35rem 1rem;font-weight:800;font-size:1.15rem;display:flex;align-items:center;gap:.4rem;}
+    .chip.num{min-width:2.6rem;justify-content:center;}
+    .foot{text-align:center;font-size:.82rem;color:#5a6a70;margin-top:.35rem;font-weight:600;}
+
+    .screen-note{max-width:8.5in;margin:.5rem auto;text-align:center;font-size:.85rem;color:#6b6f6a;}
+    @media print{
+        body{background:#fff;}
+        .sheet{width:auto;min-height:auto;margin:0;box-shadow:none;padding:.4in .45in;}
+        .screen-note{display:none;}
+        @page{size:letter;margin:0;}
+    }
+</style>
+</head>
+<body>
+<div class="screen-note">Prints on one page (8.5 &times; 11). To print: File &rarr; Print. To save: choose Save as PDF.</div>
+
+<div class="sheet">
+    <div class="head">
+        <h1>Tiki Turtle Cafe</h1>
+        <div class="point"><span class="hand">👉</span> Point to what you would like <span class="hand">👈</span></div>
+    </div>
+
+    <div class="cols">
+        <div>
+            <div class="cat">
+                <h2><span class="ico">🥪</span> Sandwiches</h2>
+                <div class="row"><span class="name">Deli Sandwich<span class="sub">Ham, Turkey, or Tuna</span></span><span class="price">$11.50</span></div>
+                <div class="row"><span class="name">Chicken Mac Nut Pesto</span><span class="price">$14.50</span></div>
+                <div class="row"><span class="name">Da Robert's Special<span class="sub">Albacore tuna</span></span><span class="price">$14.50</span></div>
+                <div class="row"><span class="name">Chicken Bacon Ranch</span><span class="price">$14.50</span></div>
+                <div class="row"><span class="name">Hot Dog</span><span class="price">$5.50</span></div>
+            </div>
+
+            <div class="cat">
+                <h2><span class="ico">🥗</span> Salads</h2>
+                <div class="row"><span class="name">Chef's Salad</span><span class="price">$15.00</span></div>
+                <div class="row"><span class="name">Chicken Pesto Salad</span><span class="price">$15.00</span></div>
+                <div class="row"><span class="name">Chicken Bacon Ranch Salad</span><span class="price">$15.00</span></div>
+                <div class="row"><span class="name">Da Robert's Special Salad</span><span class="price">$15.00</span></div>
+            </div>
+        </div>
+
+        <div>
+            <div class="cat">
+                <h2><span class="ico">🍦</span> Dole Whip</h2>
+                <div class="row"><span class="name">Dole Pineapple</span><span class="price">$6.00</span></div>
+                <div class="row"><span class="name">Dole Flavor of the Week<span class="sub">Ask what is spinning today</span></span><span class="price">$6.00</span></div>
+            </div>
+
+            <div class="cat">
+                <h2><span class="ico">🥤</span> Smoothies</h2>
+                <div class="row"><span class="name">Strawberry Banana</span><span class="price">$7.50</span></div>
+                <div class="row"><span class="name">Mango Pineapple</span><span class="price">$7.50</span></div>
+            </div>
+
+            <div class="cat">
+                <h2><span class="ico">🥛</span> Drinks</h2>
+                <div class="row"><span class="name">Fountain Drink<span class="sub">Pepsi, Root Beer, Starry & more</span></span><span class="price">$2.00</span></div>
+            </div>
+
+            <div class="cat">
+                <h2><span class="ico">⭐</span> Today's Special</h2>
+                <div class="row"><span class="name">Ask us! Point here to see</span><span class="price">$ __</span></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="helpers">
+        <div class="helper-row">
+            <span class="helper-q">How many?</span>
+            <div class="chips">
+                <span class="chip num">1</span><span class="chip num">2</span><span class="chip num">3</span><span class="chip num">4</span><span class="chip num">5</span>
+            </div>
+        </div>
+        <div class="helper-row">
+            <span class="helper-q">For here or to go?</span>
+            <div class="chips">
+                <span class="chip">🍽️ For here</span>
+                <span class="chip">🥡 To go</span>
+            </div>
+        </div>
+        <div class="helper-row">
+            <span class="helper-q">All done?</span>
+            <div class="chips">
+                <span class="chip">👍 Yes, done</span>
+                <span class="chip">➕ Add more</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="foot">Cash prices shown &middot; Card adds 4% &middot; Take your time, we are happy to help &#128153;</div>
+</div>
+</body>
+</html>
