@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Price Cards to Print | Tiki Turtle Cafe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=DM+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ocean-deep:#0d5c72; --ocean-mid:#0e8ca0; --coral:#e85a5a;
+    --sand-warm:#fff8f0; --cream:#fffcf7; --text-dark:#12303c; --line:#e7ddcf;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'DM Sans',sans-serif;background:#2f3033;color:var(--text-dark);padding:24px;display:flex;flex-direction:column;align-items:center;}
+
+  .bar{width:8.5in;max-width:100%;background:linear-gradient(135deg,var(--ocean-deep),var(--ocean-mid));color:#fff;border-radius:14px;padding:16px 22px;margin-bottom:20px;display:flex;justify-content:space-between;align-items:center;gap:16px;box-shadow:0 8px 30px rgba(0,0,0,.3);}
+  .bar p{font-size:.9rem;line-height:1.4;}
+  .bar strong{font-weight:800;}
+  .print-btn{background:var(--coral);color:#fff;border:none;border-radius:50px;padding:12px 24px;font-family:inherit;font-size:1.05rem;font-weight:800;cursor:pointer;white-space:nowrap;box-shadow:0 4px 14px rgba(232,90,90,.4);}
+
+  .sheet{width:8.5in;background:#fff;padding:0.45in 0.4in;display:grid;grid-template-columns:1fr 1fr;gap:0.28in;}
+
+  .card{
+    background:var(--cream);border:2.5px solid var(--ocean-deep);border-radius:16px;
+    padding:22px 20px 20px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;min-height:2.35in;position:relative;overflow:hidden;
+  }
+  .card::before{content:"";position:absolute;top:0;left:0;right:0;height:9px;background:var(--coral);}
+  .dish{font-family:'DM Sans',sans-serif;font-size:1.05rem;font-weight:700;letter-spacing:.01em;color:var(--ocean-mid);text-transform:uppercase;margin-bottom:8px;line-height:1.1;}
+
+  .cash-label{font-size:1rem;font-weight:800;letter-spacing:.14em;color:var(--coral);text-transform:uppercase;margin-bottom:-6px;}
+  .cash{font-family:'Playfair Display',serif;font-weight:800;font-size:5.4rem;line-height:1;color:var(--ocean-deep);}
+  .cash .cents{font-size:2.6rem;vertical-align:super;}
+  .cash .dollar{font-size:2.8rem;vertical-align:top;margin-right:2px;}
+
+  .card-price{margin-top:12px;padding-top:10px;border-top:2px dashed var(--line);font-size:1.35rem;font-weight:700;color:var(--text-dark);width:80%;}
+  .card-price b{color:var(--ocean-mid);font-weight:800;}
+
+  .flat{margin-top:10px;font-size:1.05rem;font-weight:700;color:var(--ocean-mid);}
+
+  .blank .dish{color:#b9c4c8;}
+  .blank .writein{width:78%;height:2px;background:#cdd6d9;margin:6px auto;}
+  .blank .cash{color:#cdd6d9;font-size:3rem;}
+  .blank .hint{font-size:.82rem;color:#9aa7ac;font-weight:600;margin-top:6px;}
+
+  @media print{
+    @page{size:8.5in 11in;margin:0;}
+    body{background:#fff;padding:0;}
+    .bar{display:none;}
+    .sheet{box-shadow:none;}
+    *{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .card{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+  <div class="bar">
+    <p><strong>Print &amp; cut these.</strong> Big cash and card prices, one per dish. Print on cardstock (Letter, margins None, Background graphics ON), cut along the cards, and clip them to the board.</p>
+    <button class="print-btn" onclick="window.print()">🖨 Print</button>
+  </div>
+
+  <div class="sheet">
+    <div class="card">
+      <div class="dish">Signature Sandwiches</div>
+      <div class="cash-label">Cash</div>
+      <div class="cash"><span class="dollar">$</span>14<span class="cents">.50</span></div>
+      <div class="card-price"><b>Card</b> $15.08</div>
+    </div>
+
+    <div class="card">
+      <div class="dish">Deli Sandwich</div>
+      <div class="cash-label">Cash</div>
+      <div class="cash"><span class="dollar">$</span>11<span class="cents">.50</span></div>
+      <div class="card-price"><b>Card</b> $11.96</div>
+    </div>
+
+    <div class="card">
+      <div class="dish">Signature Salads</div>
+      <div class="cash-label">Cash</div>
+      <div class="cash"><span class="dollar">$</span>15<span class="cents">.00</span></div>
+      <div class="card-price"><b>Card</b> $15.60</div>
+    </div>
+
+    <div class="card">
+      <div class="dish">Hot Dog</div>
+      <div class="cash-label">Cash</div>
+      <div class="cash"><span class="dollar">$</span>5<span class="cents">.50</span></div>
+      <div class="card-price"><b>Card</b> $5.72</div>
+    </div>
+
+    <div class="card">
+      <div class="dish">Smoothie · 16 oz</div>
+      <div class="cash-label">Cash</div>
+      <div class="cash"><span class="dollar">$</span>7<span class="cents">.50</span></div>
+      <div class="card-price"><b>Card</b> $7.80</div>
+    </div>
+
+    <div class="card">
+      <div class="dish">Dole Whip</div>
+      <div class="cash-label">Cash</div>
+      <div class="cash"><span class="dollar">$</span>6<span class="cents">.00</span></div>
+      <div class="card-price"><b>Card</b> $6.24</div>
+    </div>
+
+    <div class="card">
+      <div class="dish">Fountain Drink</div>
+      <div class="cash"><span class="dollar">$</span>2<span class="cents">.00</span></div>
+      <div class="flat">Same price, cash or card</div>
+    </div>
+
+    <div class="card blank">
+      <div class="dish">Daily Special</div>
+      <div class="writein"></div>
+      <div class="cash-label">Cash</div>
+      <div class="cash"><span class="dollar">$</span>___</div>
+      <div class="hint">Write in today's price</div>
+    </div>
+  </div>
+</body>
+</html>
