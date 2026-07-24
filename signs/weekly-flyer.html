@@ -7,89 +7,135 @@
 <title>Weekly Specials Flyer | Tiki Turtle Cafe</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;0,900;1,600;1,700&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700;1,800;1,900&family=DM+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root{
-    --ocean-deep:#0d5c72; --ocean-mid:#0e8ca0; --ocean-bright:#12b5c4;
-    --sand:#f7f3ed; --sand-warm:#fff8f0; --coral:#e85a5a; --coral-light:#ff7b7b;
-    --sunset:#f59e42; --sunset-light:#ffc178; --hibiscus:#d64d7a; --cream:#fffcf7; --ink:#12303c;
+    --navy:#12303c; --cream:#f7edd7; --cream-2:#fbf4e3;
+    --price:#e6482a; --gold:#f0a93a; --sub:#9a8c78;
   }
   *{margin:0;padding:0;box-sizing:border-box;}
   body{font-family:'DM Sans',sans-serif;background:#2f3033;}
 
-  /* 1080x1350 (4:5) social flyer at native size (top-left) for a clean screenshot */
   .flyer{
-    width:1080px;height:1350px;position:relative;overflow:hidden;color:var(--ink);
-    background:
-      radial-gradient(circle at 15% 8%, rgba(255,193,120,.55), transparent 42%),
-      radial-gradient(circle at 88% 96%, rgba(18,181,196,.5), transparent 46%),
-      linear-gradient(160deg,#0d5c72 0%,#0e8ca0 46%,#12b5c4 100%);
+    width:1080px;height:1350px;position:relative;overflow:hidden;color:var(--navy);
+    background:linear-gradient(180deg,
+      #10303f 0%, #2f2650 17%, #5c2249 31%, #9a2447 44%,
+      #cf3442 55%, #e6592b 67%, #f39a4e 78%, #f6e6cc 90%, var(--cream) 100%);
   }
-  .motif{position:absolute;opacity:.16;filter:saturate(1.1);}
-  .m1{top:40px;right:44px;font-size:150px;transform:rotate(12deg);}
-  .m2{bottom:150px;left:-30px;font-size:200px;transform:rotate(-18deg);opacity:.12;}
-  .m3{top:520px;right:-26px;font-size:150px;transform:rotate(20deg);opacity:.13;}
+  /* halftone dots, strongest up top */
+  .dots{position:absolute;inset:0;z-index:0;
+    background-image:radial-gradient(rgba(15,18,26,.20) 1.5px, transparent 1.6px);
+    background-size:17px 17px;
+    -webkit-mask:linear-gradient(180deg,#000 0%,#000 48%,transparent 78%);
+            mask:linear-gradient(180deg,#000 0%,#000 48%,transparent 78%);}
+  /* sunburst behind the title */
+  .rays{position:absolute;top:250px;left:50%;width:1250px;height:1250px;transform:translateX(-50%);z-index:0;
+    background:repeating-conic-gradient(from 0deg,rgba(224,176,110,.55) 0deg .45deg, transparent .45deg 4deg);
+    -webkit-mask:radial-gradient(circle,#000 6%,rgba(0,0,0,.55) 26%,transparent 60%);
+            mask:radial-gradient(circle,#000 6%,rgba(0,0,0,.55) 26%,transparent 60%);}
+  .sun{position:absolute;top:calc(250px + 500px);left:50%;transform:translate(-50%,-50%);width:250px;height:250px;border-radius:50%;z-index:0;
+    background:radial-gradient(circle,#9a6440 0%,#7c4f34 70%,#6d4530 100%);opacity:.6;}
 
-  .inner{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;padding:52px 66px 40px;}
+  .content{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;}
+  .top{padding:44px 60px 0;text-align:center;}
+  .logo{display:block;width:660px;max-width:100%;margin:0 auto;filter:drop-shadow(0 6px 16px rgba(0,0,0,.35));}
+  .title{font-family:'Playfair Display',serif;font-style:italic;font-weight:900;color:var(--cream);font-size:150px;line-height:.9;margin-top:24px;text-shadow:0 6px 0 rgba(0,0,0,.18),0 10px 26px rgba(0,0,0,.3);}
+  .weekbadge{display:inline-block;background:var(--cream);color:var(--navy);font-weight:800;font-size:38px;letter-spacing:.18em;padding:12px 44px;margin-top:22px;border-radius:6px;box-shadow:0 8px 22px rgba(0,0,0,.25);}
 
-  .eyebrow{display:inline-block;align-self:center;background:rgba(255,255,255,.16);border:2px solid rgba(255,255,255,.4);color:#fff;font-weight:800;font-size:24px;letter-spacing:.16em;text-transform:uppercase;padding:12px 28px;border-radius:50px;}
-  .flower{text-align:center;font-size:52px;margin:14px 0 4px;}
-  h1{font-family:'Playfair Display',serif;font-weight:900;color:#fff;text-align:center;font-size:90px;line-height:.98;text-shadow:0 4px 22px rgba(0,0,0,.28);}
-  h1 .script{display:block;font-style:italic;font-weight:700;font-size:50px;color:var(--sunset-light);margin-top:4px;}
-  .dates{text-align:center;color:#fff;font-weight:700;font-size:29px;margin-top:14px;letter-spacing:.02em;opacity:.95;}
+  .wave{display:block;width:100%;height:34px;margin-top:26px;}
 
-  .menu{background:var(--cream);border-radius:34px;margin-top:26px;padding:14px 44px;box-shadow:0 26px 60px rgba(0,0,0,.28);flex:1;display:flex;flex-direction:column;justify-content:center;}
-  .row{display:flex;align-items:center;gap:22px;padding:20px 0;border-bottom:3px dotted #e7dccb;}
-  .row:last-child{border-bottom:none;}
-  .day{flex-shrink:0;width:150px;font-weight:800;font-size:26px;letter-spacing:.06em;text-transform:uppercase;color:var(--coral);}
-  .dish{flex:1;font-family:'Playfair Display',serif;font-weight:700;font-size:44px;color:var(--ocean-deep);line-height:1.05;}
-  .price{flex-shrink:0;font-family:'Playfair Display',serif;font-weight:800;font-size:46px;color:var(--ink);background:var(--sunset-light);border:3px solid var(--sunset);border-radius:50px;padding:6px 22px;}
+  .rows{flex:1;display:flex;flex-direction:column;justify-content:center;gap:15px;padding:14px 52px 6px;}
+  .row{display:flex;align-items:center;gap:26px;background:var(--cream);border:3px solid var(--navy);border-radius:18px;padding:15px 30px;box-shadow:0 8px 20px rgba(0,0,0,.16);}
+  .circle{flex-shrink:0;width:92px;height:92px;border-radius:50%;background:var(--navy);color:var(--cream);display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1;}
+  .circle .ab{font-weight:800;font-size:27px;letter-spacing:.03em;}
+  .circle .dt{font-size:19px;font-weight:600;margin-top:4px;opacity:.9;}
+  .info{flex:1;min-width:0;}
+  .info .name{font-family:'Playfair Display',serif;font-style:italic;font-weight:800;font-size:48px;color:var(--navy);line-height:1.02;}
+  .info .sub{font-size:19px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--sub);margin-top:7px;}
+  .price{flex-shrink:0;font-family:'Playfair Display',serif;font-weight:900;font-size:62px;color:var(--price);line-height:1;}
+  .price .cur{font-size:30px;vertical-align:super;margin-right:1px;}
 
-  .foot{margin-top:22px;text-align:center;color:#fff;}
-  .foot .hours{font-weight:800;font-size:32px;letter-spacing:.01em;}
-  .foot .hours b{color:var(--sunset-light);}
-  .foot .cta{font-family:'Playfair Display',serif;font-style:italic;font-size:34px;margin-top:8px;color:#fff;}
-  .foot .meta{margin-top:12px;font-size:21px;font-weight:600;opacity:.9;}
-  .foot .fine{margin-top:5px;font-size:18px;opacity:.72;font-weight:500;}
+  .dolebar{display:flex;align-items:center;gap:22px;background:var(--navy);padding:20px 52px;}
+  .dolebadge{background:var(--gold);color:var(--navy);font-weight:800;font-size:23px;letter-spacing:.05em;text-transform:uppercase;padding:10px 18px;border-radius:8px;}
+  .doleflav{color:var(--cream);font-family:'Playfair Display',serif;font-style:italic;font-weight:700;font-size:30px;}
+  .dolehours{margin-left:auto;color:var(--gold);font-weight:800;font-size:23px;letter-spacing:.05em;}
 
-  /* helper below the flyer, off the social image */
+  .contact{display:flex;align-items:center;justify-content:space-between;gap:18px;background:var(--cream-2);padding:20px 52px 22px;}
+  .contact .col{display:flex;flex-direction:column;}
+  .contact .addr .l1{font-weight:800;font-size:25px;letter-spacing:.02em;color:var(--navy);}
+  .contact .addr .l2{font-weight:700;font-size:18px;letter-spacing:.12em;color:var(--sub);margin-top:3px;}
+  .web{font-family:'Playfair Display',serif;font-style:italic;font-weight:800;font-size:44px;color:var(--price);text-align:center;}
+  .contact .ph{text-align:right;}
+  .contact .ph .l1{font-weight:800;font-size:25px;letter-spacing:.04em;color:var(--navy);}
+  .contact .ph .l2{font-weight:700;font-size:15px;letter-spacing:.1em;color:var(--sub);margin-top:3px;text-transform:uppercase;}
+
   .bar{width:1080px;background:#20222a;color:#fff;padding:22px 30px;display:flex;justify-content:space-between;align-items:center;gap:16px;}
   .bar p{font-size:18px;line-height:1.5;}
-  .bar strong{font-weight:800;color:var(--sunset-light);}
-  .dl-btn{background:var(--coral);color:#fff;border:none;border-radius:50px;padding:14px 26px;font-family:inherit;font-size:18px;font-weight:800;cursor:pointer;white-space:nowrap;}
+  .bar strong{font-weight:800;color:var(--gold);}
+  .dl-btn{background:var(--price);color:#fff;border:none;border-radius:50px;padding:14px 26px;font-family:inherit;font-size:18px;font-weight:800;cursor:pointer;white-space:nowrap;}
 </style>
 </head>
 <body>
   <div class="flyer">
-    <div class="motif m1">🌺</div>
-    <div class="motif m2">🌴</div>
-    <div class="motif m3">🐢</div>
+    <div class="dots"></div>
+    <div class="rays"></div>
+    <div class="sun"></div>
 
-    <div class="inner">
-      <span class="eyebrow">🌴 This Week at Tiki Turtle 🌴</span>
-      <div class="flower">🍽️</div>
-      <h1>Daily Plate<span class="script">Specials</span></h1>
-      <div class="dates">Monday to Friday &middot; July 27 to 31</div>
-
-      <div class="menu">
-        <div class="row"><div class="day">Mon</div><div class="dish">Mahi Katsu</div><div class="price">$15.50</div></div>
-        <div class="row"><div class="day">Tue</div><div class="dish">Tacos (Pork &amp; Beef)</div><div class="price">$14.50</div></div>
-        <div class="row"><div class="day">Wed</div><div class="dish">Kalua Nachos</div><div class="price">$13</div></div>
-        <div class="row"><div class="day">Thu</div><div class="dish">Burgers</div><div class="price">$14.50</div></div>
-        <div class="row"><div class="day">Fri</div><div class="dish">Pork &amp; Peas</div><div class="price">$14</div></div>
+    <div class="content">
+      <div class="top">
+        <img class="logo" src="../tiki-logo.png" alt="The Arc of Hilo's Tiki Turtle Cafe">
+        <div class="title">Weekly Specials</div>
+        <div class="weekbadge">WEEK 1</div>
       </div>
 
-      <div class="foot">
-        <div class="hours">Open <b>Mon to Fri</b> &middot; 10 AM to 2 PM</div>
-        <div class="cta">Come grab a plate, Hilo! 🐢</div>
-        <div class="meta">Tiki Turtle Cafe &middot; A Program of The Arc of Hilo</div>
-        <div class="fine">Cash prices shown. Card adds 4%.</div>
+      <svg class="wave" viewBox="0 0 1080 34" preserveAspectRatio="none" fill="none">
+        <path d="M0 20 Q 30 4 60 20 T 120 20 T 180 20 T 240 20 T 300 20 T 360 20 T 420 20 T 480 20 T 540 20 T 600 20 T 660 20 T 720 20 T 780 20 T 840 20 T 900 20 T 960 20 T 1020 20 T 1080 20" stroke="#f7edd7" stroke-width="6" stroke-linecap="round"/>
+      </svg>
+
+      <div class="rows">
+        <div class="row">
+          <div class="circle"><span class="ab">MON</span><span class="dt">7/27</span></div>
+          <div class="info"><div class="name">Mahi Katsu</div><div class="sub">Monday &middot; Plate Lunch</div></div>
+          <div class="price"><span class="cur">$</span>15.50</div>
+        </div>
+        <div class="row">
+          <div class="circle"><span class="ab">TUE</span><span class="dt">7/28</span></div>
+          <div class="info"><div class="name">Tacos (Pork &amp; Beef)</div><div class="sub">Tuesday &middot; Plate Lunch</div></div>
+          <div class="price"><span class="cur">$</span>14.50</div>
+        </div>
+        <div class="row">
+          <div class="circle"><span class="ab">WED</span><span class="dt">7/29</span></div>
+          <div class="info"><div class="name">Kalua Nachos</div><div class="sub">Wednesday &middot; Plate Lunch</div></div>
+          <div class="price"><span class="cur">$</span>13</div>
+        </div>
+        <div class="row">
+          <div class="circle"><span class="ab">THU</span><span class="dt">7/30</span></div>
+          <div class="info"><div class="name">Burgers</div><div class="sub">Thursday &middot; Plate Lunch</div></div>
+          <div class="price"><span class="cur">$</span>14.50</div>
+        </div>
+        <div class="row">
+          <div class="circle"><span class="ab">FRI</span><span class="dt">7/31</span></div>
+          <div class="info"><div class="name">Pork &amp; Peas</div><div class="sub">Friday &middot; Plate Lunch</div></div>
+          <div class="price"><span class="cur">$</span>14</div>
+        </div>
+      </div>
+
+      <div class="dolebar">
+        <span class="dolebadge">Dole Soft-Serve</span>
+        <span class="doleflav">Watermelon &middot; Pineapple &middot; Vanilla</span>
+        <span class="dolehours">10AM to 2PM &middot; MON-FRI</span>
+      </div>
+
+      <div class="contact">
+        <div class="col addr"><span class="l1">1099 Waianuenue Ave</span><span class="l2">HILO &middot; HAWAI&#699;I</span></div>
+        <div class="web">tikiturtlehi.com</div>
+        <div class="col ph"><span class="l1">808 &middot; 935 &middot; 8534</span><span class="l2">Where Every Bite Transforms Lives</span></div>
       </div>
     </div>
   </div>
 
   <div class="bar">
-    <p><strong>Your promo flyer (1080&times;1350).</strong> Screenshot just the image above, or right-click it, and post to Instagram &amp; Facebook.</p>
+    <p><strong>Your promo flyer.</strong> Screenshot the image above (or right-click it) and post to Instagram &amp; Facebook, or print it 8.5&times;11.</p>
     <button class="dl-btn" onclick="window.print()">🖨 Save / Print</button>
   </div>
 </body>
