@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Weekly Specials Flyer | Tiki Turtle Cafe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;0,900;1,600;1,700&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ocean-deep:#0d5c72; --ocean-mid:#0e8ca0; --ocean-bright:#12b5c4;
+    --sand:#f7f3ed; --sand-warm:#fff8f0; --coral:#e85a5a; --coral-light:#ff7b7b;
+    --sunset:#f59e42; --sunset-light:#ffc178; --hibiscus:#d64d7a; --cream:#fffcf7; --ink:#12303c;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'DM Sans',sans-serif;background:#2f3033;}
+
+  /* 1080x1350 (4:5) social flyer at native size (top-left) for a clean screenshot */
+  .flyer{
+    width:1080px;height:1350px;position:relative;overflow:hidden;color:var(--ink);
+    background:
+      radial-gradient(circle at 15% 8%, rgba(255,193,120,.55), transparent 42%),
+      radial-gradient(circle at 88% 96%, rgba(18,181,196,.5), transparent 46%),
+      linear-gradient(160deg,#0d5c72 0%,#0e8ca0 46%,#12b5c4 100%);
+  }
+  .motif{position:absolute;opacity:.16;filter:saturate(1.1);}
+  .m1{top:40px;right:44px;font-size:150px;transform:rotate(12deg);}
+  .m2{bottom:150px;left:-30px;font-size:200px;transform:rotate(-18deg);opacity:.12;}
+  .m3{top:520px;right:-26px;font-size:150px;transform:rotate(20deg);opacity:.13;}
+
+  .inner{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;padding:70px 66px 56px;}
+
+  .eyebrow{display:inline-block;align-self:center;background:rgba(255,255,255,.16);border:2px solid rgba(255,255,255,.4);color:#fff;font-weight:800;font-size:24px;letter-spacing:.16em;text-transform:uppercase;padding:12px 28px;border-radius:50px;}
+  .flower{text-align:center;font-size:66px;margin:22px 0 6px;}
+  h1{font-family:'Playfair Display',serif;font-weight:900;color:#fff;text-align:center;font-size:104px;line-height:.98;text-shadow:0 4px 22px rgba(0,0,0,.28);}
+  h1 .script{display:block;font-style:italic;font-weight:700;font-size:58px;color:var(--sunset-light);margin-top:6px;}
+  .dates{text-align:center;color:#fff;font-weight:700;font-size:30px;margin-top:20px;letter-spacing:.02em;opacity:.95;}
+
+  .menu{background:var(--cream);border-radius:34px;margin-top:38px;padding:20px 44px;box-shadow:0 26px 60px rgba(0,0,0,.28);flex:1;display:flex;flex-direction:column;justify-content:center;}
+  .row{display:flex;align-items:center;gap:22px;padding:26px 0;border-bottom:3px dotted #e7dccb;}
+  .row:last-child{border-bottom:none;}
+  .day{flex-shrink:0;width:150px;font-weight:800;font-size:26px;letter-spacing:.06em;text-transform:uppercase;color:var(--coral);}
+  .dish{flex:1;font-family:'Playfair Display',serif;font-weight:700;font-size:44px;color:var(--ocean-deep);line-height:1.05;}
+  .price{flex-shrink:0;font-family:'Playfair Display',serif;font-weight:800;font-size:46px;color:var(--ink);background:var(--sunset-light);border:3px solid var(--sunset);border-radius:50px;padding:6px 22px;}
+
+  .foot{margin-top:34px;text-align:center;color:#fff;}
+  .foot .hours{font-weight:800;font-size:34px;letter-spacing:.01em;}
+  .foot .hours b{color:var(--sunset-light);}
+  .foot .cta{font-family:'Playfair Display',serif;font-style:italic;font-size:38px;margin-top:12px;color:#fff;}
+  .foot .meta{margin-top:16px;font-size:22px;font-weight:600;opacity:.9;}
+  .foot .fine{margin-top:6px;font-size:19px;opacity:.72;font-weight:500;}
+
+  /* helper below the flyer, off the social image */
+  .bar{width:1080px;background:#20222a;color:#fff;padding:22px 30px;display:flex;justify-content:space-between;align-items:center;gap:16px;}
+  .bar p{font-size:18px;line-height:1.5;}
+  .bar strong{font-weight:800;color:var(--sunset-light);}
+  .dl-btn{background:var(--coral);color:#fff;border:none;border-radius:50px;padding:14px 26px;font-family:inherit;font-size:18px;font-weight:800;cursor:pointer;white-space:nowrap;}
+</style>
+</head>
+<body>
+  <div class="flyer">
+    <div class="motif m1">🌺</div>
+    <div class="motif m2">🌴</div>
+    <div class="motif m3">🐢</div>
+
+    <div class="inner">
+      <span class="eyebrow">🌴 This Week at Tiki Turtle 🌴</span>
+      <div class="flower">🍽️</div>
+      <h1>Daily Plate<span class="script">Specials</span></h1>
+      <div class="dates">Monday to Friday &middot; July 27 to 31</div>
+
+      <div class="menu">
+        <div class="row"><div class="day">Mon</div><div class="dish">Mahi Katsu</div><div class="price">$15.50</div></div>
+        <div class="row"><div class="day">Tue</div><div class="dish">Tacos (Pork &amp; Beef)</div><div class="price">$14.50</div></div>
+        <div class="row"><div class="day">Wed</div><div class="dish">Kalua Nachos</div><div class="price">$13</div></div>
+        <div class="row"><div class="day">Thu</div><div class="dish">Burgers</div><div class="price">$14.50</div></div>
+        <div class="row"><div class="day">Fri</div><div class="dish">Pork &amp; Peas</div><div class="price">$14</div></div>
+      </div>
+
+      <div class="foot">
+        <div class="hours">Open <b>Mon to Fri</b> &middot; 10 AM to 2 PM</div>
+        <div class="cta">Come grab a plate, Hilo! 🐢</div>
+        <div class="meta">Tiki Turtle Cafe &middot; A Program of The Arc of Hilo</div>
+        <div class="fine">Cash prices shown. Card adds 4%.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bar">
+    <p><strong>Your promo flyer (1080&times;1350).</strong> Screenshot just the image above, or right-click it, and post to Instagram &amp; Facebook.</p>
+    <button class="dl-btn" onclick="window.print()">🖨 Save / Print</button>
+  </div>
+</body>
+</html>
