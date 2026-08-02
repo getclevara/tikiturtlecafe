@@ -3,24 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tiki Turtle Cafe | Where Every Bite Transforms Lives</title>
-    <meta name="description" content="Tiki Turtle Cafe - A vocational training cafe by The Arc of Hilo, empowering individuals with disabilities through culinary excellence in Hawai'i.">
-    
+    <title>Tiki Turtle Cafe | Plate Lunch &amp; Dole Whip in Hilo, Hawaiʻi</title>
+    <meta name="description" content="Plate lunch, sandwiches, salads and Dole Whip in downtown Hilo. Open Mon to Fri, 10 AM to 2 PM at 1099 Waianuenue Ave. A vocational training cafe of The Arc of Hilo, where every bite helps someone build real job skills.">
+    <link rel="canonical" href="https://tikiturtlehi.com/">
+    <meta name="robots" content="index, follow, max-image-preview:large">
+    <meta name="theme-color" content="#0d5c72">
+
+    <!-- Local signals -->
+    <meta name="geo.region" content="US-HI">
+    <meta name="geo.placename" content="Hilo, Hawaii">
+    <meta name="geo.position" content="19.727022;-155.089695">
+    <meta name="ICBM" content="19.727022, -155.089695">
+
     <!-- Open Graph / Social Sharing -->
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="Tiki Turtle Cafe | Good Food. Great Purpose.">
-    <meta property="og:description" content="A vocational training cafe in Hilo, Hawaiʻi where every bite transforms lives. Fresh food made with aloha by The Arc of Hilo.">
-    <meta property="og:image" content="og-image.png">
+    <meta property="og:type" content="restaurant.restaurant">
+    <meta property="og:title" content="Tiki Turtle Cafe | Plate Lunch &amp; Dole Whip in Hilo">
+    <meta property="og:description" content="Daily plate specials, fresh sandwiches, salads and Dole Whip in Hilo, Hawaiʻi. Every bite supports individuals with disabilities building real job skills.">
+    <meta property="og:image" content="https://tikiturtlehi.com/og-image.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
-    <meta property="og:url" content="https://tikiturtlehi.com">
+    <meta property="og:image:alt" content="Tiki Turtle Cafe in Hilo, Hawaiʻi">
+    <meta property="og:url" content="https://tikiturtlehi.com/">
     <meta property="og:site_name" content="Tiki Turtle Cafe">
-    
+    <meta property="og:locale" content="en_US">
+
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Tiki Turtle Cafe | Good Food. Great Purpose.">
-    <meta name="twitter:description" content="A vocational training cafe in Hilo, Hawaiʻi where every bite transforms lives.">
-    <meta name="twitter:image" content="og-image.png">
+    <meta name="twitter:title" content="Tiki Turtle Cafe | Plate Lunch &amp; Dole Whip in Hilo">
+    <meta name="twitter:description" content="Daily plate specials, sandwiches, salads and Dole Whip in Hilo, Hawaiʻi. Every bite transforms lives.">
+    <meta name="twitter:image" content="https://tikiturtlehi.com/og-image.png">
+
+    <!-- Structured data: helps Google show hours, location, and menu -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Restaurant",
+      "@id": "https://tikiturtlehi.com/#restaurant",
+      "name": "Tiki Turtle Cafe",
+      "alternateName": "The Arc of Hilo's Tiki Turtle Cafe",
+      "description": "A vocational training cafe in Hilo, Hawaiʻi serving plate lunch, sandwiches, salads and Dole Whip. A program of The Arc of Hilo, creating real culinary jobs for individuals with disabilities.",
+      "url": "https://tikiturtlehi.com/",
+      "logo": "https://tikiturtlehi.com/tiki-logo.png",
+      "image": "https://tikiturtlehi.com/og-image.png",
+      "telephone": "+1-808-935-8534",
+      "email": "info@tikiturtlehi.com",
+      "priceRange": "$$",
+      "servesCuisine": ["Hawaiian", "Plate Lunch", "American", "Sandwiches"],
+      "currenciesAccepted": "USD",
+      "paymentAccepted": "Cash, Credit Card, Debit Card",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "1099 Waianuenue Ave",
+        "addressLocality": "Hilo",
+        "addressRegion": "HI",
+        "postalCode": "96720",
+        "addressCountry": "US"
+      },
+      "geo": { "@type": "GeoCoordinates", "latitude": 19.727022, "longitude": -155.089695 },
+      "openingHoursSpecification": [{
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        "opens": "10:00",
+        "closes": "14:00"
+      }],
+      "hasMenu": "https://tikiturtlehi.com/#menu",
+      "acceptsReservations": "False",
+      "parentOrganization": {
+        "@type": "NGO",
+        "name": "The Arc of Hilo",
+        "url": "https://arcofhilo.org"
+      },
+      "slogan": "Where Every Bite Transforms Lives"
+    }
+    </script>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -290,7 +345,8 @@
         }
         .mission-highlight p { font-size: 1.2rem; font-style: italic; line-height: 1.8; position: relative; z-index: 2; }
         
-        .mission-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 3rem; }
+        .mission-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.25rem; margin-top: 3rem; }
+        @media (max-width: 900px) { .mission-stats { grid-template-columns: repeat(2, 1fr); } }
         .stat-item {
             text-align: center; padding: 2rem 1.5rem;
             background: white; border-radius: 20px;
@@ -759,7 +815,10 @@
             .hero-content { padding: 1.5rem; }
             .hero h1 { font-size: 2.2rem; }
             .hero-buttons { flex-direction: column; align-items: center; }
-            .mission-stats { grid-template-columns: 1fr; }
+            .mission-stats { grid-template-columns: repeat(2, 1fr); gap: 0.85rem; }
+            .stat-item { padding: 1.4rem 0.75rem; }
+            .stat-item .number { font-size: 2rem; }
+            .stat-item .label { font-size: 0.85rem; }
             .menu-grid { grid-template-columns: 1fr; }
             .menu-tabs { border-radius: 20px; }
             .menu-tab { padding: 0.7rem 1rem; font-size: 0.85rem; }
@@ -828,9 +887,10 @@
                     <p>When you dine with us, you witness transformation. You see confidence being built, skills being mastered, and dreams becoming reality. This is not just lunch. This is community in action.</p>
                 </div>
                 <div class="mission-stats">
-                    <div class="stat-item"><div class="number">100%</div><div class="label">Made with Aloha</div></div>
-                    <div class="stat-item"><div class="number">∞</div><div class="label">Lives Transformed</div></div>
-                    <div class="stat-item"><div class="number">1</div><div class="label">Ohana</div></div>
+                    <div class="stat-item"><div class="number" data-count="425" data-prefix="$" data-suffix="K+">$425K+</div><div class="label">Earned through real work</div></div>
+                    <div class="stat-item"><div class="number" data-count="23500" data-suffix="+">23,500+</div><div class="label">Meals made by our team</div></div>
+                    <div class="stat-item"><div class="number" data-count="19800" data-suffix="+">19,800+</div><div class="label">Dole Whips served</div></div>
+                    <div class="stat-item"><div class="number" data-count="3" data-suffix="">3</div><div class="label">Years serving Hilo</div></div>
                 </div>
                 <div class="mission-photos">
                     <div class="mission-photo">
@@ -1263,6 +1323,32 @@
                     document.getElementById(w.id + 'Badge').style.display = 'block';
                 }
             });
+        })();
+
+        // Count the mission stats up when they scroll into view
+        (function() {
+            const nums = document.querySelectorAll('.stat-item .number[data-count]');
+            if (!nums.length) return;
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+            if (!('IntersectionObserver' in window)) return;
+            const io = new IntersectionObserver(function(entries) {
+                entries.forEach(function(e) {
+                    if (!e.isIntersecting) return;
+                    const el = e.target;
+                    io.unobserve(el);
+                    const target = parseInt(el.dataset.count, 10);
+                    const prefix = el.dataset.prefix || '';
+                    const suffix = el.dataset.suffix || '';
+                    const dur = 1500, t0 = performance.now();
+                    (function step(now) {
+                        const p = Math.min((now - t0) / dur, 1);
+                        const eased = 1 - Math.pow(1 - p, 3);
+                        el.textContent = prefix + Math.round(target * eased).toLocaleString('en-US') + suffix;
+                        if (p < 1) requestAnimationFrame(step);
+                    })(t0);
+                });
+            }, { threshold: 0.4 });
+            nums.forEach(function(n) { io.observe(n); });
         })();
 
         // Hero b-roll: fade in when ready; skip on reduced-motion or data-saver
