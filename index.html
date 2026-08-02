@@ -98,10 +98,37 @@
             position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden;
         }
 
+        /* Hero b-roll video background */
+        .hero-video {
+            position: absolute; inset: 0; width: 100%; height: 100%;
+            object-fit: cover; object-position: center 45%;
+            z-index: 0; opacity: 0; transition: opacity 1.4s ease;
+            pointer-events: none;
+        }
+        .hero-video.is-ready { opacity: 1; }
+        .hero-video-tint {
+            position: absolute; inset: 0; z-index: 1; pointer-events: none;
+            background:
+                linear-gradient(180deg, rgba(13,92,114,0.74) 0%, rgba(13,92,114,0.40) 32%, rgba(14,140,160,0.40) 68%, rgba(18,181,196,0.62) 100%),
+                radial-gradient(ellipse at 50% 46%, rgba(4,30,40,0.46) 0%, rgba(4,30,40,0.18) 45%, transparent 72%);
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .hero-video { display: none; }
+        }
+        /* Mobile: video upscales on tall screens, so deepen the tint to keep text crisp */
+        @media (max-width: 768px) {
+            .hero-video { object-position: center 42%; }
+            .hero-video-tint {
+                background:
+                    linear-gradient(180deg, rgba(13,92,114,0.88) 0%, rgba(13,92,114,0.68) 35%, rgba(14,140,160,0.66) 70%, rgba(18,181,196,0.76) 100%),
+                    radial-gradient(ellipse at 50% 45%, rgba(0,0,0,0.34) 0%, transparent 70%);
+            }
+        }
+
         .light-rays {
             position: absolute; top: 0; left: 0; right: 0; height: 70%;
             background: radial-gradient(ellipse at 50% 0%, rgba(255,255,255,0.08) 0%, transparent 60%);
-            pointer-events: none;
+            pointer-events: none; z-index: 2;
         }
 
         /* Sea Turtles - 6 total */
@@ -153,14 +180,22 @@
         /* Hero Content */
         .hero-content { text-align: center; z-index: 10; padding: 2rem; max-width: 800px; }
         
+        /* Editorial micro-label: letterspaced type between hairlines, no pill */
         .hero-eyebrow {
-            display: inline-flex; align-items: center; gap: 0.5rem;
-            background: rgba(255,255,255,0.12); backdrop-filter: blur(10px);
-            padding: 0.6rem 1.25rem; border-radius: 50px;
-            color: var(--sunset-light); font-size: 0.85rem; font-weight: 600;
-            letter-spacing: 1.5px; text-transform: uppercase;
-            margin-bottom: 1.5rem;
-            border: 1px solid rgba(255,255,255,0.1);
+            display: inline-flex; align-items: center; gap: 0.9rem;
+            background: none; border: 0; padding: 0; border-radius: 0; backdrop-filter: none;
+            color: var(--sunset-light); font-size: 0.72rem; font-weight: 700;
+            letter-spacing: 0.3em; text-transform: uppercase;
+            margin-bottom: 1.75rem;
+            text-shadow: 0 1px 8px rgba(0,0,0,0.35);
+        }
+        .hero-eyebrow::before, .hero-eyebrow::after {
+            content: ''; display: block; width: 30px; height: 1px;
+            background: currentColor; opacity: 0.55;
+        }
+        @media (max-width: 480px) {
+            .hero-eyebrow { letter-spacing: 0.2em; font-size: 0.66rem; gap: 0.6rem; }
+            .hero-eyebrow::before, .hero-eyebrow::after { width: 16px; }
         }
         
         .hero h1 {
@@ -200,12 +235,14 @@
         }
         .btn-secondary:hover { background: rgba(255,255,255,0.2); transform: translateY(-3px); }
 
+        /* Hours read like signage: hairline rule above, open type, no pill */
         .hero-hours {
-            margin-top: 2.5rem; padding: 0.9rem 1.75rem;
-            background: rgba(255,255,255,0.1); backdrop-filter: blur(10px);
-            border-radius: 50px; display: inline-flex; align-items: center; gap: 0.75rem;
-            border: 1px solid rgba(255,255,255,0.15);
-            color: white; font-weight: 500; font-size: 0.95rem;
+            margin-top: 2.75rem; padding: 0.95rem 0 0;
+            background: none; backdrop-filter: none; border: 0; border-radius: 0;
+            border-top: 1px solid rgba(255,255,255,0.3);
+            display: inline-flex; align-items: center; gap: 0.7rem;
+            color: rgba(255,255,255,0.94); font-weight: 500; font-size: 0.95rem;
+            letter-spacing: 0.04em;
         }
         .hero-hours .dot { width: 8px; height: 8px; background: #4ade80; border-radius: 50%; animation: pulse 2s ease-in-out infinite; }
         @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
@@ -229,12 +266,17 @@
         /* Mission Section */
         .mission { background: var(--sand); }
         .mission-content { max-width: 900px; margin: 0 auto; text-align: center; }
+        /* Section label: coral accent rule + letterspaced type, no gradient pill */
         .mission-badge {
-            display: inline-block;
-            background: linear-gradient(135deg, var(--ocean-mid), var(--ocean-bright));
-            color: white; padding: 0.5rem 1.25rem; border-radius: 50px;
-            font-size: 0.8rem; font-weight: 600; margin-bottom: 1.5rem;
-            text-transform: uppercase; letter-spacing: 2px;
+            display: inline-flex; align-items: center; gap: 0.75rem;
+            background: none; color: var(--ocean-mid);
+            padding: 0; border-radius: 0;
+            font-size: 0.74rem; font-weight: 700; margin-bottom: 1.35rem;
+            text-transform: uppercase; letter-spacing: 0.3em;
+        }
+        .mission-badge::before {
+            content: ''; display: block; width: 26px; height: 2px;
+            background: var(--coral); border-radius: 2px;
         }
         .mission-statement { font-size: 1.15rem; line-height: 1.9; color: var(--text-dark); margin-bottom: 2rem; }
         .mission-highlight {
@@ -437,10 +479,18 @@
         .team-member:hover { transform: translateY(-8px); box-shadow: 0 20px 50px rgba(0,0,0,0.15); }
         
         .team-photo {
-            height: 200px;
+            height: 200px; overflow: hidden;
             background: linear-gradient(135deg, var(--ocean-light) 0%, var(--sand) 100%);
             display: flex; align-items: center; justify-content: center;
         }
+        .team-photo img {
+            width: 100%; height: 100%; object-fit: cover; object-position: center 22%;
+            display: block; transition: transform 0.5s ease;
+        }
+        .team-member:hover .team-photo img { transform: scale(1.06); }
+        /* turtles + bubbles now live behind the team section */
+        .team .turtle-container, .team .bubbles { z-index: 0; }
+        .team .section-container { position: relative; z-index: 2; }
         .team-photo-placeholder {
             width: 80px; height: 80px; border-radius: 50%;
             background: linear-gradient(135deg, var(--ocean-mid), var(--ocean-bright));
@@ -737,16 +787,11 @@
     </nav>
 
     <section class="hero">
+        <video class="hero-video" autoplay muted loop playsinline preload="metadata" poster="video/hero-broll-poster.jpg" aria-hidden="true" tabindex="-1">
+            <source src="video/hero-broll.mp4" type="video/mp4">
+        </video>
+        <div class="hero-video-tint"></div>
         <div class="light-rays"></div>
-        <div class="turtle-container">
-            <svg class="sea-turtle sea-turtle-1" viewBox="0 0 200 120" fill="none"><ellipse cx="100" cy="60" rx="55" ry="40" fill="#3d7a5a"/><ellipse cx="100" cy="55" rx="48" ry="35" fill="#5a9a7a"/><path d="M100 25 L100 85" stroke="#3d7a5a" stroke-width="3"/><path d="M55 55 L145 55" stroke="#3d7a5a" stroke-width="2"/><ellipse cx="165" cy="55" rx="22" ry="16" fill="#6aaa8a"/><ellipse cx="172" cy="50" rx="4" ry="3" fill="#2a5a4a"/><circle cx="173" cy="49" r="1.5" fill="white"/><path d="M140 40 Q170 20 190 35 Q175 45 145 50" fill="#5a9a7a"/><path d="M140 75 Q170 95 190 80 Q175 70 145 65" fill="#5a9a7a"/><ellipse cx="50" cy="45" rx="18" ry="10" fill="#5a9a7a" transform="rotate(-20 50 45)"/><ellipse cx="50" cy="75" rx="18" ry="10" fill="#5a9a7a" transform="rotate(20 50 75)"/></svg>
-            <svg class="sea-turtle sea-turtle-2" viewBox="0 0 200 120" fill="none"><ellipse cx="100" cy="60" rx="55" ry="40" fill="#2d6a4a"/><ellipse cx="100" cy="55" rx="48" ry="35" fill="#4a8a6a"/><ellipse cx="165" cy="55" rx="22" ry="16" fill="#5a9a7a"/><ellipse cx="172" cy="50" rx="4" ry="3" fill="#1a4a3a"/><circle cx="173" cy="49" r="1.5" fill="white"/><path d="M140 40 Q170 20 190 35 Q175 45 145 50" fill="#4a8a6a"/><path d="M140 75 Q170 95 190 80 Q175 70 145 65" fill="#4a8a6a"/><ellipse cx="50" cy="45" rx="18" ry="10" fill="#4a8a6a" transform="rotate(-20 50 45)"/><ellipse cx="50" cy="75" rx="18" ry="10" fill="#4a8a6a" transform="rotate(20 50 75)"/></svg>
-            <svg class="sea-turtle sea-turtle-3" viewBox="0 0 200 120" fill="none"><ellipse cx="100" cy="60" rx="55" ry="40" fill="#3d7a5a"/><ellipse cx="100" cy="55" rx="48" ry="35" fill="#5a9a7a"/><ellipse cx="165" cy="55" rx="22" ry="16" fill="#6aaa8a"/><ellipse cx="172" cy="50" rx="4" ry="3" fill="#2a5a4a"/><circle cx="173" cy="49" r="1.5" fill="white"/><path d="M140 40 Q170 20 190 35 Q175 45 145 50" fill="#5a9a7a"/><path d="M140 75 Q170 95 190 80 Q175 70 145 65" fill="#5a9a7a"/></svg>
-            <svg class="sea-turtle sea-turtle-4" viewBox="0 0 200 120" fill="none"><ellipse cx="100" cy="60" rx="55" ry="40" fill="#2d6a4a"/><ellipse cx="100" cy="55" rx="48" ry="35" fill="#4a8a6a"/><ellipse cx="165" cy="55" rx="22" ry="16" fill="#5a9a7a"/><ellipse cx="172" cy="50" rx="4" ry="3" fill="#1a4a3a"/><circle cx="173" cy="49" r="1.5" fill="white"/><path d="M140 40 Q170 20 190 35 Q175 45 145 50" fill="#4a8a6a"/><path d="M140 75 Q170 95 190 80 Q175 70 145 65" fill="#4a8a6a"/><ellipse cx="50" cy="45" rx="18" ry="10" fill="#4a8a6a" transform="rotate(-20 50 45)"/><ellipse cx="50" cy="75" rx="18" ry="10" fill="#4a8a6a" transform="rotate(20 50 75)"/></svg>
-            <svg class="sea-turtle sea-turtle-5" viewBox="0 0 200 120" fill="none"><ellipse cx="100" cy="60" rx="55" ry="40" fill="#3d7a5a"/><ellipse cx="100" cy="55" rx="48" ry="35" fill="#5a9a7a"/><ellipse cx="165" cy="55" rx="22" ry="16" fill="#6aaa8a"/><path d="M140 40 Q170 20 190 35 Q175 45 145 50" fill="#5a9a7a"/><path d="M140 75 Q170 95 190 80 Q175 70 145 65" fill="#5a9a7a"/></svg>
-            <svg class="sea-turtle sea-turtle-6" viewBox="0 0 200 120" fill="none"><ellipse cx="100" cy="60" rx="55" ry="40" fill="#2d6a4a"/><ellipse cx="100" cy="55" rx="48" ry="35" fill="#4a8a6a"/><ellipse cx="165" cy="55" rx="22" ry="16" fill="#5a9a7a"/><ellipse cx="172" cy="50" rx="4" ry="3" fill="#1a4a3a"/><circle cx="173" cy="49" r="1.5" fill="white"/><path d="M140 40 Q170 20 190 35 Q175 45 145 50" fill="#4a8a6a"/><path d="M140 75 Q170 95 190 80 Q175 70 145 65" fill="#4a8a6a"/></svg>
-        </div>
-        <div class="bubbles" id="bubbles"></div>
         
         <div class="hero-content">
             <span class="hero-eyebrow">A Program of The Arc of Hilo</span>
@@ -869,6 +914,15 @@
     </section>
 
     <section class="section team" id="team">
+        <div class="turtle-container">
+            <svg class="sea-turtle sea-turtle-1" viewBox="0 0 200 120" fill="none"><ellipse cx="100" cy="60" rx="55" ry="40" fill="#3d7a5a"/><ellipse cx="100" cy="55" rx="48" ry="35" fill="#5a9a7a"/><path d="M100 25 L100 85" stroke="#3d7a5a" stroke-width="3"/><path d="M55 55 L145 55" stroke="#3d7a5a" stroke-width="2"/><ellipse cx="165" cy="55" rx="22" ry="16" fill="#6aaa8a"/><ellipse cx="172" cy="50" rx="4" ry="3" fill="#2a5a4a"/><circle cx="173" cy="49" r="1.5" fill="white"/><path d="M140 40 Q170 20 190 35 Q175 45 145 50" fill="#5a9a7a"/><path d="M140 75 Q170 95 190 80 Q175 70 145 65" fill="#5a9a7a"/><ellipse cx="50" cy="45" rx="18" ry="10" fill="#5a9a7a" transform="rotate(-20 50 45)"/><ellipse cx="50" cy="75" rx="18" ry="10" fill="#5a9a7a" transform="rotate(20 50 75)"/></svg>
+            <svg class="sea-turtle sea-turtle-2" viewBox="0 0 200 120" fill="none"><ellipse cx="100" cy="60" rx="55" ry="40" fill="#2d6a4a"/><ellipse cx="100" cy="55" rx="48" ry="35" fill="#4a8a6a"/><ellipse cx="165" cy="55" rx="22" ry="16" fill="#5a9a7a"/><ellipse cx="172" cy="50" rx="4" ry="3" fill="#1a4a3a"/><circle cx="173" cy="49" r="1.5" fill="white"/><path d="M140 40 Q170 20 190 35 Q175 45 145 50" fill="#4a8a6a"/><path d="M140 75 Q170 95 190 80 Q175 70 145 65" fill="#4a8a6a"/><ellipse cx="50" cy="45" rx="18" ry="10" fill="#4a8a6a" transform="rotate(-20 50 45)"/><ellipse cx="50" cy="75" rx="18" ry="10" fill="#4a8a6a" transform="rotate(20 50 75)"/></svg>
+            <svg class="sea-turtle sea-turtle-3" viewBox="0 0 200 120" fill="none"><ellipse cx="100" cy="60" rx="55" ry="40" fill="#3d7a5a"/><ellipse cx="100" cy="55" rx="48" ry="35" fill="#5a9a7a"/><ellipse cx="165" cy="55" rx="22" ry="16" fill="#6aaa8a"/><ellipse cx="172" cy="50" rx="4" ry="3" fill="#2a5a4a"/><circle cx="173" cy="49" r="1.5" fill="white"/><path d="M140 40 Q170 20 190 35 Q175 45 145 50" fill="#5a9a7a"/><path d="M140 75 Q170 95 190 80 Q175 70 145 65" fill="#5a9a7a"/></svg>
+            <svg class="sea-turtle sea-turtle-4" viewBox="0 0 200 120" fill="none"><ellipse cx="100" cy="60" rx="55" ry="40" fill="#2d6a4a"/><ellipse cx="100" cy="55" rx="48" ry="35" fill="#4a8a6a"/><ellipse cx="165" cy="55" rx="22" ry="16" fill="#5a9a7a"/><ellipse cx="172" cy="50" rx="4" ry="3" fill="#1a4a3a"/><circle cx="173" cy="49" r="1.5" fill="white"/><path d="M140 40 Q170 20 190 35 Q175 45 145 50" fill="#4a8a6a"/><path d="M140 75 Q170 95 190 80 Q175 70 145 65" fill="#4a8a6a"/><ellipse cx="50" cy="45" rx="18" ry="10" fill="#4a8a6a" transform="rotate(-20 50 45)"/><ellipse cx="50" cy="75" rx="18" ry="10" fill="#4a8a6a" transform="rotate(20 50 75)"/></svg>
+            <svg class="sea-turtle sea-turtle-5" viewBox="0 0 200 120" fill="none"><ellipse cx="100" cy="60" rx="55" ry="40" fill="#3d7a5a"/><ellipse cx="100" cy="55" rx="48" ry="35" fill="#5a9a7a"/><ellipse cx="165" cy="55" rx="22" ry="16" fill="#6aaa8a"/><path d="M140 40 Q170 20 190 35 Q175 45 145 50" fill="#5a9a7a"/><path d="M140 75 Q170 95 190 80 Q175 70 145 65" fill="#5a9a7a"/></svg>
+            <svg class="sea-turtle sea-turtle-6" viewBox="0 0 200 120" fill="none"><ellipse cx="100" cy="60" rx="55" ry="40" fill="#2d6a4a"/><ellipse cx="100" cy="55" rx="48" ry="35" fill="#4a8a6a"/><ellipse cx="165" cy="55" rx="22" ry="16" fill="#5a9a7a"/><ellipse cx="172" cy="50" rx="4" ry="3" fill="#1a4a3a"/><circle cx="173" cy="49" r="1.5" fill="white"/><path d="M140 40 Q170 20 190 35 Q175 45 145 50" fill="#4a8a6a"/><path d="M140 75 Q170 95 190 80 Q175 70 145 65" fill="#4a8a6a"/></svg>
+        </div>
+        <div class="bubbles" id="bubbles"></div>
         <div class="section-container">
             <div class="section-header">
                 <h2>Meet Our Ohana</h2>
@@ -879,13 +933,13 @@
                     <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
                 </button>
                 <div class="team-scroll" id="teamScroll">
-                    <div class="team-member"><div class="team-photo"><div class="team-photo-placeholder">AW</div></div><div class="team-info"><h3>Chef Angelina</h3><p class="role">Head Chef & Mentor</p><p>The heart of our kitchen, guiding our team with patience and passion.</p></div></div>
-                    <div class="team-member"><div class="team-photo"><div class="team-photo-placeholder">A</div></div><div class="team-info"><h3>Allyssa</h3><p class="role">Team Lead & Mentor</p><p>Trains our front of house team and is a source of support for all participants.</p></div></div>
-                    <div class="team-member"><div class="team-photo"><div class="team-photo-placeholder">J</div></div><div class="team-info"><h3>Jace</h3><p class="role">Team Member</p><p>Brings energy and enthusiasm to everything he does.</p></div></div>
+                    <div class="team-member"><div class="team-photo"><img src="team/angelina.jpg" alt="Chef Angelina, Tiki Turtle Cafe team" loading="lazy" width="640" height="640"></div><div class="team-info"><h3>Chef Angelina</h3><p class="role">Head Chef & Mentor</p><p>The heart of our kitchen, guiding our team with patience and passion.</p></div></div>
+                    <div class="team-member"><div class="team-photo"><img src="team/allyssa.jpg" alt="Allyssa, Tiki Turtle Cafe team" loading="lazy" width="640" height="640"></div><div class="team-info"><h3>Allyssa</h3><p class="role">Team Lead & Mentor</p><p>Trains our front of house team and is a source of support for all participants.</p></div></div>
+                    <div class="team-member"><div class="team-photo"><img src="team/jace.jpg" alt="Jace, Tiki Turtle Cafe team" loading="lazy" width="640" height="640"></div><div class="team-info"><h3>Jace</h3><p class="role">Team Member</p><p>Brings energy and enthusiasm to everything he does.</p></div></div>
                     <div class="team-member"><div class="team-photo"><div class="team-photo-placeholder">M</div></div><div class="team-info"><h3>Matt</h3><p class="role">Team Member</p><p>Known for his attention to detail and friendly demeanor.</p></div></div>
                     <div class="team-member"><div class="team-photo"><div class="team-photo-placeholder">D</div></div><div class="team-info"><h3>Dayton</h3><p class="role">Team Member</p><p>His hard work and determination make him invaluable.</p></div></div>
                     <div class="team-member"><div class="team-photo"><div class="team-photo-placeholder">L</div></div><div class="team-info"><h3>Lisa</h3><p class="role">Team Member</p><p>Brightens every shift with her warm smile and caring nature.</p></div></div>
-                    <div class="team-member"><div class="team-photo"><div class="team-photo-placeholder">E</div></div><div class="team-info"><h3>Ethan</h3><p class="role">Team Member</p><p>Approaches every task with focus and commitment.</p></div></div>
+                    <div class="team-member"><div class="team-photo"><img src="team/ethan.jpg" alt="Ethan, Tiki Turtle Cafe team" loading="lazy" width="640" height="640"></div><div class="team-info"><h3>Ethan</h3><p class="role">Team Member</p><p>Approaches every task with focus and commitment.</p></div></div>
                     <div class="team-member"><div class="team-photo"><div class="team-photo-placeholder">G</div></div><div class="team-info"><h3>Genesis</h3><p class="role">Team Member</p><p>Brings creativity and joy to our team every day.</p></div></div>
                 </div>
                 <button class="team-arrow team-arrow-right" id="teamScrollRight">
@@ -1209,6 +1263,23 @@
                     document.getElementById(w.id + 'Badge').style.display = 'block';
                 }
             });
+        })();
+
+        // Hero b-roll: fade in when ready; skip on reduced-motion or data-saver
+        (function() {
+            const v = document.querySelector('.hero-video');
+            if (!v) return;
+            const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            const saveData = navigator.connection && navigator.connection.saveData;
+            if (reduce || saveData) { v.remove(); return; }
+            const show = function() { v.classList.add('is-ready'); };
+            if (v.readyState >= 2) show();
+            v.addEventListener('loadeddata', show, { once: true });
+            v.addEventListener('canplay', show, { once: true });
+            // iOS/Android sometimes need an explicit nudge
+            const tryPlay = function() { const p = v.play(); if (p && p.catch) p.catch(function(){}); };
+            tryPlay();
+            document.addEventListener('visibilitychange', function() { if (!document.hidden) tryPlay(); });
         })();
     </script>
 </body>
