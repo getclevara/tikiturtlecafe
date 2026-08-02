@@ -938,6 +938,83 @@
             .form-row { grid-template-columns: 1fr; }
             .nav-logo img { height: 55px; }
         }
+
+        /* ══ FUN PASS ═══════════════════════════════════════════
+           We're a tiki cafe with a cartoon sign, not a law firm.
+           Louder type, chunkier shapes, and motion with some bounce.
+           Everything here is disabled under prefers-reduced-motion. */
+
+        /* Bigger, bolder type across the board */
+        body { font-size: 1.05rem; }
+        h1, h2, h3, h4 { font-weight: 700; letter-spacing: -0.01em; }
+        .hero h1 { font-size: clamp(3.4rem, 9.5vw, 6.2rem); line-height: 1.02; }
+        .hero-subtitle { font-size: clamp(1.08rem, 2.1vw, 1.35rem); line-height: 1.6; }
+        .section-header h2 { font-size: clamp(2.6rem, 6.5vw, 4.2rem); line-height: 1.03; }
+        .section-header p { font-size: 1.22rem; }
+        .bday-head h2 { font-size: clamp(2.9rem, 8vw, 5.2rem); }
+        .bday-head p { font-size: 1.18rem; }
+        .bday-feature h3 { font-size: clamp(1.9rem, 3.4vw, 2.5rem); }
+        .bday-feature p { font-size: 1.04rem; }
+        .bday-card h4 { font-size: 1.5rem; }
+        .bday-card p { font-size: 1rem; }
+        .bday-count .n { font-size: 3.4rem; }
+        .stat-item .number { font-size: 3.4rem; }
+        .stat-item .label { font-size: 1rem; }
+        .menu-item-header h3 { font-size: 1.35rem; }
+        .menu-item .price { font-size: 1.25rem; }
+        .day-dish { font-size: 1.06rem; }
+        .day-price { font-size: 1.1rem; }
+        .team-info h3 { font-size: 1.5rem; }
+        .mission-highlight p { font-size: 1.28rem; }
+        @media (max-width: 700px) {
+            body { font-size: 1rem; }
+            .bday-card h4 { font-size: 1.35rem; }
+            .stat-item .number { font-size: 2.2rem; }
+        }
+
+        /* Scroll reveal with a little overshoot */
+        @keyframes popIn {
+            0%   { opacity: 0; transform: translateY(26px) scale(0.97); }
+            65%  { opacity: 1; transform: translateY(-5px) scale(1.012); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .reveal { opacity: 0; }
+        .reveal.in { animation: popIn 0.62s cubic-bezier(.22,1.2,.36,1) both; }
+        .reveal.in:nth-child(2) { animation-delay: 0.07s; }
+        .reveal.in:nth-child(3) { animation-delay: 0.14s; }
+        .reveal.in:nth-child(4) { animation-delay: 0.21s; }
+        .reveal.in:nth-child(5) { animation-delay: 0.28s; }
+        .reveal.in:nth-child(6) { animation-delay: 0.35s; }
+
+        /* Cards get a playful wobble instead of a polite lift */
+        .bday-card { transition: transform .25s cubic-bezier(.34,1.6,.64,1), box-shadow .25s ease; }
+        .bday-card:hover { transform: rotate(-1.4deg) translateY(-6px) scale(1.02); box-shadow: 10px 12px 0 var(--sunset); }
+        .bday-card:nth-child(3n+3):hover { transform: rotate(1.4deg) translateY(-6px) scale(1.02); }
+        .stat-item { transition: transform .25s cubic-bezier(.34,1.6,.64,1); }
+        .stat-item:hover { transform: translateY(-7px) rotate(-1deg) scale(1.03); }
+        .menu-item { transition: transform .22s cubic-bezier(.34,1.6,.64,1), box-shadow .22s ease; }
+        .menu-item:hover { transform: translateY(-4px) rotate(-0.5deg); }
+
+        /* The countdown gets a heartbeat so the date pops */
+        @keyframes bump { 0%,100% { transform: scale(1) rotate(-3deg); } 50% { transform: scale(1.07) rotate(3deg); } }
+        .bday-date { animation: bump 2.6s ease-in-out infinite; }
+        @keyframes tick { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+        .bday-count .n { display: inline-block; animation: tick 1.9s ease-in-out infinite; }
+
+        /* Buttons with spring */
+        .btn { transition: transform .2s cubic-bezier(.34,1.7,.64,1), box-shadow .2s ease, background .2s ease; }
+        .btn:hover { transform: translateY(-3px) scale(1.04); }
+        .btn:active { transform: translateY(0) scale(0.97); }
+
+        /* Logo gives a little shimmy on hover */
+        @keyframes shimmy { 0%,100% { transform: rotate(0); } 25% { transform: rotate(-3deg); } 75% { transform: rotate(3deg); } }
+        .nav-logo:hover img { animation: shimmy .5s ease-in-out; }
+
+        @media (prefers-reduced-motion: reduce) {
+            .reveal, .reveal.in { opacity: 1 !important; animation: none !important; }
+            .bday-date, .bday-count .n { animation: none !important; }
+            .bday-card:hover, .stat-item:hover, .menu-item:hover, .btn:hover { transform: none !important; }
+        }
     </style>
 </head>
 <body>
@@ -1062,8 +1139,8 @@
                 </div>
                 <div class="bday-card" data-start="2026-08-03" data-end="2026-08-28">
                     <span class="when">All month</span>
-                    <h4>Anniversary Punch Card</h4>
-                    <p>Come in three times during August and your fourth visit comes with a treat on us. Ask for a card at the register.</p>
+                    <h4>Punch Card: 7th Is Free</h4>
+                    <p>Grab a punch card at the register. Six visits during August and your seventh one is on us.</p>
                 </div>
                 <div class="bday-card" data-start="2026-08-25" data-end="2026-08-25">
                     <span class="when">Drawn live Aug 25</span>
@@ -1550,6 +1627,22 @@
                     sessionStorage.setItem('bdayBarClosed', '1');
                 });
             }
+        })();
+
+
+        // Reveal things as they scroll in, with a bit of bounce
+        (function() {
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+            if (!('IntersectionObserver' in window)) return;
+            var sel = '.section-header, .bday-feature, .bday-card, .stat-item, .week-card, .menu-item, .team-member, .mission-highlight';
+            var els = document.querySelectorAll(sel);
+            els.forEach(function(el) { el.classList.add('reveal'); });
+            var io = new IntersectionObserver(function(entries) {
+                entries.forEach(function(e) {
+                    if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+                });
+            }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+            els.forEach(function(el) { io.observe(el); });
         })();
 
         // Count the mission stats up when they scroll into view
