@@ -154,13 +154,14 @@
         }
 
         /* Hero b-roll video background */
+        /* Visible from the start: the poster attribute paints frame 1 instantly,
+           so the scene appears immediately and the video takes over seamlessly. */
         .hero-video {
             position: absolute; inset: 0; width: 100%; height: 100%;
             object-fit: cover; object-position: center 45%;
-            z-index: 0; opacity: 0; transition: opacity 1.4s ease;
-            pointer-events: none;
+            z-index: 0; pointer-events: none;
+            background: #0d5c72;
         }
-        .hero-video.is-ready { opacity: 1; }
         .hero-video-tint {
             position: absolute; inset: 0; z-index: 1; pointer-events: none;
             background:
@@ -889,7 +890,7 @@
                 <div class="mission-stats">
                     <div class="stat-item"><div class="number" data-count="425" data-prefix="$" data-suffix="K+">$425K+</div><div class="label">Earned through real work</div></div>
                     <div class="stat-item"><div class="number" data-count="23500" data-suffix="+">23,500+</div><div class="label">Meals made by our team</div></div>
-                    <div class="stat-item"><div class="number" data-count="19800" data-suffix="+">19,800+</div><div class="label">Dole Whips served</div></div>
+                    <div class="stat-item"><div class="number" data-count="220" data-suffix="+">220+</div><div class="label">Families supported through The Arc of Hilo</div></div>
                     <div class="stat-item"><div class="number" data-count="3" data-suffix="">3</div><div class="label">Years serving Hilo</div></div>
                 </div>
                 <div class="mission-photos">
@@ -1355,16 +1356,19 @@
         (function() {
             const v = document.querySelector('.hero-video');
             if (!v) return;
+            const c = navigator.connection || {};
+            const slow = c.saveData === true || /^(slow-2g|2g)$/.test(c.effectiveType || '');
             const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-            const saveData = navigator.connection && navigator.connection.saveData;
-            if (reduce || saveData) { v.remove(); return; }
-            const show = function() { v.classList.add('is-ready'); };
-            if (v.readyState >= 2) show();
-            v.addEventListener('loadeddata', show, { once: true });
-            v.addEventListener('canplay', show, { once: true });
-            // iOS/Android sometimes need an explicit nudge
+            // On reduced-motion or a very slow link, keep the poster still and skip the download.
+            if (reduce || slow) { v.removeAttribute('autoplay'); v.preload = 'none'; v.pause(); return; }
             const tryPlay = function() { const p = v.play(); if (p && p.catch) p.catch(function(){}); };
             tryPlay();
+            // Don't burn CPU/battery decoding while the hero is scrolled away
+            if ('IntersectionObserver' in window) {
+                new IntersectionObserver(function(entries) {
+                    entries.forEach(function(e) { e.isIntersecting ? tryPlay() : v.pause(); });
+                }, { threshold: 0.1 }).observe(v);
+            }
             document.addEventListener('visibilitychange', function() { if (!document.hidden) tryPlay(); });
         })();
     </script>
