@@ -583,6 +583,7 @@
         .day-item:last-child { border-bottom: none; }
         .day-name { font-weight: 600; color: var(--ocean-deep); font-size: 0.9rem; min-width: 90px; }
         .day-dish { color: var(--text-dark); font-size: 0.95rem; flex: 1; }
+        .day-note { opacity: 0.55; font-size: 0.82em; font-weight: 400; }
         .day-price { font-weight: 700; color: var(--coral); font-size: 0.95rem; }
         .dole-flavors {
             background: var(--sand); padding: 1rem 1.5rem;
@@ -912,34 +913,64 @@
                         <div class="this-week-badge" id="week1Badge" style="display:none;">👉 This Week!</div>
                         <div class="week-header">
                             <h3>🌴 Week 1</h3>
-                            <p class="week-dates" id="week1Dates"></p>
+                            <p class="week-dates">Aug 3-7</p>
                         </div>
                         <div class="week-days">
-                            <div class="day-item"><span class="day-name">Monday</span><span class="day-dish">Mahi Katsu</span><span class="day-price">$15.50</span></div>
-                            <div class="day-item"><span class="day-name">Tuesday</span><span class="day-dish">Tacos (Pork or Beef)</span><span class="day-price">$14.50</span></div>
-                            <div class="day-item"><span class="day-name">Wednesday</span><span class="day-dish">Kalua Nachos</span><span class="day-price">$13</span></div>
-                            <div class="day-item"><span class="day-name">Thursday</span><span class="day-dish">Burgers</span><span class="day-price">$14.50</span></div>
-                            <div class="day-item"><span class="day-name">Friday</span><span class="day-dish">Pork & Peas</span><span class="day-price">$14</span></div>
+                            <div class="day-item"><span class="day-name">Monday</span><span class="day-dish">Mahi <span class="day-note">(furikake or garlic butter)</span></span><span class="day-price">$15.50</span></div>
+                            <div class="day-item"><span class="day-name">Tuesday</span><span class="day-dish">Tacos, Rice &amp; Beans <span class="day-note">(birria &amp; chicken)</span></span><span class="day-price">$15</span></div>
+                            <div class="day-item"><span class="day-name">Wednesday</span><span class="day-dish">Kalua Nachos</span><span class="day-price">$14</span></div>
+                            <div class="day-item"><span class="day-name">Thursday</span><span class="day-dish">Shoyu Chicken</span><span class="day-price">$14</span></div>
+                            <div class="day-item"><span class="day-name">Friday</span><span class="day-dish">Steak &amp; Onions</span><span class="day-price">$17</span></div>
                         </div>
-                        <div class="dole-flavors">🍦 <strong>Dole Flavors:</strong> Lime | Pineapple | Vanilla</div>
+                        <div class="dole-flavors">🍦 <strong>Dole Flavor:</strong> Watermelon <span class="day-note">(+ Pineapple &amp; Vanilla daily)</span></div>
                     </div>
                     <div class="week-card" id="week2Card">
                         <div class="this-week-badge" id="week2Badge" style="display:none;">👉 This Week!</div>
                         <div class="week-header">
                             <h3>🌺 Week 2</h3>
-                            <p class="week-dates" id="week2Dates"></p>
+                            <p class="week-dates">Aug 10-14</p>
                         </div>
                         <div class="week-days">
-                            <div class="day-item"><span class="day-name">Monday</span><span class="day-dish">Loco Moco</span><span class="day-price">$12</span></div>
-                            <div class="day-item"><span class="day-name">Tuesday</span><span class="day-dish">Tacos w/ Beans & Rice</span><span class="day-price">$14.50</span></div>
-                            <div class="day-item"><span class="day-name">Wednesday</span><span class="day-dish">Chicken Katsu Curry</span><span class="day-price">$14.50</span></div>
-                            <div class="day-item"><span class="day-name">Thursday</span><span class="day-dish">Shoyu Chicken</span><span class="day-price">$13</span></div>
-                            <div class="day-item"><span class="day-name">Friday</span><span class="day-dish">Pastele Stew</span><span class="day-price">$14</span></div>
+                            <div class="day-item"><span class="day-name">Monday</span><span class="day-dish">LauLau <span class="day-note">(Kimo &amp; Melia's collab)</span></span><span class="day-price">$17</span></div>
+                            <div class="day-item"><span class="day-name">Tuesday</span><span class="day-dish">Tacos, Rice &amp; Beans <span class="day-note">(beef &amp; carnitas)</span></span><span class="day-price">$15</span></div>
+                            <div class="day-item"><span class="day-name">Wednesday</span><span class="day-dish">Kalua Nachos</span><span class="day-price">$14</span></div>
+                            <div class="day-item"><span class="day-name">Thursday</span><span class="day-dish">Burgers &amp; Fries</span><span class="day-price">$15</span></div>
+                            <div class="day-item"><span class="day-name">Friday</span><span class="day-dish">Roast Pork</span><span class="day-price">$14</span></div>
                         </div>
-                        <div class="dole-flavors">🍦 <strong>Dole Flavors:</strong> Melona | Pineapple | Vanilla</div>
+                        <div class="dole-flavors">🍦 <strong>Dole Flavor:</strong> Mango <span class="day-note">(+ Pineapple &amp; Vanilla daily)</span></div>
+                    </div>
+                    <div class="week-card" id="week3Card">
+                        <div class="this-week-badge" id="week3Badge" style="display:none;">👉 This Week!</div>
+                        <div class="week-header">
+                            <h3>🌮 Week 3</h3>
+                            <p class="week-dates">Aug 17-21 · Double Taco Week</p>
+                        </div>
+                        <div class="week-days">
+                            <div class="day-item"><span class="day-name">Monday</span><span class="day-dish">Mahi <span class="day-note">(furikake or garlic butter)</span></span><span class="day-price">$15.50</span></div>
+                            <div class="day-item"><span class="day-name">Tuesday</span><span class="day-dish">Tacos, Rice &amp; Beans <span class="day-note">(carnitas &amp; chicken)</span></span><span class="day-price">$15</span></div>
+                            <div class="day-item"><span class="day-name">Wednesday</span><span class="day-dish">Kalua Nachos</span><span class="day-price">$14</span></div>
+                            <div class="day-item"><span class="day-name">Thursday</span><span class="day-dish">Tacos, Rice &amp; Beans <span class="day-note">(beef &amp; carnitas)</span></span><span class="day-price">$15</span></div>
+                            <div class="day-item"><span class="day-name">Friday</span><span class="day-dish">Steak &amp; Onions</span><span class="day-price">$17</span></div>
+                        </div>
+                        <div class="dole-flavors">🍦 <strong>Dole Flavor:</strong> Strawberry <span class="day-note">(+ Pineapple &amp; Vanilla daily)</span></div>
+                    </div>
+                    <div class="week-card" id="week4Card">
+                        <div class="this-week-badge" id="week4Badge" style="display:none;">👉 This Week!</div>
+                        <div class="week-header">
+                            <h3>🎉 Week 4</h3>
+                            <p class="week-dates">Aug 24-28</p>
+                        </div>
+                        <div class="week-days">
+                            <div class="day-item"><span class="day-name">Monday</span><span class="day-dish">LauLau <span class="day-note">(last chance for the collab)</span></span><span class="day-price">$17</span></div>
+                            <div class="day-item"><span class="day-name">Tuesday</span><span class="day-dish">Tacos, Rice &amp; Beans <span class="day-note">(beef &amp; carnitas)</span></span><span class="day-price">$15</span></div>
+                            <div class="day-item"><span class="day-name">Wednesday</span><span class="day-dish">Kalua Nachos</span><span class="day-price">$14</span></div>
+                            <div class="day-item"><span class="day-name">Thursday</span><span class="day-dish">Burgers &amp; Fries</span><span class="day-price">$15</span></div>
+                            <div class="day-item"><span class="day-name">Friday</span><span class="day-dish">Roast Pork</span><span class="day-price">$14</span></div>
+                        </div>
+                        <div class="dole-flavors">🍦 <strong>Dole Flavor:</strong> Melona <span class="day-note">(+ Pineapple &amp; Vanilla daily)</span></div>
                     </div>
                 </div>
-                <div class="specials-note">Our daily plate specials rotate weekly. Plates $12-$15.50. Served 10 AM - 2 PM, Mon-Fri.<br><strong>* Bowls available for some meals. Just ask!</strong></div>
+                <div class="specials-note">August plate specials · Mon to Fri · $14 to $17 · Served 10 AM to 2 PM. Dole Whip: a new flavor each week, plus Pineapple &amp; Vanilla every day.<br><strong>🎂 Birthday Bash: Tuesday, Aug 25 · cake &amp; live drawing!</strong></div>
             </div>
             <div class="menu-category" id="sandwiches">
                 <div class="menu-grid">
@@ -1159,38 +1190,25 @@
             teamScroll.scrollBy({ left: 300, behavior: 'smooth' });
         });
 
-        // Auto-detect current week for specials
+        // Auto-detect the current August specials week (highlights Mon–Sun of each week)
         (function() {
-            // Configuration: First day of Week 1 (Monday Apr 6, 2026)
-            const scheduleStart = new Date('2026-04-06');
-            const scheduleEnd = new Date('2026-08-31');
-            const today = new Date();
-
-            // Week 1 dates (Mondays, every other week from Apr 6) (through end of August)
-            const week1Dates = ['6/29', '7/13', '7/27', '8/10', '8/24'];
-            // Week 2 dates (Mondays, every other week from Apr 13) (through end of August)
-            const week2Dates = ['6/22', '7/6', '7/20', '8/3', '8/17', '8/31'];
-            
-            // Display date lists
-            document.getElementById('week1Dates').textContent = week1Dates.join(', ');
-            document.getElementById('week2Dates').textContent = week2Dates.join(', ');
-            
-            // Calculate which week we're in (starts on Week 1)
-            const msPerDay = 24 * 60 * 60 * 1000;
-            const daysSinceStart = Math.floor((today - scheduleStart) / msPerDay);
-            const weekNumber = Math.floor(daysSinceStart / 7);
-            const isWeek1 = weekNumber % 2 === 0;  // Week 1 is first (Apr 6)
-            
-            // Only highlight if we're within the schedule period
-            if (today >= scheduleStart && today <= scheduleEnd) {
-                if (isWeek1) {
-                    document.getElementById('week1Card').classList.add('current-week');
-                    document.getElementById('week1Badge').style.display = 'block';
-                } else {
-                    document.getElementById('week2Card').classList.add('current-week');
-                    document.getElementById('week2Badge').style.display = 'block';
+            // August 2026 week starts (Mondays). Month index 7 = August.
+            const weeks = [
+                { id: 'week1', start: new Date(2026, 7, 3) },
+                { id: 'week2', start: new Date(2026, 7, 10) },
+                { id: 'week3', start: new Date(2026, 7, 17) },
+                { id: 'week4', start: new Date(2026, 7, 24) },
+            ];
+            const now = new Date();
+            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            weeks.forEach(function(w) {
+                const end = new Date(w.start);
+                end.setDate(end.getDate() + 7); // exclusive: covers Mon through Sun
+                if (today >= w.start && today < end) {
+                    document.getElementById(w.id + 'Card').classList.add('current-week');
+                    document.getElementById(w.id + 'Badge').style.display = 'block';
                 }
-            }
+            });
         })();
     </script>
 </body>
