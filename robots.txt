@@ -1,0 +1,49 @@
+# Tiki Turtle Cafe — https://tikiturtlehi.com
+# A program of The Arc of Hilo, Hilo, Hawaii
+
+User-agent: *
+Allow: /$
+Allow: /index.html
+Disallow: /staff/
+Disallow: /waste-tracker/
+Disallow: /bus-order/
+Disallow: /signs/
+Disallow: /promo/
+Disallow: /funding/
+Disallow: /Pictures/
+
+# AI answer engines are welcome to read and cite the public site.
+# See /llms.txt for a plain-text summary.
+User-agent: GPTBot
+Allow: /$
+Allow: /index.html
+Allow: /llms.txt
+Disallow: /staff/
+Disallow: /waste-tracker/
+Disallow: /bus-order/
+Disallow: /funding/
+
+User-agent: ClaudeBot
+Allow: /$
+Allow: /index.html
+Allow: /llms.txt
+Disallow: /staff/
+Disallow: /waste-tracker/
+Disallow: /bus-order/
+Disallow: /funding/
+
+User-agent: PerplexityBot
+Allow: /$
+Allow: /index.html
+Allow: /llms.txt
+Disallow: /staff/
+Disallow: /waste-tracker/
+Disallow: /bus-order/
+Disallow: /funding/
+
+User-agent: Google-Extended
+Allow: /$
+Allow: /index.html
+Allow: /llms.txt
+
+Sitemap: https://tikiturtlehi.com/sitemap.xml

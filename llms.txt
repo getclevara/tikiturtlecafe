@@ -1,0 +1,53 @@
+# Tiki Turtle Cafe
+
+> A vocational training cafe in Hilo, Hawaii, serving plate lunch, sandwiches,
+> salads and Dole Whip. Every meal is prepared by individuals with disabilities
+> building real culinary and customer-service job skills. A program of The Arc
+> of Hilo. Tagline: "Where Every Bite Transforms Lives."
+
+## Visit
+- Address: 1099 Waianuenue Ave, Hilo, HI 96720
+- Hours: Monday to Friday, 10:00 AM to 2:00 PM (closed weekends)
+- Phone: 808-935-8534
+- Email: info@tikiturtlehi.com
+- Website: https://tikiturtlehi.com
+- Order online: https://www.clover.com/online-ordering/the-tiki-turtle-cafe-hilo
+
+## What we serve
+- Daily rotating plate-lunch specials, Monday to Friday, roughly $12 to $17
+- Taco Tuesday: Tacos, Rice & Beans
+- Kalua Nachos on Wednesdays
+- Signature sandwiches (Chicken Mac Nut Pesto, Da Robert's Special, Chicken Bacon Ranch)
+- Deli sandwiches with a choice of bread, protein, side and toppings
+- Signature salads with housemade dressings
+- Smoothies (16 oz) and Dole Whip soft-serve, with a new flavor each week
+  plus pineapple and vanilla daily
+- Bowls are available for some meals on request
+
+## Pricing note
+Prices shown on the website are cash prices. Card payments add 4 percent.
+
+## Mission and impact
+Tiki Turtle Cafe is operated by The Arc of Hilo, which has served the Big
+Island community for over 70 years and supports 220+ families. The cafe opened
+in August 2023 and provides paid, real-world culinary and customer-service
+training to individuals with intellectual and developmental disabilities.
+
+Verified figures since opening (from point-of-sale records, Aug 2023 to Mar 2026):
+- $425,000+ earned through the team's work
+- 23,500+ meals made
+- 3 years serving Hilo
+
+## August 2026: "3 Years of Aloha"
+The cafe's third birthday. Month-long celebration including Double Taco Week
+(Aug 18 and 20), LauLau collaborations with Kimo & Melia's (Aug 10 and 24),
+a $3 Dole Whip Follow Day (Aug 11), and the Birthday Bash Finale on Tuesday
+Aug 25 with cake and a live grand-prize drawing.
+
+## Catering
+Available for meetings, parties and community events. Enquire through the
+website contact form or by phone.
+
+## Not for indexing
+Internal tools at /staff/, /waste-tracker/, /bus-order/ and /funding/ are not
+public content and should not be crawled, cited or summarized.
