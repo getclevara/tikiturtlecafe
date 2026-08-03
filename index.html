@@ -553,7 +553,9 @@
             cursor: pointer; padding: 0.25rem 0.6rem; opacity: 0.85;
         }
         .bday-bar .x:hover { opacity: 1; }
-        body.has-bday-bar .navbar { top: var(--bar-h, 40px); }
+        body.has-bday-bar .navbar { top: var(--nav-top, 0px);
+            /* top must track scroll instantly, or it lags behind the bar */
+            transition: background 0.4s ease, padding 0.4s ease, box-shadow 0.4s ease; }
         @media (max-width: 600px) { .bday-bar { font-size: 0.8rem; padding-right: 2.4rem; } }
 
         /* Mission Photos - Real people at work */
@@ -1266,7 +1268,7 @@
 
             <h3 class="bday-sub">Running all month</h3>
             <ul class="bday-runs">
-                <li><b>Tuesdays</b> Taco Rice &amp; Beans, $15</li>
+                <li><b>Tuesdays</b> Tacos, Rice &amp; Beans, $15</li>
                 <li><b>Wednesdays</b> Kalua Nachos, $14</li>
                 <li><b>Daily</b> A new island special every day</li>
                 <li><b>Punch cards</b> Six visits and your seventh is on us</li>
@@ -1740,16 +1742,27 @@
                 if (sessionStorage.getItem('bdayBarClosed') !== '1') {
                     bar.hidden = false;
                     document.body.classList.add('has-bday-bar');
-                    const setH = function() {
-                        document.body.style.setProperty('--bar-h', bar.offsetHeight + 'px');
+                    var barH = 0, ticking = false;
+                    const sync = function() {
+                        barH = bar.offsetHeight;
+                        var y = window.pageYOffset || document.documentElement.scrollTop;
+                        var t = Math.max(0, barH - y);
+                        document.body.style.setProperty('--nav-top', t + 'px');
                     };
-                    setH();
-                    window.addEventListener('resize', setH);
+                    const onScroll = function() {
+                        if (ticking) return;
+                        ticking = true;
+                        requestAnimationFrame(function() { sync(); ticking = false; });
+                    };
+                    sync();
+                    window.addEventListener('scroll', onScroll, { passive: true });
+                    window.addEventListener('resize', sync);
                 }
                 const x = document.getElementById('bdayBarX');
                 if (x) x.addEventListener('click', function() {
                     bar.hidden = true;
                     document.body.classList.remove('has-bday-bar');
+                    document.body.style.setProperty('--nav-top', '0px');
                     sessionStorage.setItem('bdayBarClosed', '1');
                 });
             }
