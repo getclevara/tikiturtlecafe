@@ -69,7 +69,20 @@
         "opens": "10:00",
         "closes": "14:00"
       }],
-      "hasMenu": "https://tikiturtlehi.com/#menu",
+      "hasMenu": {
+        "@type": "Menu",
+        "name": "Tiki Turtle Cafe Menu",
+        "url": "https://tikiturtlehi.com/#menu",
+        "hasMenuSection": [{
+          "@type": "MenuSection",
+          "name": "Dole Whip and Treats",
+          "description": "Pineapple and vanilla Dole Whip soft serve daily, plus a rotating flavor of the week.",
+          "hasMenuItem": [
+            { "@type": "MenuItem", "name": "Dole Whip - Pineapple", "description": "The iconic Hawaiian treat. Refreshing pineapple soft serve.", "offers": { "@type": "Offer", "price": "6.00", "priceCurrency": "USD" } },
+            { "@type": "MenuItem", "name": "Dole Whip - Flavor of the Week", "description": "A new flavor every week alongside pineapple and vanilla.", "offers": { "@type": "Offer", "price": "6.00", "priceCurrency": "USD" } }
+          ]
+        }]
+      },
       "acceptsReservations": "False",
       "parentOrganization": {
         "@type": "NGO",
@@ -155,6 +168,13 @@
             background: linear-gradient(180deg, var(--ocean-deep) 0%, var(--ocean-mid) 50%, var(--ocean-bright) 100%);
             position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden;
         }
+
+        .hero-doleline {
+            margin-top: 1.6rem; color: var(--sunset-light);
+            font-size: clamp(1rem, 2vw, 1.2rem); font-weight: 600; letter-spacing: 0.01em;
+            text-shadow: 0 1px 10px rgba(0,0,0,0.4);
+        }
+        .hero-doleline strong { color: #fff; font-weight: 800; }
 
         /* Hero b-roll video background */
         /* Visible from the start: the poster attribute paints frame 1 instantly,
@@ -1191,6 +1211,7 @@
                 </a>
                 <a href="#menu" class="btn btn-secondary">View Menu</a>
             </div>
+            <p class="hero-doleline">Home of Hilo&rsquo;s <strong>Dole Whip</strong> &middot; a new flavor every week</p>
             <div class="hero-hours">
                 <span class="dot"></span>
                 <span>Open <strong>Mon - Fri</strong> · 10 AM to 2 PM</span>
@@ -1533,8 +1554,8 @@
             </div>
             <div class="menu-category" id="treats">
                 <div class="menu-grid">
-                    <div class="menu-item"><div class="menu-item-header"><h3>Dole Pineapple</h3><span class="price">$6.00</span></div><p>The iconic Hawaiian treat. Refreshing pineapple soft serve.</p></div>
-                    <div class="menu-item"><div class="menu-item-header"><h3>Dole Assorted Flavor</h3><span class="price">$6.00</span></div><p>A new flavor every week! Ask us what's spinning today.</p></div>
+                    <div class="menu-item"><div class="menu-item-header"><h3>Dole Whip &middot; Pineapple</h3><span class="price">$6.00</span></div><p>The iconic Hawaiian treat. Refreshing pineapple soft serve.</p></div>
+                    <div class="menu-item"><div class="menu-item-header"><h3>Dole Whip &middot; Flavor of the Week</h3><span class="price">$6.00</span></div><p>A new flavor every week! Ask us what's spinning today.</p></div>
                     <div class="menu-item"><div class="menu-item-header"><h3>Fountain Drinks</h3><span class="price">$2.00</span></div><p>Pepsi, Diet Pepsi, Root Beer, Orange Bang, Fruit Punch & Starry.</p></div>
                 </div>
             </div>
