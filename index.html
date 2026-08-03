@@ -539,6 +539,48 @@
             .bday-head::before { display: none; }
         }
 
+
+        /* ── Sticky mobile order bar ─────────────────────────
+           Phones only. Slides up once you're past the hero so it
+           doesn't compete with the hero CTA. Painted-sign styling. */
+        .order-dock { display: none; }
+        @media (max-width: 768px) {
+            .order-dock {
+                display: flex; align-items: center; gap: 0.6rem;
+                position: fixed; left: 0; right: 0; bottom: 0; z-index: 1200;
+                background: var(--cream);
+                border-top: 4px solid var(--text-dark);
+                padding: 0.7rem 0.85rem calc(0.7rem + env(safe-area-inset-bottom));
+                transform: translateY(115%);
+                transition: transform 0.32s cubic-bezier(.22,1.1,.36,1);
+                box-shadow: 0 -6px 18px rgba(0,0,0,0.16);
+            }
+            .order-dock.up { transform: translateY(0); }
+            .order-dock .dock-cta {
+                flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+                background: var(--coral); color: #fff; text-decoration: none;
+                border: 3px solid var(--text-dark); border-radius: 4px;
+                padding: 0.85rem 1rem; font-weight: 800; font-size: 1.06rem;
+                box-shadow: 4px 4px 0 var(--text-dark);
+                transition: transform .16s ease, box-shadow .16s ease;
+            }
+            .order-dock .dock-cta:active { transform: translate(3px, 3px); box-shadow: 1px 1px 0 var(--text-dark); }
+            .order-dock .dock-call {
+                display: inline-flex; align-items: center; justify-content: center;
+                width: 52px; height: 52px; flex-shrink: 0;
+                background: var(--ocean-deep); color: var(--cream);
+                border: 3px solid var(--text-dark); border-radius: 4px;
+                box-shadow: 4px 4px 0 var(--text-dark);
+            }
+            .order-dock .dock-call:active { transform: translate(3px, 3px); box-shadow: 1px 1px 0 var(--text-dark); }
+            .order-dock svg { width: 20px; height: 20px; }
+            /* keep the footer clear of the dock */
+            body { padding-bottom: 84px; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .order-dock { transition: none; }
+        }
+
         /* Announcement bar: flat painted banner, gold stripe like the sign edge */
         .bday-bar {
             position: relative; z-index: 1100; background: var(--coral);
@@ -1634,6 +1676,11 @@
         </div>
         <div class="footer-bottom"><p>© 2025 Tiki Turtle Cafe · A Program of The Arc of Hilo</p></div>
     </footer>
+    <div class="order-dock" id="orderDock">
+        <a class="dock-cta" href="https://www.clover.com/online-ordering/the-tiki-turtle-cafe-hilo" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="20" r="1.6" fill="currentColor" stroke="none"/><circle cx="18" cy="20" r="1.6" fill="currentColor" stroke="none"/><path d="M2 3h2.6l2.2 11.3a1.6 1.6 0 0 0 1.6 1.3h8.5a1.6 1.6 0 0 0 1.6-1.3L20 7H5.2"/></svg> Order Online</a>
+        <a class="dock-call" href="tel:808-935-8534" aria-label="Call Tiki Turtle Cafe"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5.4A2.4 2.4 0 0 1 5.4 3h2.1a1.2 1.2 0 0 1 1.14.82l1.3 3.9a1.2 1.2 0 0 1-.6 1.45l-1.5.75a11.6 11.6 0 0 0 5.24 5.24l.75-1.5a1.2 1.2 0 0 1 1.45-.6l3.9 1.3A1.2 1.2 0 0 1 21 15.5v2.1a2.4 2.4 0 0 1-2.4 2.4h-.6C9.94 20 3 13.06 3 5.4Z"/></svg></a>
+    </div>
+
 
     <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
         const navbar = document.getElementById('navbar');
@@ -1768,6 +1815,25 @@
             }
         })();
 
+
+
+        // Sticky mobile order bar: appear once the hero is behind you
+        (function() {
+            var dock = document.getElementById('orderDock');
+            var hero = document.querySelector('.hero');
+            if (!dock || !hero) return;
+            var ticking = false;
+            function sync() {
+                var past = window.pageYOffset > (hero.offsetHeight * 0.62);
+                dock.classList.toggle('up', past);
+            }
+            window.addEventListener('scroll', function() {
+                if (ticking) return;
+                ticking = true;
+                requestAnimationFrame(function() { sync(); ticking = false; });
+            }, { passive: true });
+            sync();
+        })();
 
         // Reveal things as they scroll in, with a bit of bounce
         (function() {
