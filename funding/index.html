@@ -50,6 +50,8 @@
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
+        /* keep anchored sections clear of the sticky topbar */
+        section[id] { scroll-margin-top: 84px; }
         body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--ink); overflow-x: hidden; line-height: 1.65; }
         h1, h2, h3, h4 { font-family: 'Playfair Display', serif; font-weight: 700; color: var(--ocean-deep); line-height: 1.15; }
         img { max-width: 100%; display: block; }
@@ -215,6 +217,28 @@
         .vision-item p { color: var(--text-dark); font-size: 1.02rem; }
 
         /* Ask */
+        /* --- 3D walkthrough --- */
+        .walkthrough { background: linear-gradient(165deg, #0a1116, #12222b); color: var(--sand-warm); }
+        .walkthrough h2 { color: #fff; }
+        .walkthrough .section-label { color: var(--ocean-bright); }
+        .walkthrough .section-head p { color: rgba(255,255,255,0.8); }
+        .tour-frame {
+            position: relative; margin-top: 2rem; border-radius: 14px; overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.16);
+            box-shadow: 0 26px 70px rgba(0,0,0,0.45);
+            aspect-ratio: 16 / 9; background: #0e1418;
+        }
+        .tour-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; display: block; }
+        .tour-actions { display: flex; flex-wrap: wrap; gap: 0.8rem; align-items: center; margin-top: 1.6rem; }
+        .tour-note { font-size: 0.86rem; color: rgba(255,255,255,0.62); margin: 0; }
+        .btn-tour {
+            display: inline-block; background: var(--ocean-mid); color: #fff; font-weight: 700;
+            padding: 0.85rem 1.6rem; border-radius: 999px; text-decoration: none;
+            border: 1px solid var(--ocean-bright); transition: background .2s ease, transform .12s ease;
+        }
+        .btn-tour:hover { background: var(--ocean-bright); transform: translateY(-2px); }
+        @media (max-width: 640px) { .tour-frame { aspect-ratio: 4 / 3; } }
+
         .ask { background: linear-gradient(160deg, var(--ocean-deep), var(--hibiscus-deep)); color: white; }
         .ask .section-label { color: rgba(255,255,255,0.94); }
         .ask h2 { color: white; }
@@ -332,6 +356,7 @@
                 <p class="lede">Tiki Turtle Cafe trains adults with disabilities for real culinary jobs, in a real working kitchen, in Hilo, Hawaiʻi. We're raising $200,000 to make our kitchen fully certified, the first phase of a $750,000 vision to build Hawaiʻi Island's first teaching kitchen for adults with disabilities.</p>
                 <div class="hero-ctas">
                     <a class="btn-primary" href="#ask">See the Ask</a>
+                    <a class="btn-ghost" href="#walkthrough">Walk the Kitchen</a>
                     <a class="btn-ghost" href="#stories">Meet Our Team</a>
                 </div>
             </div>
@@ -531,6 +556,23 @@
                         <p>Local chefs and food vendors in Hilo need certified kitchen space and can't always find it. Once we're certified, we can open our kitchen to them too, and turn Tiki Turtle into a resource the whole food community shares.</p>
                     </div>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="walkthrough" id="walkthrough">
+        <div class="wrap">
+            <div class="section-head reveal">
+                <span class="section-label">Walk Through It</span>
+                <h2>This kitchen is already drawn. Come stand in it.</h2>
+                <p>Our foodservice consultant and architect have the plans permitted and specified, down to the 27 pieces of equipment. We built this walkthrough straight from those drawings, so what you are looking at is the kitchen as it will actually be built: 42 feet by 20 feet, one certified commercial line, opening onto the event center.</p>
+            </div>
+            <div class="tour-frame reveal">
+                <iframe src="/funding/kitchen-tour/" title="Interactive 3D walkthrough of the ARC of Hilo culinary incubator kitchen" loading="lazy" allowfullscreen></iframe>
+            </div>
+            <div class="tour-actions reveal">
+                <a class="btn-tour" href="/funding/kitchen-tour/" target="_blank" rel="noopener">Open the full walkthrough</a>
+                <p class="tour-note">Drag to look around, or press Free roam and walk the line yourself.</p>
             </div>
         </div>
     </section>

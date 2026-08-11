@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kitchen Walkthrough · ARC of Hilo Culinary Incubator</title>
+<meta name="description" content="An interactive 3D walkthrough of the ARC of Hilo culinary incubator and catering kitchen, built from the permitted construction documents.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="/favicon-32.png" sizes="32x32">
+<style>
+  :root{
+    --ocean-deep:#0d5c72; --ocean-mid:#0e8ca0; --ocean-bright:#12b5c4;
+    --sunset:#f59e42; --cream:#fffcf7; --ink:#0a1116; --ink-2:#111c23;
+    --line:rgba(255,255,255,.14);
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0}
+  body{
+    background:var(--ink); color:var(--cream); overflow:hidden;
+    font-family:ui-sans-serif,-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  #view{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none;cursor:grab}
+  #view:active{cursor:grabbing}
+
+  /* ---------- loading ---------- */
+  #loading{
+    position:fixed;inset:0;z-index:40;display:grid;place-content:center;gap:.9rem;
+    background:radial-gradient(120% 90% at 50% 40%,#12222b 0%,#070d11 70%);
+    text-align:center;transition:opacity .5s ease,visibility .5s;
+  }
+  #loading.gone{opacity:0;visibility:hidden;pointer-events:none}
+  #loading p{margin:0;letter-spacing:.16em;text-transform:uppercase;font-size:.72rem;opacity:.65}
+  #loading .sp{
+    width:34px;height:34px;margin:0 auto;border-radius:50%;
+    border:2px solid rgba(255,255,255,.15);border-top-color:var(--ocean-bright);
+    animation:spin .9s linear infinite;
+  }
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  /* ---------- top bar ---------- */
+  header{
+    position:fixed;top:0;left:0;right:0;z-index:20;display:flex;align-items:center;
+    justify-content:space-between;gap:1rem;padding:.85rem clamp(.9rem,3vw,1.6rem);
+    background:linear-gradient(180deg,rgba(6,11,15,.82),rgba(6,11,15,0));
+    pointer-events:none;
+  }
+  header > *{pointer-events:auto}
+  .brand{display:flex;flex-direction:column;line-height:1.25}
+  .brand b{font-size:clamp(.86rem,2.2vw,1rem);font-weight:650;letter-spacing:.01em}
+  .brand span{font-size:.7rem;opacity:.6;letter-spacing:.06em;text-transform:uppercase}
+  .tools{display:flex;gap:.45rem;flex-wrap:wrap;justify-content:flex-end}
+  button{
+    font:inherit;font-size:.78rem;color:var(--cream);cursor:pointer;
+    background:rgba(255,255,255,.07);border:1px solid var(--line);
+    padding:.46rem .82rem;border-radius:999px;
+    backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+    transition:background .2s ease,border-color .2s ease,transform .12s ease;
+  }
+  button:hover{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.3)}
+  button:active{transform:translateY(1px)}
+  button:focus-visible{outline:2px solid var(--ocean-bright);outline-offset:2px}
+  button[aria-pressed="true"]{background:var(--ocean-mid);border-color:var(--ocean-bright)}
+  #play{background:var(--ocean-mid);border-color:var(--ocean-bright)}
+  #play:hover{background:var(--ocean-bright)}
+
+  /* ---------- caption ---------- */
+  #panel{
+    position:fixed;left:clamp(.9rem,3vw,1.6rem);bottom:clamp(5.4rem,12vh,7rem);
+    z-index:20;max-width:min(30rem,72vw);
+  }
+  #shot-title{
+    margin:0 0 .4rem;font-size:clamp(1.5rem,4.6vw,2.3rem);font-weight:640;
+    letter-spacing:-.02em;line-height:1.05;
+    text-shadow:0 2px 18px rgba(0,0,0,.75);
+  }
+  #shot-title::after{
+    content:"";display:block;width:2.4rem;height:3px;margin-top:.55rem;border-radius:2px;
+    background:linear-gradient(90deg,var(--ocean-bright),var(--sunset));
+  }
+  #shot-caption{
+    margin:.7rem 0 0;font-size:clamp(.84rem,2.3vw,.97rem);line-height:1.55;
+    color:rgba(255,252,247,.9);text-shadow:0 1px 12px rgba(0,0,0,.85);
+  }
+  body[data-mode="free"] #panel{opacity:.25;transition:opacity .35s ease}
+
+  /* ---------- bottom rail ---------- */
+  footer{
+    position:fixed;left:0;right:0;bottom:0;z-index:20;
+    padding:.7rem clamp(.9rem,3vw,1.6rem) calc(.8rem + env(safe-area-inset-bottom));
+    background:linear-gradient(0deg,rgba(6,11,15,.9),rgba(6,11,15,0));
+  }
+  #track{height:2px;background:rgba(255,255,255,.13);border-radius:2px;margin-bottom:.7rem;overflow:hidden}
+  #bar{height:100%;width:100%;transform-origin:0 50%;transform:scaleX(0);
+       background:linear-gradient(90deg,var(--ocean-bright),var(--sunset))}
+  #chips{display:flex;gap:.4rem;overflow-x:auto;scrollbar-width:none;padding-bottom:.15rem}
+  #chips::-webkit-scrollbar{display:none}
+  .chip{white-space:nowrap;font-size:.74rem;opacity:.66}
+  .chip[aria-current="true"]{opacity:1;background:rgba(18,181,196,.2);border-color:var(--ocean-bright)}
+
+  /* ---------- equipment tags ---------- */
+  #tags{position:fixed;inset:0;z-index:15;pointer-events:none;display:none}
+  .tag{
+    position:absolute;top:0;left:0;display:flex;align-items:center;gap:.4rem;
+    padding:.2rem .5rem .2rem .22rem;border-radius:999px;
+    background:rgba(8,14,18,.72);border:1px solid rgba(255,255,255,.18);
+    backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+    font-size:.68rem;white-space:nowrap;transition:opacity .18s linear;
+  }
+  .tag b{
+    display:grid;place-content:center;min-width:1.15rem;height:1.15rem;border-radius:50%;
+    background:var(--ocean-bright);color:#04222a;font-size:.62rem;font-weight:700;
+  }
+  .tag span{opacity:.9}
+
+  /* ---------- hint ---------- */
+  #hint{
+    position:fixed;right:clamp(.9rem,3vw,1.6rem);bottom:clamp(5.4rem,12vh,7rem);z-index:20;
+    font-size:.7rem;text-align:right;line-height:1.7;opacity:.5;max-width:12rem;
+  }
+  kbd{
+    font:inherit;font-size:.66rem;padding:.05rem .3rem;border-radius:4px;
+    background:rgba(255,255,255,.1);border:1px solid var(--line);
+  }
+  @media (max-width:640px){ #hint{display:none} }
+
+  @media (prefers-reduced-motion:reduce){
+    *{animation-duration:.01ms !important;transition-duration:.01ms !important}
+  }
+</style>
+</head>
+<body>
+
+<canvas id="view"></canvas>
+<div id="tags" aria-hidden="true"></div>
+
+<header>
+  <div class="brand">
+    <b>ARC of Hilo Culinary Incubator</b>
+    <span>Catering kitchen · 42′-0″ × 20′-1″</span>
+  </div>
+  <div class="tools">
+    <button id="shot-still" title="Download this view at 3x resolution">Save still</button>
+    <button id="tagbtn" aria-pressed="false" title="Show K101 equipment numbers">Equipment tags</button>
+    <button id="roam" title="Walk the room yourself (F)">Free roam</button>
+    <button id="play">Pause</button>
+  </div>
+</header>
+
+<div id="panel">
+  <h1 id="shot-title">Arrive</h1>
+  <p id="shot-caption"></p>
+</div>
+
+<div id="hint">
+  <kbd>drag</kbd> to look<br>
+  <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> to walk<br>
+  <kbd>shift</kbd> to move faster
+</div>
+
+<footer>
+  <div id="track"><div id="bar"></div></div>
+  <div id="chips"></div>
+</footer>
+
+<div id="loading">
+  <div class="sp"></div>
+  <p>Building the kitchen</p>
+</div>
+
+<script type="module" src="./app.js"></script>
+<noscript>
+  <p style="padding:2rem">This walkthrough needs JavaScript and WebGL. The underlying drawings are in the permit set: sheets A03, A04 and K101.</p>
+</noscript>
+</body>
+</html>
