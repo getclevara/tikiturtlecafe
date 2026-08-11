@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 560" font-family="ui-sans-serif, -apple-system, Segoe UI, Helvetica, Arial, sans-serif">
+  <rect width="1000" height="560" fill="#0e1418"/>
+
+  <!-- title -->
+  <text x="40" y="46" fill="#fffcf7" font-size="23" font-weight="700">Kitchen openings, per sheet A03</text>
+  <text x="40" y="70" fill="#8fa3ad" font-size="14">Plan view. 42′-0″ × 20′-1″. North is up. Scale: 20 px = 1 ft.</text>
+
+  <!-- ============ room: x 60..900 (42ft), y 150..552 (20.08ft) ============ -->
+  <!-- exterior (north / top) wall -->
+  <rect x="60" y="140" width="840" height="10" fill="#5a6b75"/>
+  <!-- interior (south / bottom) wall -->
+  <rect x="60" y="452" width="840" height="10" fill="#5a6b75"/>
+  <!-- end walls -->
+  <rect x="50" y="140" width="10" height="322" fill="#5a6b75"/>
+  <rect x="900" y="140" width="10" height="322" fill="#5a6b75"/>
+  <!-- floor -->
+  <rect x="60" y="150" width="840" height="302" fill="#171f25"/>
+
+  <!-- outside: landing + sidewalk -->
+  <rect x="248" y="86" width="140" height="54" fill="#22303a"/>
+  <text x="318" y="118" fill="#9db3bf" font-size="12" text-anchor="middle">new concrete landing</text>
+  <text x="318" y="76" fill="#6f8593" font-size="11" text-anchor="middle">to existing sidewalk → event center</text>
+
+  <!-- ===== cook line along the EXTERIOR wall, x 22ft..41.3ft ===== -->
+  <rect x="500" y="152" width="386" height="46" fill="#2f3941" stroke="#7d8a93" stroke-width="1.5"/>
+  <text x="693" y="180" fill="#dfe7ec" font-size="14" font-weight="600" text-anchor="middle">COOK LINE  ·  under the Type I hood</text>
+  <text x="693" y="216" fill="#7f929d" font-size="11.5" text-anchor="middle">range · broiler · griddle · fryers · convection oven</text>
+
+  <!-- ===== walk-in on the interior wall ===== -->
+  <rect x="250" y="300" width="200" height="152" fill="#1d2b33" stroke="#6d7f8a" stroke-width="1.5"/>
+  <text x="350" y="382" fill="#a9c6d3" font-size="13" text-anchor="middle">walk-in cold storage</text>
+
+  <!-- ===== island ===== -->
+  <rect x="570" y="302" width="240" height="80" fill="#252d34" stroke="#7d8a93" stroke-width="1.5"/>
+  <text x="690" y="348" fill="#dfe7ec" font-size="13" text-anchor="middle">chef’s island / pass</text>
+
+  <!-- ================= OPENING 1: catering double doors ================= -->
+  <rect x="258" y="138" width="140" height="14" fill="#12b5c4"/>
+  <path d="M258 152 A140 140 0 0 1 398 152" fill="none" stroke="#12b5c4" stroke-width="1.6" stroke-dasharray="5 5" opacity="0.8"/>
+  <line x1="328" y1="138" x2="328" y2="96" stroke="#12b5c4" stroke-width="1.5"/>
+  <circle cx="328" cy="138" r="4" fill="#12b5c4"/>
+  <g>
+    <rect x="404" y="150" width="252" height="58" rx="7" fill="#0c2b32" stroke="#12b5c4" stroke-width="1.5"/>
+    <text x="418" y="172" fill="#12b5c4" font-size="13" font-weight="700">1 · NEW DOUBLE SWING DOOR</text>
+    <text x="418" y="192" fill="#c6dde3" font-size="12">catering out · exterior wall · permitted</text>
+  </g>
+
+  <!-- ================= OPENING 2: hall single door ================= -->
+  <rect x="75" y="452" width="70" height="14" fill="#f59e42"/>
+  <path d="M145 466 A70 70 0 0 0 145 466" fill="none"/>
+  <path d="M75 466 A70 70 0 0 0 145 466" fill="none" stroke="#f59e42" stroke-width="1.6" stroke-dasharray="5 5" opacity="0.8"/>
+  <g>
+    <rect x="70" y="486" width="238" height="58" rx="7" fill="#33230f" stroke="#f59e42" stroke-width="1.5"/>
+    <text x="84" y="508" fill="#f59e42" font-size="13" font-weight="700">2 · NEW SINGLE 42″ DOOR</text>
+    <text x="84" y="528" fill="#efd9bd" font-size="12">to interior hallway · permitted</text>
+  </g>
+
+  <!-- ================= OPENING 3: proposed pass-through, WEST END wall ====== -->
+  <rect x="48" y="300" width="14" height="78" fill="none" stroke="#ff7b7b" stroke-width="3" stroke-dasharray="7 5"/>
+  <text x="30" y="344" fill="#ff7b7b" font-size="12" text-anchor="end" transform="rotate(-90 30 344)">CAFE POS →</text>
+  <line x1="62" y1="339" x2="150" y2="339" stroke="#ff7b7b" stroke-width="1.5" stroke-dasharray="4 4"/>
+  <g>
+    <rect x="150" y="312" width="336" height="58" rx="7" fill="#331717" stroke="#ff7b7b" stroke-width="1.5"/>
+    <text x="164" y="334" fill="#ff7b7b" font-size="13" font-weight="700">3 · PROPOSED PASS-THROUGH  (not permitted)</text>
+    <text x="164" y="354" fill="#f4cccc" font-size="12">west end wall · cafe front of house beyond · note for Andrew</text>
+  </g>
+
+  <!-- wall labels -->
+  <text x="80" y="132" fill="#7f929d" font-size="12" font-style="italic">EXTERIOR WALL  (windows removed, CMU infill)</text>
+  <text x="80" y="446" fill="#7f929d" font-size="12" font-style="italic">INTERIOR WALL  (hallway / cafe side)</text>
+
+  <!-- overall dimension -->
+  <line x1="60" y1="240" x2="900" y2="240" stroke="#4a5a64" stroke-width="1"/>
+  <text x="480" y="234" fill="#8fa3ad" font-size="12" text-anchor="middle">42′-0″</text>
+
+  <!-- legend -->
+  <text x="620" y="430" fill="#5f7681" font-size="11.5">solid = on the permit set   ·   dashed = proposed, not permitted</text>
+</svg>

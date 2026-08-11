@@ -249,13 +249,25 @@ dayLight.position.set(2.6, 5.2, 10.6); scene.add(dayLight);
 
 /* --------------------------------------------------------------- the tour */
 
+// One continuous walk, west to east, in the order a person actually moves
+// through the room: in from the hallway at the west corner, then straight down
+// the length of the kitchen. No jumping back and forth across 42 feet.
 const SHOTS = [
-  { id: 'arrive', title: 'Arrive',
-    pos: [13.4, EYE, 3.4], look: [37, 4.4, 6.4],
-    caption: 'In through the new double-acting doors off the concrete landing. Forty-two feet of working kitchen opens to your right, in a building the ARC of Hilo already operates.' },
+  { id: 'hall', title: 'In from the hallway',
+    pos: [3.6, EYE, 17.2], look: [15.5, 4.4, 3.8],
+    caption: 'You come in from the interior hallway, at the west corner. The kitchen opens ahead of you and runs 42 feet off to your right.' },
+  { id: 'cafe', title: 'The cafe window, on your left',
+    pos: [5.8, 5.4, 15.2], look: [0.4, 4.4, 12.5],
+    caption: 'Turn left and there is the end wall, with the Cafe POS and front of house directly behind it. The pass-through is proposed, not yet permitted. Note for Andrew Ling.' },
+  { id: 'wash', title: 'Wash & reset',
+    pos: [9.2, EYE, 7.2], look: [1.6, 4.2, 3.6],
+    caption: 'The dish end sits right where you walked in. Three-compartment sink and a high-temp warewasher. Unglamorous, and the reason the kitchen can turn around twice in a day.' },
   { id: 'store', title: 'Receive & store',
     pos: [8.2, EYE, 5.6], look: [16.4, 4.2, 12.6],
     caption: 'Cold storage and dry goods. The walk-in and the louvered shelving are what let a trainee cohort and a catering order share one kitchen without colliding.' },
+  { id: 'out', title: 'The catering doors',
+    pos: [17.8, 5.5, 8.6], look: [12.6, 4.7, 0.3],
+    caption: 'Halfway down, on the exterior wall, the new double-acting doors open onto the concrete landing and the existing sidewalk. The event center is a short push across it. That adjacency is the whole business case.' },
   { id: 'prep', title: 'Prep',
     pos: [21.4, EYE, 14.0], look: [26.0, 3.9, 18.8],
     caption: 'The custom stainless run: ingredient bins below, double over-shelf above, power routed through the counter. This is where most of the teaching happens.' },
@@ -265,19 +277,13 @@ const SHOTS = [
   { id: 'pass', title: 'Pass & plate',
     pos: [36.8, 5.2, 13.8], look: [27.6, 3.6, 6.8],
     caption: "The chef's island is the pass. Cold rails and plate storage below, heat lamps above, pick-up at both ends, and the cook line three steps behind it." },
-  { id: 'cafe', title: 'Straight to the cafe',
-    pos: [8.6, 5.3, 15.4], look: [0.2, 4.3, 12.3],
-    caption: 'Proposed, not yet permitted: a service pass-through in the west end wall, with the Cafe POS and front of house directly on the other side. Ready orders hand straight across instead of being carried around. Note for Andrew Ling.' },
-  { id: 'out', title: 'Out to the event center',
-    pos: [21.8, 5.5, 9.6], look: [12.6, 4.7, 0.3],
-    caption: 'The double-acting doors open onto the new landing and the existing sidewalk, and the event center is a short push across it. That adjacency is the whole business case: catering revenue that funds the training.' },
-  { id: 'wash', title: 'Wash & reset',
-    pos: [11.0, EYE, 6.2], look: [1.5, 4.0, 4.4],
-    caption: 'Three-compartment sink and a high-temp warewasher. Unglamorous, and the reason the kitchen can turn around twice in a day.' },
   { id: 'room', title: 'The whole room',
     pos: [40.3, 6.7, 6.3], look: [5, 3.0, 8.8],
     caption: '42\u2032-0\u2033 \u00d7 20\u2032-1\u2033. One certified commercial kitchen, one culinary incubator, one workforce pipeline on Hawai\u02bbi Island.' },
 ];
+
+// links shared before the reorder should still land somewhere sensible
+const SHOT_ALIASES = { arrive: 'hall' };
 
 const state = {
   mode: 'tour', shot: 0, t: 0, playing: true,
@@ -519,7 +525,9 @@ const params = new URLSearchParams(location.search);
 const want = params.get('shot');
 let startShot = 0;
 if (want !== null) {
-  const byId = SHOTS.findIndex((s) => s.id === want.toLowerCase());
+  const asked = want.toLowerCase();
+  const id = SHOT_ALIASES[asked] || asked;
+  const byId = SHOTS.findIndex((s) => s.id === id);
   startShot = byId >= 0 ? byId : THREE.MathUtils.clamp(parseInt(want, 10) - 1 || 0, 0, SHOTS.length - 1);
 }
 if (params.get('still') === '1') { state.playing = false; playBtn.textContent = 'Play tour'; }
