@@ -38,20 +38,26 @@ Verified figures since opening (from point-of-sale records, Aug 2023 to Mar 2026
 - 23,500+ meals made
 - 3 years serving Hilo
 
-## September 2026 specials, week of Sept 14 to 18 (this week)
-- Monday: Steak & Onions, $17
-- Tuesday: Carne Asada Burritos, $15
-- Wednesday: Roast Pork & Gravy, $14
-- Thursday: Mahi Katsu, $15
-- Friday: Pastele Stew, $14
+## Plate specials (two-week rotation, October to December 2026)
+The daily plate special menu runs on a repeating two-week cycle. The Week 1
+menu is served the week of Oct 5, 2026 and every other week after that; the
+Week 2 menu fills the weeks in between, starting the week of Oct 12.
 
-## September 2026 specials, week of Sept 21 to 25 (next week)
-- Monday: Spaghetti & Garlic Bread, $13
-- Tuesday: Carne Asada Fries, $14
-- Wednesday: Baked Chicken & Gravy, $14
-- Thursday: Burger & Fries, $15
-- Friday: BBQ Ribs with rice & slaw, $15
-- Dole Whip: Pineapple and Vanilla daily
+Week 1 menu:
+- Monday: Kimchi Tofu Pork Soup, served with rice and no side, $13
+- Tuesday: Tacos, Rice & Beans, $14
+- Wednesday: Kalua Nachos, $14
+- Thursday: Orange Chicken with rice and mac salad, $14
+- Friday: Kalua Pig & Cabbage with rice, lomi tomato, mac salad and haupia, $14
+- Dole Whip flavor of the week: Strawberry (plus Pineapple and Vanilla daily)
+
+Week 2 menu:
+- Monday: Loco Moco, $13
+- Tuesday: Fried Chicken Sandwich, spicy or regular, $14
+- Wednesday: Pepper Pork, $14
+- Thursday: Steak Bites with mashed potatoes, $15
+- Friday: Chicken Katsu, $15
+- Dole Whip: Pineapple and Vanilla daily, plus a weekly flavor
 
 ## Catering
 Available for meetings, parties and community events. Enquire through the
