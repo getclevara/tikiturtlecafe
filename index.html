@@ -728,6 +728,7 @@
 
         /* Weekly Specials */
         .weekly-specials { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; max-width: 1000px; margin: 0 auto; }
+        .weekly-specials.single { grid-template-columns: minmax(0, 580px); justify-content: center; }
         .week-card {
             background: white; border-radius: 20px; overflow: hidden;
             box-shadow: 0 4px 20px rgba(0,0,0,0.06);
@@ -1170,27 +1171,11 @@
                             <div class="day-item"><span class="day-name">Thursday</span><span class="day-dish">Surf &amp; Turf <span class="day-note">(steak &amp; mahi katsu)</span></span><span class="day-price">$20</span></div>
                             <div class="day-item"><span class="day-name">Friday</span><span class="day-dish">Baked Chicken</span><span class="day-price">$14</span></div>
                         </div>
-                        <div class="dole-flavors"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2.6c-3 0-5.2 1.7-5.2 3.6 0 .5.2 1 .6 1.4-1.3.4-2.2 1.3-2.2 2.4 0 .8.5 1.5 1.3 2-.6.4-1 1-1 1.7 0 1.5 1.9 2.4 4.1 2.4h5c2.2 0 4.1-.9 4.1-2.4 0-.7-.4-1.3-1-1.7.8-.5 1.3-1.2 1.3-2 0-1.1-.9-2-2.2-2.4.4-.4.6-.9.6-1.4 0-1.9-2.2-3.6-5.2-3.6Z" fill="currentColor"/><path d="M9 17.2 12 22l3-4.8Z" fill="currentColor"/></svg> <strong>Dole Whip:</strong> Pineapple &amp; Vanilla daily, plus a weekly flavor</div>
+                        <div class="dole-flavors"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2.6c-3 0-5.2 1.7-5.2 3.6 0 .5.2 1 .6 1.4-1.3.4-2.2 1.3-2.2 2.4 0 .8.5 1.5 1.3 2-.6.4-1 1-1 1.7 0 1.5 1.9 2.4 4.1 2.4h5c2.2 0 4.1-.9 4.1-2.4 0-.7-.4-1.3-1-1.7.8-.5 1.3-1.2 1.3-2 0-1.1-.9-2-2.2-2.4.4-.4.6-.9.6-1.4 0-1.9-2.2-3.6-5.2-3.6Z" fill="currentColor"/><path d="M9 17.2 12 22l3-4.8Z" fill="currentColor"/></svg> <strong>Dole Flavors:</strong> Pineapple, Cherry &amp; Lime</div>
                     </div>
-                    <div class="week-card" id="week1Card">
-                        <div class="this-week-badge" id="week1Badge" style="display:none;"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 12h11l-3.6-3.6L12.8 7l6 5-6 5-1.4-1.4L15 12H4Z" fill="currentColor"/></svg> This Week!</div>
-                        <div class="week-header">
-                            <h3>Week 1</h3>
-                            <p class="week-dates"></p>
-                        </div>
-                        <div class="week-days">
-                            <div class="day-item"><span class="day-name">Monday</span><span class="day-dish">Loco Moco</span><span class="day-price">$14</span></div>
-                            <div class="day-item"><span class="day-name">Tuesday</span><span class="day-dish">Tacos, Rice &amp; Beans</span><span class="day-price">$15</span></div>
-                            <div class="day-item"><span class="day-name">Wednesday</span><span class="day-dish">Kalua Nachos</span><span class="day-price">$14</span></div>
-                            <div class="day-item"><span class="day-name">Thursday</span><span class="day-dish">Boneless Korean Chicken, Rice &amp; Mac</span><span class="day-price">$14</span></div>
-                            <div class="day-item"><span class="day-name">Friday</span><span class="day-dish">Roast Pork &amp; Gravy</span><span class="day-price">$14</span></div>
-                        </div>
-                        <div class="dole-flavors"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2.6c-3 0-5.2 1.7-5.2 3.6 0 .5.2 1 .6 1.4-1.3.4-2.2 1.3-2.2 2.4 0 .8.5 1.5 1.3 2-.6.4-1 1-1 1.7 0 1.5 1.9 2.4 4.1 2.4h5c2.2 0 4.1-.9 4.1-2.4 0-.7-.4-1.3-1-1.7.8-.5 1.3-1.2 1.3-2 0-1.1-.9-2-2.2-2.4.4-.4.6-.9.6-1.4 0-1.9-2.2-3.6-5.2-3.6Z" fill="currentColor"/><path d="M9 17.2 12 22l3-4.8Z" fill="currentColor"/></svg> <strong>Dole Flavor:</strong> Strawberry <span class="day-note">(+ Pineapple &amp; Vanilla daily)</span></div>
-                    </div>
-                    <div class="week-card" id="week2Card">
-                        <div class="this-week-badge" id="week2Badge" style="display:none;"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 12h11l-3.6-3.6L12.8 7l6 5-6 5-1.4-1.4L15 12H4Z" fill="currentColor"/></svg> This Week!</div>
-                        <div class="week-header">
-                            <h3>Week 2</h3>
+                    <div class="week-card" id="defaultCard" hidden>
+                                                <div class="week-header">
+                            <h3>This Week</h3>
                             <p class="week-dates"></p>
                         </div>
                         <div class="week-days">
@@ -1203,7 +1188,7 @@
                         <div class="dole-flavors"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2.6c-3 0-5.2 1.7-5.2 3.6 0 .5.2 1 .6 1.4-1.3.4-2.2 1.3-2.2 2.4 0 .8.5 1.5 1.3 2-.6.4-1 1-1 1.7 0 1.5 1.9 2.4 4.1 2.4h5c2.2 0 4.1-.9 4.1-2.4 0-.7-.4-1.3-1-1.7.8-.5 1.3-1.2 1.3-2 0-1.1-.9-2-2.2-2.4.4-.4.6-.9.6-1.4 0-1.9-2.2-3.6-5.2-3.6Z" fill="currentColor"/><path d="M9 17.2 12 22l3-4.8Z" fill="currentColor"/></svg> <strong>Dole Whip:</strong> Pineapple &amp; Vanilla daily, plus a weekly flavor</div>
                     </div>
                 </div>
-                <div class="specials-note">Plate specials &middot; Mon to Fri &middot; <span class="price-range">$14 to $15</span> &middot; Served 10 AM to 2 PM. <span class="rotation-note">Our two-week menu rotates, so the plates above come back around every other week.</span></div>
+                <div class="specials-note">Plate specials &middot; Mon to Fri &middot; <span class="price-range">$14 to $15</span> &middot; Served 10 AM to 2 PM. <span class="rotation-note">Our menu changes weekly, so check back each Monday for what the crew is cooking.</span></div>
             </div>
             <div class="menu-category" id="sandwiches">
                 <div class="menu-grid">
@@ -1428,16 +1413,16 @@
             teamScroll.scrollBy({ left: 300, behavior: 'smooth' });
         });
 
-        // Specials run on a two-week rotation. The dates, the "This Week" badge
-        // and the price range below all render themselves off the anchor, so the
-        // cards stay right every Monday without anyone editing this file.
+        // The specials board shows one card: this week.
         //
-        // A card carrying data-week="YYYY-MM-DD" is a one-off menu for the week
-        // starting that Monday. It takes over the current slot for those five
-        // days, hides the rotation card it stands in for, and drops off on its
-        // own afterwards. To add one, copy a week-card, set data-week and hidden.
+        // A card carrying data-week="YYYY-MM-DD" is the menu for the week
+        // starting that Monday. It shows for those five days and then drops off
+        // on its own. To set a new week, copy a week-card, give it that week's
+        // Monday in data-week, and leave the hidden attribute on.
+        //
+        // #defaultCard is the standing menu. It only appears on a week with no
+        // card of its own, so the board is never empty.
         (function() {
-            var ANCHOR = new Date(2026, 9, 5); // Mon Oct 5 2026: the Week 1 menu
             var MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
             var shelf = document.querySelector('.weekly-specials');
             if (!shelf) return;
@@ -1449,8 +1434,6 @@
             var dow = today.getDay();
             var monday = new Date(today);
             monday.setDate(monday.getDate() + (dow === 0 ? 1 : dow === 6 ? 2 : 1 - dow));
-            var nextMonday = new Date(monday);
-            nextMonday.setDate(nextMonday.getDate() + 7);
 
             var iso = function(d) {
                 return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2);
@@ -1462,40 +1445,26 @@
                 return MONTHS[start.getMonth()] + ' ' + start.getDate() + ' to ' + tail;
             };
 
-            var weeksSince = Math.round((monday - ANCHOR) / 604800000);
-            var currentId = ((weeksSince % 2) + 2) % 2 === 0 ? 'week1' : 'week2';
-            var nextId = currentId === 'week1' ? 'week2' : 'week1';
-
-            // Only an override for this exact week survives; the rest never show.
-            var override = null;
+            // Only a card for this exact week survives; the rest never show.
+            var dated = null;
             [].forEach.call(shelf.querySelectorAll('.week-card[data-week]'), function(card) {
-                if (card.dataset.week === iso(monday)) override = card;
+                if (card.dataset.week === iso(monday)) dated = card;
                 else card.remove();
             });
 
-            var show = function(card, start, isCurrent) {
-                if (!card) return;
-                card.hidden = false;
-                var dates = card.querySelector('.week-dates');
-                if (dates) dates.textContent = label(start);
-                if (!isCurrent) return;
-                card.classList.add('current-week');
-                var badge = card.querySelector('.this-week-badge');
-                if (badge) badge.style.display = 'block';
-                shelf.insertBefore(card, shelf.firstChild); // this week reads first
-            };
+            var standing = document.getElementById('defaultCard');
+            var live = dated || standing;
+            if (dated && standing) standing.remove();
+            if (!live) return;
 
-            show(document.getElementById(nextId + 'Card'), nextMonday, false);
-            if (override) {
-                var standIn = document.getElementById(currentId + 'Card');
-                if (standIn) standIn.remove();
-                show(override, monday, true);
-            } else {
-                show(document.getElementById(currentId + 'Card'), monday, true);
-            }
+            live.hidden = false;
+            live.classList.add('current-week');
+            var dates = live.querySelector('.week-dates');
+            if (dates) dates.textContent = label(monday);
+            shelf.classList.add('single');
 
             // The footer range follows whatever is actually on the board.
-            var prices = [].map.call(shelf.querySelectorAll('.day-price'), function(el) {
+            var prices = [].map.call(live.querySelectorAll('.day-price'), function(el) {
                 return parseFloat(el.textContent.replace(/[^0-9.]/g, ''));
             }).filter(function(n) { return !isNaN(n); });
             var range = document.querySelector('.price-range');
@@ -1503,10 +1472,6 @@
                 var lo = Math.min.apply(null, prices);
                 var hi = Math.max.apply(null, prices);
                 range.textContent = lo === hi ? '$' + lo : '$' + lo + ' to $' + hi;
-            }
-            if (override) {
-                var rot = document.querySelector('.rotation-note');
-                if (rot) rot.textContent = 'This week is a one-off menu. Our regular two-week rotation picks back up next week.';
             }
         })();
 
